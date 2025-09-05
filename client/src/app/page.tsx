@@ -66,6 +66,8 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen overflow-x-hidden">
+      <div className="fixed inset-0 -z-10 bg-gradient-to-br from-[#0A2463] via-[#0d2d73] to-[#1a4d99]"></div>
+
       {/* Hero Section */}
       <section 
         id="hero"
@@ -149,7 +151,6 @@ export default function HomePage() {
             >
               <div className="relative w-full h-80 lg:h-96 rounded-2xl overflow-hidden shadow-2xl bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center group transform hover:scale-105 transition-all duration-500 hover:shadow-3xl">
                 <div className="text-white text-center transition-transform duration-500 group-hover:scale-110">
-                  <div className="text-6xl mb-4 animate-bounce-gentle">🔬</div>
                   <div className="text-xl font-semibold">{homePageContent.hero.imageCard.title}</div>
                 </div>
                 
@@ -331,7 +332,7 @@ export default function HomePage() {
                     <div className="bg-white rounded-xl shadow-lg overflow-hidden h-full hover:shadow-2xl transition-all duration-500 group-hover:-translate-y-2">
                       <div className="relative h-48 bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center overflow-hidden">
                         <div className="text-white text-center z-10">
-                          <div className="text-4xl mb-2 transition-transform duration-300 group-hover:scale-110">📰</div>
+                          
                           <span className="absolute top-4 right-4 bg-[#FAA916] text-[#0A2463] text-xs font-semibold px-3 py-1 rounded-full transition-all duration-300 group-hover:scale-110">
                             {news.category}
                           </span>
