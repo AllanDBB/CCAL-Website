@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Buen Café - Sistema de Gestión</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        /* Figma-like Header */
+        .figma-header {
+            background: #2c2c2c;
+            color: white;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            font-size: 14px;
+        }
+
+        .figma-header h1 {
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .figma-tabs {
+            display: flex;
+            gap: 20px;
+            margin-left: 40px;
+        }
+
+        .figma-tab {
+            padding: 8px 16px;
+            background: transparent;
+            border: none;
+            color: #ccc;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .figma-tab.active {
+            background: #404040;
+            color: white;
+        }
+
+        .figma-tab:hover {
+            background: #404040;
+            color: white;
+        }
+
+        /* Main Container */
+        .container {
+            margin-top: 60px;
+            padding: 20px;
+            max-width: 1440px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Screen Container */
+        .screen {
+            display: none;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+            margin: 20px auto;
+            width: 800px;
+            min-height: 600px;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        /* Header */
+        .screen-header {
+            background: linear-gradient(135deg, #E3B574, #D4A661);
+            padding: 20px;
+            text-align: center;
+            color: white;
+        }
+
+        .screen-header h2 {
+            font-size: 24px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .screen-header .subtitle {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        /* Content */
+        .screen-content {
+            padding: 30px;
+        }
+
+        /* Login Form */
+        .login-form {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #6F4E37;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.2s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #E3B574;
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            background: white;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: #6F4E37;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5a3e2d;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #E3B574;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #D4A661;
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #6F4E37;
+            border: 2px solid #6F4E37;
+        }
+
+        .btn-outline:hover {
+            background: #6F4E37;
+            color: white;
+        }
+
+        .btn-full {
+            width: 100%;
+        }
+
+        /* Product Grid */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .product-card {
+            background: white;
+            border: 2px solid #f0f0f0;
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            border-color: #E3B574;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .product-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #E3B574, #D4A661);
+            margin: 0 auto 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+        }
+
+        .product-name {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .product-price {
+            font-size: 18px;
+            font-weight: 700;
+            color: #6F4E37;
+            margin-bottom: 12px;
+        }
+
+        /* Cart */
+        .cart-items {
+            margin-bottom: 20px;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-item-name {
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .cart-item-price {
+            color: #6F4E37;
+            font-weight: 500;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .quantity-btn {
+            width: 32px;
+            height: 32px;
+            border: 1px solid #E3B574;
+            background: white;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .quantity-btn:hover {
+            background: #E3B574;
+            color: white;
+        }
+
+        .cart-total {
+            background: #f8f8f8;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .total-amount {
+            font-size: 24px;
+            font-weight: 700;
+            color: #6F4E37;
+        }
+
+        /* Payment Options */
+        .payment-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .payment-option {
+            padding: 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .payment-option.selected {
+            border-color: #E3B574;
+            background: #fdf9f3;
+        }
+
+        .payment-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        /* Date Picker */
+        .date-range {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        /* Table */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .data-table th {
+            background: #f8f8f8;
+            font-weight: 500;
+            color: #6F4E37;
+        }
+
+        /* Chart */
+        .chart-container {
+            background: #f8f8f8;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: center;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chart-placeholder {
+            color: #888;
+            font-size: 16px;
+        }
+
+        /* Export Options */
+        .export-options {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        /* Navigation */
+        .screen-nav {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        /* Loading */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #E3B574;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 16px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .screen {
+                width: 95%;
+                margin: 10px auto;
+            }
+
+            .product-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+
+            .payment-options {
+                grid-template-columns: 1fr;
+            }
+
+            .date-range {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Figma-style header -->
+    <div class="figma-header">
+        <h1>El Buen Café - Sistema de Gestión</h1>
+        <div class="figma-tabs">
+            <button class="figma-tab active" onclick="showFlow('cashier')">CU-01: Pedir Café</button>
+            <button class="figma-tab" onclick="showFlow('admin')">CU-02: Reportar Ventas</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- CU-01: Login Cajero -->
+        <div class="screen active" id="cashier-login">
+            <div class="screen-header">
+                <h2>Iniciar Sesión</h2>
+                <div class="subtitle">Sistema de Punto de Venta</div>
+            </div>
+            <div class="screen-content">
+                <form class="login-form">
+                    <div class="form-group">
+                        <label>Usuario</label>
+                        <input type="text" class="form-input" placeholder="Ingrese su usuario" value="cajero01">
+                    </div>
+                    <div class="form-group">
+                        <label>Contraseña</label>
+                        <input type="password" class="form-input" placeholder="********">
+                    </div>
+                    <div class="form-group">
+                        <label>Rol</label>
+                        <select class="form-select">
+                            <option>Cajero</option>
+                        </select>
+                    </div>
+                    <button type="button" class="btn btn-primary btn-full" onclick="showScreen('cashier-menu')">
+                        Iniciar Sesión
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- CU-01: Menú de Productos -->
+        <div class="screen" id="cashier-menu">
+            <div class="screen-header">
+                <h2>Menú de Productos</h2>
+                <div class="subtitle">Seleccione los productos para agregar al pedido</div>
+            </div>
+            <div class="screen-content">
+                <div class="product-grid">
+                    <div class="product-card" onclick="addToCart('Espresso', 2.50)">
+                        <div class="product-image">☕</div>
+                        <div class="product-name">Espresso</div>
+                        <div class="product-price">$2.50</div>
+                        <button class="btn btn-secondary">Añadir</button>
+                    </div>
+                    <div class="product-card" onclick="addToCart('Americano', 3.00)">
+                        <div class="product-image">☕</div>
+                        <div class="product-name">Americano</div>
+                        <div class="product-price">$3.00</div>
+                        <button class="btn btn-secondary">Añadir</button>
+                    </div>
+                    <div class="product-card" onclick="addToCart('Cappuccino', 4.00)">
+                        <div class="product-image">☕</div>
+                        <div class="product-name">Cappuccino</div>
+                        <div class="product-price">$4.00</div>
+                        <button class="btn btn-secondary">Añadir</button>
+                    </div>
+                    <div class="product-card" onclick="addToCart('Latte', 4.50)">
+                        <div class="product-image">☕</div>
+                        <div class="product-name">Latte</div>
+                        <div class="product-price">$4.50</div>
+                        <button class="btn btn-secondary">Añadir</button>
+                    </div>
+                    <div class="product-card" onclick="addToCart('Mocha', 5.00)">
+                        <div class="product-image">☕</div>
+                        <div class="product-name">Mocha</div>
+                        <div class="product-price">$5.00</div>
+                        <button class="btn btn-secondary">Añadir</button>
+                    </div>
+                    <div class="product-card" onclick="addToCart('Frappé', 5.50)">
+                        <div class="product-image">🥤</div>
+                        <div class="product-name">Frappé</div>
+                        <div class="product-price">$5.50</div>
+                        <button class="btn btn-secondary">Añadir</button>
+                    </div>
+                </div>
+                <div class="screen-nav">
+                    <button class="btn btn-outline" onclick="showScreen('cashier-login')">Volver</button>
+                    <button class="btn btn-primary" onclick="showScreen('cashier-cart')">Ver Carrito (<span id="cart-count">0</span>)</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- CU-01: Carrito de Compra -->
+        <div class="screen" id="cashier-cart">
+            <div class="screen-header">
+                <h2>Carrito de Compra</h2>
+                <div class="subtitle">Revise y modifique su pedido</div>
+            </div>
+            <div class="screen-content">
+                <div class="cart-items" id="cart-items">
+                    <!-- Los items se agregarán dinámicamente -->
+                </div>
+                <div class="cart-total">
+                    <div style="font-size: 16px; margin-bottom: 8px;">Total del Pedido:</div>
+                    <div class="total-amount" id="cart-total">$0.00</div>
+                </div>
+                <div class="screen-nav">
+                    <button class="btn btn-outline" onclick="showScreen('cashier-menu')">Continuar Comprando</button>
+                    <button class="btn btn-primary" onclick="showScreen('cashier-payment')" id="checkout-btn" disabled>Proceder al Pago</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- CU-01: Pago -->
+        <div class="screen" id="cashier-payment">
+            <div class="screen-header">
+                <h2>Procesar Pago</h2>
+                <div class="subtitle">Seleccione el método de pago</div>
+            </div>
+            <div class="screen-content">
+                <div class="payment-options">
+                    <div class="payment-option" onclick="selectPayment('cash')">
+                        <div class="payment-icon">💵</div>
+                        <div>Efectivo</div>
+                    </div>
+                    <div class="payment-option" onclick="selectPayment('card')">
+                        <div class="payment-icon">💳</div>
+                        <div>Tarjeta</div>
+                    </div>
+                </div>
+                
+                <div id="payment-details" style="display: none;">
+                    <div class="form-group">
+                        <label>Total a Pagar</label>
+                        <input type="text" class="form-input" id="total-to-pay" readonly>
+                    </div>
+                    <div class="form-group" id="cash-received-group" style="display: none;">
+                        <label>Efectivo Recibido</label>
+                        <input type="number" class="form-input" id="cash-received" placeholder="0.00" step="0.01">
+                    </div>
+                    <div id="change-amount" style="display: none; background: #f0f8f0; padding: 16px; border-radius: 8px; margin: 16px 0;">
+                        <strong>Cambio: $<span id="change-value">0.00</span></strong>
+                    </div>
+                </div>
+
+                <div class="screen-nav">
+                    <button class="btn btn-outline" onclick="showScreen('cashier-cart')">Volver</button>
+                    <button class="btn btn-primary" onclick="processPayment()" id="pay-btn" disabled>Procesar Pago</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- CU-01: Factura -->
+        <div class="screen" id="cashier-invoice">
+            <div class="screen-header">
+                <h2>Factura Generada</h2>
+                <div class="subtitle">Transacción completada exitosamente</div>
+            </div>
+            <div class="screen-content">
+                <div style="background: #f8f8f8; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                    <div style="text-align: center; margin-bottom: 20px;">
+                        <h3>El Buen Café</h3>
+                        <p>Factura #<span id="invoice-number">001234</span></p>
+                        <p>Fecha: <span id="invoice-date"></span></p>
+                    </div>
+                    
+                    <div id="invoice-items" style="margin: 20px 0;">
+                        <!-- Items de la factura -->
+                    </div>
+                    
+                    <div style="border-top: 2px solid #ddd; padding-top: 16px; text-align: right;">
+                        <strong>Total: $<span id="invoice-total">0.00</span></strong>
+                    </div>
+                </div>
+
+                <div class="export-options">
+                    <button class="btn btn-secondary">🖨️ Imprimir</button>
+                    <button class="btn btn-secondary">📧 Enviar por Email</button>
+                </div>
+
+                <div class="screen-nav">
+                    <button class="btn btn-primary btn-full" onclick="newOrder()">Nueva Venta</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- CU-02: Login Admin -->
+        <div class="screen" id="admin-login">
+            <div class="screen-header">
+                <h2>Iniciar Sesión</h2>
+                <div class="subtitle">Sistema de Reportes</div>
+            </div>
+            <div class="screen-content">
+                <form class="login-form">
+                    <div class="form-group">
+                        <label>Usuario</label>
+                        <input type="text" class="form-input" placeholder="Ingrese su usuario" value="admin01">
+                    </div>
+                    <div class="form-group">
+                        <label>Contraseña</label>
+                        <input type="password" class="form-input" placeholder="********">
+                    </div>
+                    <div class="form-group">
+                        <label>Rol</label>
+                        <select class="form-select">
+                            <option>Administrativo</option>
+                            <option>Auditoría</option>
+                        </select>
+                    </div>
+                    <button type="button" class="btn btn-primary btn-full" onclick="showScreen('admin-date-selection')">
+                        Iniciar Sesión
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- CU-02: Selección de Fecha -->
+        <div class="screen" id="admin-date-selection">
+            <div class="screen-header">
+                <h2>Generar Reporte de Ventas</h2>
+                <div class="subtitle">Seleccione el rango de fechas y filtros</div>
+            </div>
+            <div class="screen-content">
+                <div class="date-range">
+                    <div class="form-group">
+                        <label>Fecha Desde</label>
+                        <input type="date" class="form-input" id="date-from" value="2025-05-01">
+                    </div>
+                    <div class="form-group">
+                        <label>Fecha Hasta</label>
+                        <input type="date" class="form-input" id="date-to" value="2025-05-25">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Filtrar por Producto</label>
+                    <select class="form-select">
+                        <option value="">Todos los productos</option>
+                        <option value="espresso">Espresso</option>
+                        <option value="americano">Americano</option>
+                        <option value="cappuccino">Cappuccino</option>
+                        <option value="latte">Latte</option>
+                        <option value="mocha">Mocha</option>
+                        <option value="frappe">Frappé</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Filtrar por Método de Pago</label>
+                    <select class="form-select">
+                        <option value="">Todos los métodos</option>
+                        <option value="cash">Efectivo</option>
+                        <option value="card">Tarjeta</option>
+                    </select>
+                </div>
+
+                <div class="screen-nav">
+                    <button class="btn btn-outline" onclick="showScreen('admin-login')">Volver</button>
+                    <button class="btn btn-primary" onclick="generateReport()">Generar Reporte</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- CU-02: Reporte -->
+        <div class="screen" id="admin-report">
+            <div class="screen-header">
+                <h2>Reporte de Ventas</h2>
+                <div class="subtitle">Del 01/05/2025 al 25/05/2025</div>
+            </div>
+            <div class="screen-content">
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <div>Generando reporte...</div>
+                </div>
+
+                <div id="report-content" style="display: none;">
+                    <div class="chart-container">
+                        <div class="chart-placeholder">📊 Gráfico de Ventas por Día<br><small>(Implementación pendiente)</small></div>
+                    </div>
+
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Producto</th>
+                                <th>Cantidad</th>
+                                <th>Método Pago</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>25/05/2025</td><td>Cappuccino</td><td>3</td><td>Tarjeta</td><td>$12.00</td></tr>
+                            <tr><td>25/05/2025</td><td>Americano</td><td>2</td><td>Efectivo</td><td>$6.00</td></tr>
+                            <tr><td>24/05/2025</td><td>Latte</td><td>4</td><td>Tarjeta</td><td>$18.00</td></tr>
+                            <tr><td>24/05/2025</td><td>Espresso</td><td>1</td><td>Efectivo</td><td>$2.50</td></tr>
+                            <tr><td>23/05/2025</td><td>Mocha</td><td>2</td><td>Tarjeta</td><td>$10.00</td></tr>
+                            <tr><td>23/05/2025</td><td>Frappé</td><td>3</td><td>Efectivo</td><td>$16.50</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div style="background: #f8f8f8; padding: 20px; border-radius: 8px; margin: 20px 0; text-align: center;">
+                        <h4>Resumen del Período</h4>
+                        <p><strong>Total de Ventas:</strong> $65.00</p>
+                        <p><strong>Transacciones:</strong> 15</p>
+                        <p><strong>Producto Más Vendido:</strong> Latte</p>
+                    </div>
+                </div>
+
+                <div class="screen-nav">
+                    <button class="btn btn-outline" onclick="showScreen('admin-date-selection')">Nueva Consulta</button>
+                    <button class="btn btn-primary" onclick="showScreen('admin-export')">Exportar Datos</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- CU-02: Exportar -->
+        <div class="screen" id="admin-export">
+            <div class="screen-header">
+                <h2>Exportar Reporte</h2>
+                <div class="subtitle">Seleccione el formato de exportación</div>
+            </div>
+            <div class="screen-content">
+                <div style="text-align: center; margin-bottom: 30px;">
+                    <p>Reporte generado exitosamente</p>
+                    <p><strong>15 transacciones</strong> encontradas para el período seleccionado</p>
+                </div>
+
+                <div class="export-options">
+                    <button class="btn btn-secondary" onclick="exportReport('pdf')">📄 Exportar PDF</button>
+                    <button class="btn btn-secondary" onclick="exportReport('excel')">📊 Exportar Excel</button>
+                    <button class="btn btn-secondary" onclick="exportReport('email')">📧 Enviar por Email</button>
+                </div>
+
+                <div style="background: #f0f8f0; padding: 20px; border-radius: 8px; margin: 20px 0; text-align: center; display: none;" id="export-success">
+                    <strong>✅ Archivo exportado exitosamente</strong>
+                </div>
+
+                <div class="screen-nav">
+                    <button class="btn btn-outline" onclick="showScreen('admin-report')">Volver al Reporte</button>
+                    <button class="btn btn-primary" onclick="showScreen('admin-date-selection')">Nuevo Reporte</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ===== FUNCIONES GLOBALES - MOVER AL INICIO =====
+        
+        // Estado global
+        let currentFlow = 'cashier';
+        let cart = [];
+        let selectedPayment = null;
+        let cartTotal = 0;
+
+        // Navegación entre pantallas - DEBE ESTAR DISPONIBLE INMEDIATAMENTE
+        function showScreen(screenId) {
+            // Ocultar todas las pantallas
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            
+            // Mostrar pantalla seleccionada
+            const targetScreen = document.getElementById(screenId);
+            if (targetScreen) {
+                targetScreen.classList.add('active');
+            }
+        }
+
+        // Navegación entre flujos
+        function showFlow(flow) {
+            currentFlow = flow;
+            
+            // Actualizar tabs
+            document.querySelectorAll('.figma-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Mostrar pantalla inicial del flujo
+            if (flow === 'cashier') {
+                showScreen('cashier-login');
+            } else if (flow === 'admin') {
+                showScreen('admin-login');
+            }
+        }
+
+        // Funciones del carrito
+        function addToCart(name, price) {
+            const existingItem = cart.find(item => item.name === name);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    name: name,
+                    price: price,
+                    quantity: 1
+                });
+            }
+            
+            updateCartDisplay();
+            updateCartCounter();
+        }
+
+        function removeFromCart(name) {
+            const itemIndex = cart.findIndex(item => item.name === name);
+            if (itemIndex > -1) {
+                if (cart[itemIndex].quantity > 1) {
+                    cart[itemIndex].quantity -= 1;
+                } else {
+                    cart.splice(itemIndex, 1);
+                }
+            }
+            updateCartDisplay();
+            updateCartCounter();
+        }
+
+        function updateQuantity(name, change) {
+            const item = cart.find(item => item.name === name);
+            if (item) {
+                item.quantity += change;
+                if (item.quantity <= 0) {
+                    removeFromCart(name);
+                    return;
+                }
+            }
+            updateCartDisplay();
+            updateCartCounter();
+        }
+
+        function updateCartDisplay() {
+            const cartItemsContainer = document.getElementById('cart-items');
+            const cartTotalElement = document.getElementById('cart-total');
+            const checkoutBtn = document.getElementById('checkout-btn');
+            
+            if (!cartItemsContainer) return;
+            
+            cartItemsContainer.innerHTML = '';
+            cartTotal = 0;
+            
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = '<div style="text-align: center; padding: 40px; color: #888;">El carrito está vacío</div>';
+                if (checkoutBtn) checkoutBtn.disabled = true;
+            } else {
+                cart.forEach(item => {
+                    const itemTotal = item.price * item.quantity;
+                    cartTotal += itemTotal;
+                    
+                    cartItemsContainer.innerHTML += `
+                        <div class="cart-item">
+                            <div class="cart-item-info">
+                                <div class="cart-item-name">${item.name}</div>
+                                <div class="cart-item-price">$${item.price.toFixed(2)} c/u</div>
+                            </div>
+                            <div class="quantity-controls">
+                                <button class="quantity-btn" onclick="updateQuantity('${item.name}', -1)">−</button>
+                                <span>${item.quantity}</span>
+                                <button class="quantity-btn" onclick="updateQuantity('${item.name}', 1)">+</button>
+                            </div>
+                            <div style="font-weight: 500; color: #6F4E37;">
+                                $${itemTotal.toFixed(2)}
+                            </div>
+                        </div>
+                    `;
+                });
+                if (checkoutBtn) checkoutBtn.disabled = false;
+            }
+            
+            if (cartTotalElement) {
+                cartTotalElement.textContent = `$${cartTotal.toFixed(2)}`;
+            }
+        }
+
+        function updateCartCounter() {
+            const cartCount = document.getElementById('cart-count');
+            if (cartCount) {
+                const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+                cartCount.textContent = totalItems;
+            }
+        }
+
+        // Funciones de pago
+        function selectPayment(type) {
+            selectedPayment = type;
+            
+            // Actualizar interfaz de opciones de pago
+            document.querySelectorAll('.payment-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // Buscar el elemento clickeado correctamente
+            const clickedOption = event.target.closest('.payment-option');
+            if (clickedOption) {
+                clickedOption.classList.add('selected');
+            }
+            
+            // Mostrar detalles de pago
+            const paymentDetails = document.getElementById('payment-details');
+            const totalToPayInput = document.getElementById('total-to-pay');
+            const cashReceivedGroup = document.getElementById('cash-received-group');
+            const payBtn = document.getElementById('pay-btn');
+            
+            if (paymentDetails) paymentDetails.style.display = 'block';
+            if (totalToPayInput) totalToPayInput.value = `$${cartTotal.toFixed(2)}`;
+            
+            if (type === 'cash') {
+                if (cashReceivedGroup) cashReceivedGroup.style.display = 'block';
+                if (payBtn) payBtn.disabled = true;
+                
+                // Agregar listener para calcular cambio
+                const cashReceivedInput = document.getElementById('cash-received');
+                if (cashReceivedInput) {
+                    cashReceivedInput.oninput = calculateChange;
+                }
+            } else {
+                if (cashReceivedGroup) cashReceivedGroup.style.display = 'none';
+                const changeAmount = document.getElementById('change-amount');
+                if (changeAmount) changeAmount.style.display = 'none';
+                if (payBtn) payBtn.disabled = false;
+            }
+        }
+
+        function calculateChange() {
+            const cashReceivedInput = document.getElementById('cash-received');
+            const changeAmount = document.getElementById('change-amount');
+            const changeValue = document.getElementById('change-value');
+            const payBtn = document.getElementById('pay-btn');
+            
+            if (!cashReceivedInput || !changeAmount || !changeValue || !payBtn) return;
+            
+            const cashReceived = parseFloat(cashReceivedInput.value) || 0;
+            
+            if (cashReceived >= cartTotal) {
+                const change = cashReceived - cartTotal;
+                changeValue.textContent = change.toFixed(2);
+                changeAmount.style.display = 'block';
+                payBtn.disabled = false;
+            } else {
+                changeAmount.style.display = 'none';
+                payBtn.disabled = true;
+            }
+        }
+
+        function processPayment() {
+            // Simular procesamiento
+            const payBtn = document.getElementById('pay-btn');
+            if (payBtn) {
+                payBtn.textContent = 'Procesando...';
+                payBtn.disabled = true;
+            }
+            
+            setTimeout(() => {
+                generateInvoice();
+                showScreen('cashier-invoice');
+                if (payBtn) {
+                    payBtn.textContent = 'Procesar Pago';
+                    payBtn.disabled = false;
+                }
+            }, 1500);
+        }
+
+        function generateInvoice() {
+            const invoiceNumber = document.getElementById('invoice-number');
+            const invoiceDate = document.getElementById('invoice-date');
+            const invoiceItems = document.getElementById('invoice-items');
+            const invoiceTotal = document.getElementById('invoice-total');
+            
+            // Generar número de factura aleatorio
+            if (invoiceNumber) {
+                invoiceNumber.textContent = Math.floor(Math.random() * 900000) + 100000;
+            }
+            
+            // Fecha actual
+            if (invoiceDate) {
+                invoiceDate.textContent = new Date().toLocaleDateString('es-ES');
+            }
+            
+            // Items de la factura
+            if (invoiceItems) {
+                invoiceItems.innerHTML = '';
+                cart.forEach(item => {
+                    const itemTotal = item.price * item.quantity;
+                    invoiceItems.innerHTML += `
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px; padding: 4px 0; border-bottom: 1px dotted #ddd;">
+                            <span>${item.name} x${item.quantity}</span>
+                            <span style="font-weight: 500;">$${itemTotal.toFixed(2)}</span>
+                        </div>
+                    `;
+                });
+            }
+            
+            if (invoiceTotal) {
+                invoiceTotal.textContent = cartTotal.toFixed(2);
+            }
+        }
+
+        function newOrder() {
+            // Limpiar carrito y resetear estado
+            cart = [];
+            selectedPayment = null;
+            cartTotal = 0;
+            
+            // Limpiar campos de pago
+            const cashReceivedInput = document.getElementById('cash-received');
+            if (cashReceivedInput) cashReceivedInput.value = '';
+            
+            const paymentOptions = document.querySelectorAll('.payment-option');
+            paymentOptions.forEach(option => option.classList.remove('selected'));
+            
+            const paymentDetails = document.getElementById('payment-details');
+            if (paymentDetails) paymentDetails.style.display = 'none';
+            
+            updateCartDisplay();
+            updateCartCounter();
+            showScreen('cashier-menu');
+        }
+
+        // Funciones del módulo administrativo
+        function generateReport() {
+            showScreen('admin-report');
+            
+            // Mostrar loading
+            const loading = document.getElementById('loading');
+            const reportContent = document.getElementById('report-content');
+            
+            if (loading) loading.style.display = 'block';
+            if (reportContent) reportContent.style.display = 'none';
+            
+            // Simular carga de datos
+            setTimeout(() => {
+                if (loading) loading.style.display = 'none';
+                if (reportContent) reportContent.style.display = 'block';
+            }, 2000);
+        }
+
+        function exportReport(format) {
+            const exportSuccess = document.getElementById('export-success');
+            
+            // Simular exportación
+            if (exportSuccess) {
+                setTimeout(() => {
+                    exportSuccess.style.display = 'block';
+                    exportSuccess.innerHTML = `<strong>✅ Archivo ${format.toUpperCase()} exportado exitosamente</strong>`;
+                    setTimeout(() => {
+                        exportSuccess.style.display = 'none';
+                    }, 3000);
+                }, 1000);
+            }
+        }
+
+        // ===== INICIALIZACIÓN =====
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Sistema inicializado correctamente');
+            updateCartDisplay();
+            updateCartCounter();
+            
+            // Asegurar que la primera pantalla esté visible
+            showScreen('cashier-login');
+        });
+
+        // Exponer funciones globalmente para debugging
+        window.showScreen = showScreen;
+        window.showFlow = showFlow;
+        window.addToCart = addToCart;
+        window.selectPayment = selectPayment;
+        window.processPayment = processPayment;
+        window.newOrder = newOrder;
+        window.generateReport = generateReport;
+        window.exportReport = exportReport;
+    </script>
+</body>
+</html>

@@ -7,8 +7,9 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Perspectiva - Centro Pre Universitario",
-  description: "Preparación académica para el ingreso universitario",
+  title: "CCAL - Colegio Científico de Alajuela",
+  description:
+    "Educación científica de excelencia en Costa Rica. Formamos líderes del futuro con valores y conocimiento.",
 };
 
 export default function RootLayout({
