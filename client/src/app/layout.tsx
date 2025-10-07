@@ -10,6 +10,9 @@ export const metadata: Metadata = {
   title: "CCAL - Colegio Científico de Alajuela",
   description:
     "Educación científica de excelencia en Costa Rica. Formamos líderes del futuro con valores y conocimiento.",
+  icons: {
+    icon: '/favicon.ico',
+  },
 };
 
 export default function RootLayout({

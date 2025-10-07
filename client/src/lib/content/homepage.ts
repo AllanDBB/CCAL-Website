@@ -76,41 +76,30 @@ export const homePageContent = {
     { number: "300+", label: "Premios Científicos" }
   ],
 
-  news: {
-    title: "Últimas Noticias",
-    description: "Mantente al día con los logros y eventos de nuestra comunidad educativa.",
-    viewAllText: "Ver todas",
-    readMoreText: "Leer más",
-    items: [
+  socialMedia: {
+    title: "Síguenos en Redes Sociales",
+    description: "Mantente conectado con nuestra comunidad y descubre lo último del CCAL.",
+    platforms: [
       {
-        title: "CCAL obtiene primer lugar en Feria Nacional de Ciencias",
-        description: "Nuestros estudiantes destacan una vez más con su proyecto de energías renovables, obteniendo el reconocimiento nacional.",
-        category: "Logros",
-        date: "15 Mayo, 2025"
+        name: "Instagram",
+        handle: "@ccalajuela",
+        url: "https://instagram.com/ccalajuela",
+        icon: "📸",
+        color: "#E4405F"
       },
       {
-        title: "Nueva alianza con Universidad de Costa Rica",
-        description: "Firmamos un convenio que permitirá a nuestros estudiantes acceder a programas especiales de preparación universitaria.",
-        category: "Alianzas",
-        date: "8 Mayo, 2025"
+        name: "Facebook",
+        handle: "Colegio Científico Alajuela",
+        url: "https://facebook.com/ccalajuela",
+        icon: "👥",
+        color: "#1877F2"
       },
       {
-        title: "Inauguración del nuevo laboratorio de robótica",
-        description: "Ampliamos nuestras instalaciones con un moderno laboratorio equipado con la última tecnología en robótica educativa.",
-        category: "Infraestructura",
-        date: "1 Mayo, 2025"
-      },
-      {
-        title: "Estudiantes CCAL ganan competencia internacional",
-        description: "Nuestro equipo de matemáticas obtiene medallas en la Olimpiada Internacional de Matemáticas.",
-        category: "Logros",
-        date: "19 Abril, 2025"
-      },
-      {
-        title: "Programa de intercambio estudiantil",
-        description: "Lanzamos nuestro nuevo programa de intercambio con instituciones educativas internacionales.",
-        category: "Programas",
-        date: "20 Abril, 2025"
+        name: "LinkedIn",
+        handle: "CCAL",
+        url: "https://www.linkedin.com/company/colegio-científico-de-alajuela",
+        icon: "💼",
+        color: "#0A66C2"
       }
     ]
   },

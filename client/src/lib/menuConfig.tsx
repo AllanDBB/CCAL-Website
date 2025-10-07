@@ -19,14 +19,6 @@ interface MenuItem {
         {
           title: "Misión y Visión",
           link: "/nosotros/mision-vision",
-        },
-        {
-          title: "Equipo Docente",
-          link: "/nosotros/equipo-docente",
-        },
-        {
-          title: "Trabajo",
-          link: "/nosotros/trabajo",
         }
       ]
     },
@@ -65,14 +57,6 @@ interface MenuItem {
           link: "/servicios/recursos",
         }
       ]
-    },
-    {
-      title: "RESULTADOS",
-      link: "/resultados",
-    },
-    {
-      title: "BLOG",
-      link: "/blog",
     }
   ];
 

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { menuItems } from '@/lib/menuConfig';
@@ -8,20 +8,37 @@ import NavbarDropdown from './NavbarDropdown';
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
-    <header className="mx-auto my-6 max-w-[95%] md:max-w-[94%] lg:max-w-[92%] rounded-xl bg-white shadow-lg">
-      <div className="flex items-center justify-between px-4 sm:px-6 py-3 h-[72px]">
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out ${
+      scrolled 
+        ? 'bg-white shadow-xl' 
+        : 'bg-transparent'
+    }`}>
+      <div className={`max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-8 transition-all duration-500 ${
+        scrolled ? 'py-3 h-[64px]' : 'py-4 h-[72px]'
+      }`}>
         <div className="flex items-center">
           <Link href="/">
-            <div className="cursor-pointer">
-              {/* Logo textual temporal */}
-              <div className="flex items-center">
-                <span className="text-xl sm:text-2xl font-bold text-[#0A2463]">
-                  CCAL
-                  <span className="text-[#FAA916]">.</span>
-                </span>
-              </div>
+            <div className="cursor-pointer flex items-center">
+              <Image 
+                src="/Logo.svg" 
+                alt="CCAL Logo" 
+                width={120} 
+                height={40}
+                className="h-10 w-auto transition-opacity duration-300"
+                priority
+              />
             </div>
           </Link>
         </div>
@@ -32,11 +49,13 @@ const Navbar = () => {
             {menuItems.map((item, index) => (
               <li key={index} className="relative">
                 {item.submenu ? (
-                  <NavbarDropdown title={item.title} items={item.submenu} />
+                  <NavbarDropdown title={item.title} items={item.submenu} scrolled={scrolled} />
                 ) : (
                   <Link 
                     href={item.link} 
-                    className="font-semibold text-[#0A2463] hover:text-[#FAA916] transition-colors relative py-2 group"
+                    className={`font-semibold transition-colors relative py-2 group ${
+                      scrolled ? 'text-[#0A2463] hover:text-[#FAA916]' : 'text-white hover:text-[#FAA916]'
+                    }`}
                   >
                     {item.title}
                     <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#FAA916] transition-all duration-300 group-hover:w-full"></span>
@@ -49,18 +68,16 @@ const Navbar = () => {
         
         {/* Botones de acción - ahora ocultos por debajo de 1260px */}
         <div className="hidden xl:flex items-center">
-          <Link 
-            href="/portal" 
-            className="mr-3 px-4 xl:px-5 py-2 rounded-full font-semibold text-sm text-[#FFFFF] bg-opacity-15 bg-[#0A2463] border border-transparent hover:bg-opacity-20 hover:border-[#0A2463] transition-all"
-          >
-            ◉ PORTAL 
-          </Link>
-          <Link 
-            href="/admisiones" 
-            className="px-4 xl:px-5 py-2 rounded-full font-semibold text-sm text-[#0A2463] bg-[#FAA916] shadow-md hover:bg-[#ffb52e] hover:shadow-lg hover:-translate-y-0.5 transition-all"
+          <button 
+            disabled
+            className={`px-4 xl:px-5 py-2 rounded-full font-semibold text-sm transition-all cursor-not-allowed ${
+              scrolled
+                ? 'text-[#0A2463]/50 bg-[#FAA916]/60'
+                : 'text-[#0A2463]/70 bg-[#FAA916]/80'
+            }`}
           >
             ▷ ADMISIONES
-          </Link>
+          </button>
         </div>
         
         {/* Botón de menú móvil - ahora visible hasta 1260px */}
@@ -69,9 +86,15 @@ const Navbar = () => {
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           aria-label="Menú"
         >
-          <span className={`block w-6 h-0.5 bg-[#0A2463] transition-all duration-300 ${mobileMenuOpen ? 'rotate-45 translate-y-1' : ''}`}></span>
-          <span className={`block w-6 h-0.5 bg-[#0A2463] mt-1.5 mb-1.5 transition-all duration-300 ${mobileMenuOpen ? 'opacity-0' : ''}`}></span>
-          <span className={`block w-6 h-0.5 bg-[#0A2463] transition-all duration-300 ${mobileMenuOpen ? '-rotate-45 -translate-y-1' : ''}`}></span>
+          <span className={`block w-6 h-0.5 transition-all duration-300 ${
+            scrolled ? 'bg-[#0A2463]' : 'bg-white'
+          } ${mobileMenuOpen ? 'rotate-45 translate-y-1' : ''}`}></span>
+          <span className={`block w-6 h-0.5 mt-1.5 mb-1.5 transition-all duration-300 ${
+            scrolled ? 'bg-[#0A2463]' : 'bg-white'
+          } ${mobileMenuOpen ? 'opacity-0' : ''}`}></span>
+          <span className={`block w-6 h-0.5 transition-all duration-300 ${
+            scrolled ? 'bg-[#0A2463]' : 'bg-white'
+          } ${mobileMenuOpen ? '-rotate-45 -translate-y-1' : ''}`}></span>
         </button>
       </div>
 
@@ -116,21 +139,13 @@ const Navbar = () => {
                   )}
                 </li>
               ))}
-              <li className="flex flex-col space-y-3 pt-2">
-                <Link 
-                  href="/portal" 
-                  className="w-full px-5 py-3 rounded-full font-semibold text-center text-[#FFFFF] bg-opacity-15 bg-[#0A2463] border border-transparent"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  ◉ PORTAL
-                </Link>
-                <Link 
-                  href="/admisiones" 
-                  className="w-full px-5 py-3 rounded-full font-semibold text-center text-[#0A2463] bg-[#FAA916] shadow-md"
-                  onClick={() => setMobileMenuOpen(false)}
+              <li className="flex flex-col pt-2">
+                <button 
+                  disabled
+                  className="w-full px-5 py-3 rounded-full font-semibold text-center text-[#0A2463]/50 bg-[#FAA916]/60 cursor-not-allowed"
                 >
                   ▷ ADMISIONES
-                </Link>
+                </button>
               </li>
             </ul>
           </div>

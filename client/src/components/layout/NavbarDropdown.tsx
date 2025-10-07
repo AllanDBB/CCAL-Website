@@ -9,11 +9,12 @@ interface NavbarDropdownProps {
     title: string;
     link: string;
   }[];
+  scrolled?: boolean;
 }
 
 const activeDropdown = { current: null as HTMLDivElement | null };
 
-const NavbarDropdown: React.FC<NavbarDropdownProps> = ({ title, items }) => {
+const NavbarDropdown: React.FC<NavbarDropdownProps> = ({ title, items, scrolled = true }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -95,7 +96,9 @@ const NavbarDropdown: React.FC<NavbarDropdownProps> = ({ title, items }) => {
       ref={dropdownRef}
     >
       <button 
-        className="flex items-center font-semibold text-[#0A2463] hover:text-[#FAA916] transition-colors py-2 focus:outline-none"
+        className={`flex items-center font-semibold transition-colors py-2 focus:outline-none ${
+          scrolled ? 'text-[#0A2463] hover:text-[#FAA916]' : 'text-white hover:text-[#FAA916]'
+        }`}
         onClick={() => setIsOpen(!isOpen)}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}

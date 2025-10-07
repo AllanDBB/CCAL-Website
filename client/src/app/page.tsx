@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
 import { Button } from '@/components/ui/buttons';
 import { FeatureCard, Card } from '@/components/ui/cards';
+import SocialMediaFeed from '@/components/features/SocialMediaFeed';
 import { homePageContent } from '@/lib/content/homepage';
 
 export default function HomePage() {
@@ -68,7 +68,7 @@ export default function HomePage() {
     <div className="min-h-screen overflow-x-hidden">
       <div className="fixed inset-0 -z-10 bg-gradient-to-br from-[#0A2463] via-[#0d2d73] to-[#1a4d99]"></div>
 
-      {/* Hero Section */}
+      {/* Hero Section - sin padding top ya que el navbar es transparente */}
       <section 
         id="hero"
         className="relative min-h-screen bg-gradient-to-br from-[#0A2463] via-[#0d2d73] to-[#1a4d99] text-white overflow-hidden flex items-center"
@@ -149,13 +149,31 @@ export default function HomePage() {
               }`}
               style={{ transitionDelay: '600ms' }}
             >
-              <div className="relative w-full h-80 lg:h-96 rounded-2xl overflow-hidden shadow-2xl bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center group transform hover:scale-105 transition-all duration-500 hover:shadow-3xl">
-                <div className="text-white text-center transition-transform duration-500 group-hover:scale-110">
-                  <div className="text-xl font-semibold">{homePageContent.hero.imageCard.title}</div>
+              {/* Logo circular con efectos */}
+              <div className="relative w-full h-80 lg:h-96 flex items-center justify-center">
+                <div className="relative group">
+                  {/* Círculo de fondo con gradiente animado */}
+                  <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/30 via-white/20 to-transparent blur-3xl animate-pulse-slow"></div>
+                  
+                  {/* Círculo principal */}
+                  <div className="relative w-72 h-72 lg:w-80 lg:h-80 rounded-full bg-white/10 backdrop-blur-lg border-4 border-white/30 flex items-center justify-center shadow-2xl overflow-hidden group-hover:scale-110 group-hover:border-white/50 transition-all duration-500">
+                    {/* Efecto de brillo giratorio */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent rotate-45 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                    
+                    {/* Logo */}
+                    <div className="relative z-10 p-12">
+                      <img 
+                        src="/Logo.svg" 
+                        alt="CCAL Logo" 
+                        className="w-full h-full object-contain filter drop-shadow-2xl transition-transform duration-500 group-hover:scale-105"
+                      />
+                    </div>
+                  </div>
+                  
+                  {/* Anillos decorativos */}
+                  <div className="absolute inset-0 rounded-full border-2 border-white/20 scale-110 animate-ping-slow"></div>
+                  <div className="absolute inset-0 rounded-full border border-white/10 scale-125"></div>
                 </div>
-                
-                {/* Efecto de brillo al hover */}
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
               </div>
               
               {/* Floating stats con animaciones mejoradas */}
@@ -282,86 +300,58 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* News Section */}
+      {/* Social Media Section */}
       <section 
-        id="news"
+        id="social"
         className="py-20 bg-gradient-to-br from-blue-50 to-indigo-100 relative overflow-hidden"
       >
-        <div className="max-w-full px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div 
-            className={`max-w-7xl mx-auto flex justify-between items-center mb-12 transform transition-all duration-1000 ${
+            className={`text-center mb-12 transform transition-all duration-1000 ${
               isVisible.news ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
             }`}
           >
-            <div>
-              <h2 className="text-3xl lg:text-4xl font-bold text-[#0A2463] mb-4 relative">
-                {homePageContent.news.title}
-                <div className={`absolute -bottom-2 left-0 h-1 bg-gradient-to-r from-[#0A2463] to-[#FAA916] rounded-full transition-all duration-1000 ${
-                  isVisible.news ? 'w-32' : 'w-0'
-                }`} style={{ transitionDelay: '500ms' }}></div>
-              </h2>
-              <p className="text-xl text-gray-600">
-                {homePageContent.news.description}
-              </p>
+            <h2 className="text-3xl lg:text-4xl font-bold text-[#0A2463] mb-4 relative">
+              {homePageContent.socialMedia.title}
+              <div className={`absolute -bottom-2 left-1/2 transform -translate-x-1/2 h-1 bg-gradient-to-r from-[#0A2463] to-[#FAA916] rounded-full transition-all duration-1000 ${
+                isVisible.news ? 'w-48' : 'w-0'
+              }`} style={{ transitionDelay: '500ms' }}></div>
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+              {homePageContent.socialMedia.description}
+            </p>
+
+            {/* Social Media Links */}
+            <div className="flex justify-center gap-4 mb-12 flex-wrap">
+              {homePageContent.socialMedia.platforms.map((platform, index) => (
+                <a
+                  key={index}
+                  href={platform.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-white transition-all duration-300 hover:scale-105 hover:shadow-xl transform ${
+                    isVisible.news ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
+                  }`}
+                  style={{ 
+                    backgroundColor: platform.color,
+                    transitionDelay: `${(index + 1) * 200}ms`
+                  }}
+                >
+                  <span className="text-2xl">{platform.icon}</span>
+                  <span>{platform.name}</span>
+                </a>
+              ))}
             </div>
-            <Link 
-              href="/noticias" 
-              className="text-[#0A2463] hover:text-[#FAA916] font-semibold flex items-center gap-2 transition-all duration-300 hover:scale-105 group"
-            >
-              {homePageContent.news.viewAllText}
-              <svg className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </Link>
           </div>
-          
-          {/* Contenedor de scroll horizontal con gradiente */}
-          <div className="relative">
-            <div className="overflow-x-auto scrollbar-hide">
-              <div className="flex gap-6 pb-4 px-4 lg:px-8" style={{ width: 'fit-content' }}>
-                {homePageContent.news.items.map((news, index) => (
-                  <div 
-                    key={index}
-                    className={`flex-shrink-0 w-80 transform transition-all duration-700 hover:scale-105 group ${
-                      isVisible.news 
-                        ? 'translate-y-0 opacity-100' 
-                        : 'translate-y-20 opacity-0'
-                    }`}
-                    style={{ transitionDelay: `${index * 150}ms` }}
-                  >
-                    <div className="bg-white rounded-xl shadow-lg overflow-hidden h-full hover:shadow-2xl transition-all duration-500 group-hover:-translate-y-2">
-                      <div className="relative h-48 bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center overflow-hidden">
-                        <div className="text-white text-center z-10">
-                          
-                          <span className="absolute top-4 right-4 bg-[#FAA916] text-[#0A2463] text-xs font-semibold px-3 py-1 rounded-full transition-all duration-300 group-hover:scale-110">
-                            {news.category}
-                          </span>
-                        </div>
-                        
-                        {/* Efecto de ondas */}
-                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
-                      </div>
-                      
-                      <div className="p-6">
-                        <div className="text-sm text-gray-500 mb-2">{news.date}</div>
-                        <h3 className="text-lg font-bold text-[#0A2463] mb-2 line-clamp-2 group-hover:text-[#FAA916] transition-colors duration-300">{news.title}</h3>
-                        <p className="text-gray-600 line-clamp-3 mb-4">{news.description}</p>
-                        <div className="inline-flex items-center text-[#0A2463] font-medium hover:text-[#FAA916] transition-all duration-300 cursor-pointer group-hover:translate-x-2">
-                          {homePageContent.news.readMoreText}
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                          </svg>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-            
-            {/* Gradientes en los bordes para indicar scroll */}
-            <div className="absolute left-0 top-0 w-8 h-full bg-gradient-to-r from-blue-50 to-transparent pointer-events-none"></div>
-            <div className="absolute right-0 top-0 w-8 h-full bg-gradient-to-l from-indigo-100 to-transparent pointer-events-none"></div>
+
+          {/* SociableKit Embed */}
+          <div 
+            className={`bg-white rounded-2xl shadow-xl p-8 transform transition-all duration-1000 ${
+              isVisible.news ? 'translate-y-0 opacity-100 scale-100' : 'translate-y-20 opacity-0 scale-95'
+            }`}
+            style={{ transitionDelay: '800ms' }}
+          >
+            <SocialMediaFeed />
           </div>
         </div>
       </section>
