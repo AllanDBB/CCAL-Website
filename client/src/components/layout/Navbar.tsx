@@ -68,16 +68,16 @@ const Navbar = () => {
         
         {/* Botones de acción - ahora ocultos por debajo de 1260px */}
         <div className="hidden xl:flex items-center">
-          <button 
-            disabled
-            className={`px-4 xl:px-5 py-2 rounded-full font-semibold text-sm transition-all cursor-not-allowed ${
+          <Link 
+            href="/contacto"
+            className={`px-4 xl:px-5 py-2 rounded-full font-semibold text-sm transition-all hover:shadow-lg hover:scale-105 ${
               scrolled
-                ? 'text-[#0A2463]/50 bg-[#FAA916]/60'
-                : 'text-[#0A2463]/70 bg-[#FAA916]/80'
+                ? 'text-[#0A2463] bg-[#FAA916]'
+                : 'text-[#0A2463] bg-[#FAA916]'
             }`}
           >
-            ▷ ADMISIONES
-          </button>
+            ✉ CONTACTO
+          </Link>
         </div>
         
         {/* Botón de menú móvil - ahora visible hasta 1260px */}
@@ -140,12 +140,13 @@ const Navbar = () => {
                 </li>
               ))}
               <li className="flex flex-col pt-2">
-                <button 
-                  disabled
-                  className="w-full px-5 py-3 rounded-full font-semibold text-center text-[#0A2463]/50 bg-[#FAA916]/60 cursor-not-allowed"
+                <Link 
+                  href="/contacto"
+                  className="w-full px-5 py-3 rounded-full font-semibold text-center text-[#0A2463] bg-[#FAA916] shadow-md hover:bg-[#ffb52e] transition-all"
+                  onClick={() => setMobileMenuOpen(false)}
                 >
-                  ▷ ADMISIONES
-                </button>
+                  ✉ CONTACTO
+                </Link>
               </li>
             </ul>
           </div>

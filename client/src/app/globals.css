@@ -91,6 +91,38 @@ body {
   100% { transform: scale(1.3); opacity: 0; }
 }
 
+@keyframes loader-spin {
+  100% { transform: rotate(0.5turn); }
+}
+
+/* CCAL Loader */
+.ccal-loader {
+  width: 120px;
+  aspect-ratio: 1;
+  display: grid;
+}
+
+.ccal-loader::before,
+.ccal-loader::after {
+  content: "";
+  grid-area: 1/1;
+  --c: no-repeat radial-gradient(farthest-side, #FAA916 92%, transparent);
+  background: 
+    var(--c) 50% 0, 
+    var(--c) 50% 100%, 
+    var(--c) 100% 50%, 
+    var(--c) 0 50%;
+  background-size: 20px 20px;
+  animation: loader-spin 1s infinite;
+}
+
+.ccal-loader::before {
+  margin: 8px;
+  filter: hue-rotate(180deg);
+  background-size: 14px 14px;
+  animation-timing-function: linear;
+}
+
 .animate-float-slow {
   animation: float-slow 8s ease-in-out infinite;
 }

@@ -7,7 +7,7 @@ export const homePageContent = {
     },
     description: "Más de 19 años educando con excelencia académica. El Colegio Científico Costarricense Sede Alajuela, donde la ciencia transforma vidas.",
     buttons: {
-      primary: "🎓 Proceso de Admisión 2019",
+      primary: "🎓 Proceso de Admisión 2025",
       secondary: "Conócenos"
     },
     imageCard: {
@@ -106,7 +106,7 @@ export const homePageContent = {
 
   cta: {
     title: "¿Listo para formar parte de nuestra familia CCAL?",
-    description: "Únete a la comunidad educativa más prestigiosa de Alajuela. El proceso de admisión 2019 ya está abierto.",
+    description: "Únete a la comunidad educativa más prestigiosa de Alajuela. El proceso de admisión 2025 ya está abierto.",
     buttons: {
       primary: "Iniciar Proceso de Admisión",
       secondary: "Agendar Visita"

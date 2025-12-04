@@ -25,38 +25,10 @@ interface MenuItem {
     {
       title: "OFERTA ACADÉMICA",
       link: "/oferta",
-      submenu: [
-        {
-          title: "Asignaturas",
-          link: "/oferta/asignaturas",
-        },
-        {
-          title: "Olimpiadas",
-          link: "/oferta/olimpiadas",
-        },
-        {
-          title: "Idiomas",
-          link: "/oferta/idiomas",
-        }
-      ]
     },
     {
-      title: "INSTITUCIÓN",
-      link: "/servicios",
-      submenu: [
-        {
-          title: "Actividades Extra",
-          link: "/servicios/actividades-extra",
-        },
-        {
-          title: "Vinculación con comunidad",
-          link: "/servicios/vinculacion-comunidad",
-        },
-        {
-          title: "Recursos Adicionales",
-          link: "/servicios/recursos",
-        }
-      ]
+      title: "ADMISIONES",
+      link: "/admisiones",
     }
   ];
 
@@ -101,8 +73,7 @@ export const socialMedia = [
 ];
 
 export const legalLinks = [
-  { title: "Política de Privacidad", link: "/privacy-policy" },
-  { title: "Términos de Uso", link: "/terms" },
+  { title: "Términos de Uso", link: "/terminos-de-uso" },
 ];
 
 export const schoolDescription = "Colegio Científico Sede Alajuela (CCAL) es una institución educativa dedicada";
