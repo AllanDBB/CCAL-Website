@@ -189,6 +189,19 @@ body {
   overflow: hidden;
 }
 
+/* Cross-browser font rendering */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Asegurar que el texto sea siempre visible */
+h1, h2, h3, h4, h5, h6, p, span, a, button {
+  font-display: swap;
+  text-rendering: optimizeLegibility;
+}
+
 .line-clamp-3 {
   display: -webkit-box;
   -webkit-line-clamp: 3;
@@ -211,8 +224,22 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Optimizaciones de rendimiento */
+/* Optimizaciones de rendimiento y compatibilidad cross-browser */
 .transform {
+  -webkit-transform-style: preserve-3d;
   transform-style: preserve-3d;
+  -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
+}
+
+/* Firefox-specific fixes */
+@-moz-document url-prefix() {
+  .transform {
+    will-change: transform;
+  }
+  
+  img {
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+  }
 }

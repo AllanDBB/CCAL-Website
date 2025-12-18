@@ -5,22 +5,30 @@ import Image from 'next/image';
 
 const PageLoader = () => {
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-white">
-      <div className="relative flex items-center justify-center">
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-white" style={{ isolation: 'isolate' }}>
+      <div className="relative flex flex-col items-center justify-center gap-6">
         {/* Logo en el centro */}
-        <div className="absolute inset-0 flex items-center justify-center z-10">
+        <div className="relative z-10 animate-pulse">
           <Image 
             src="/Logo.svg" 
             alt="CCAL Logo" 
-            width={100} 
-            height={70}
-            className="w-24 h-auto object-contain"
+            width={120} 
+            height={80}
+            className="w-28 sm:w-32 h-auto object-contain"
             priority
+            style={{ maxWidth: '100%', height: 'auto' }}
           />
         </div>
         
         {/* Loader animado */}
-        <div className="ccal-loader"></div>
+        <div className="flex gap-2">
+          <div className="w-3 h-3 bg-[#0A2463] rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+          <div className="w-3 h-3 bg-[#FAA916] rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+          <div className="w-3 h-3 bg-[#0A2463] rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+        </div>
+        
+        {/* Texto de carga */}
+        <p className="text-[#0A2463] font-semibold text-sm animate-pulse">Cargando...</p>
       </div>
     </div>
   );

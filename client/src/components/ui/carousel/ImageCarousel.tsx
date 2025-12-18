@@ -44,7 +44,7 @@ export default function ImageCarousel({ images, autoPlay = true, interval = 5000
   return (
     <div className="relative w-full group">
       {/* Main Image Container */}
-      <div className="relative w-full h-[400px] md:h-[500px] lg:h-[600px] overflow-hidden rounded-2xl shadow-2xl">
+      <div className="relative w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] overflow-hidden rounded-2xl shadow-2xl bg-gray-100">
         {images.map((image, index) => (
           <div
             key={index}
@@ -55,11 +55,23 @@ export default function ImageCarousel({ images, autoPlay = true, interval = 5000
             }`}
           >
             <div 
-              className="w-full h-full bg-[#0A2463] bg-cover bg-center"
-              style={{ backgroundImage: `url(${image.src})` }}
+              className="w-full h-full bg-[#0A2463] bg-cover bg-center bg-no-repeat"
+              style={{ 
+                backgroundImage: `url(${image.src})`,
+                imageRendering: '-webkit-optimize-contrast'
+              }}
               role="img"
               aria-label={image.alt}
-            ></div>
+            >
+              {/* Fallback para carga de imagen */}
+              <img 
+                src={image.src} 
+                alt={image.alt}
+                className="w-full h-full object-cover opacity-0"
+                loading="lazy"
+                style={{ position: 'absolute', top: 0, left: 0 }}
+              />
+            </div>
             {/* Overlay gradient */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
           </div>

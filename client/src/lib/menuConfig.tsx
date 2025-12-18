@@ -9,6 +9,10 @@ interface MenuItem {
   
   export const menuItems: MenuItem[] = [
     {
+      title: "HOME",
+      link: "/",
+    },
+    {
       title: "NOSOTROS",
       link: "/nosotros",
       submenu: [
