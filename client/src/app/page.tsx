@@ -98,15 +98,15 @@ export default function HomePage() {
           ></div>
         </div>
         
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <div 
               className={`text-center lg:text-left transform transition-all duration-1200 ease-out ${
                 isVisible.hero ? 'translate-y-0 opacity-100 scale-100' : 'translate-y-32 opacity-0 scale-95'
               }`}
             >
               <div className="overflow-hidden">
-                <h1 className={`text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-6 transition-transform duration-1000 ${
+                <h1 className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-4 sm:mb-6 transition-transform duration-1000 ${
                   isVisible.hero ? 'translate-y-0' : 'translate-y-full'
                 }`}>
                   {homePageContent.hero.title.part1}
@@ -119,23 +119,23 @@ export default function HomePage() {
                 </h1>
               </div>
               
-              <p className={`text-xl lg:text-2xl text-blue-100 mb-8 leading-relaxed transition-all duration-1000 delay-700 ${
+              <p className={`text-base sm:text-lg lg:text-xl xl:text-2xl text-blue-100 mb-6 sm:mb-8 leading-relaxed transition-all duration-1000 delay-700 ${
                 isVisible.hero ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
               }`}>
                 {homePageContent.hero.description}
               </p>
               
-              <div className={`flex flex-col sm:flex-row gap-4 justify-center lg:justify-start transition-all duration-1200 delay-1000 ${
+              <div className={`flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start transition-all duration-1200 delay-1000 ${
                 isVisible.hero ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
               }`}>
                 <Button 
                   href="/admisiones" 
                   variant="secondary"
-                  className="text-lg px-8 py-4 hover:shadow-2xl hover:shadow-[#FAA916]/25 transition-all duration-300"
+                  className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 hover:shadow-2xl hover:shadow-[#FAA916]/25 transition-all duration-300"
                 >
                   {homePageContent.hero.buttons.primary}
                 </Button>
-                <button className="text-lg px-8 py-4 border-2 border-white text-white hover:bg-white hover:text-[#0A2463] rounded-full font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-2xl">
+                <button className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 border-2 border-white text-white hover:bg-white hover:text-[#0A2463] rounded-full font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-2xl">
                   {homePageContent.hero.buttons.secondary}
                 </button>
               </div>
@@ -148,13 +148,13 @@ export default function HomePage() {
               style={{ transitionDelay: '600ms' }}
             >
               {/* Logo circular con efectos */}
-              <div className="relative w-full h-80 lg:h-96 flex items-center justify-center">
+              <div className="relative w-full h-64 sm:h-72 lg:h-80 xl:h-96 flex items-center justify-center mt-8 lg:mt-0">
                 <div className="relative group">
                   {/* Círculo de fondo con gradiente animado */}
                   <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/30 via-white/20 to-transparent blur-3xl animate-pulse-slow"></div>
                   
                   {/* Círculo principal */}
-                  <div className="relative w-72 h-72 lg:w-80 lg:h-80 rounded-full bg-white/10 backdrop-blur-lg border-4 border-white/30 flex items-center justify-center shadow-2xl overflow-hidden group-hover:scale-110 group-hover:border-white/50 transition-all duration-500">
+                  <div className="relative w-56 h-56 sm:w-64 sm:h-64 md:w-72 md:h-72 lg:w-80 lg:h-80 rounded-full bg-white/10 backdrop-blur-lg border-4 border-white/30 flex items-center justify-center shadow-2xl overflow-hidden group-hover:scale-110 group-hover:border-white/50 transition-all duration-500">
                     {/* Efecto de brillo giratorio */}
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent rotate-45 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
                     
@@ -207,7 +207,7 @@ export default function HomePage() {
       <section 
         id="features"
         data-animate
-        className="py-20 bg-white relative overflow-hidden"
+        className="py-12 sm:py-16 lg:py-20 bg-white relative overflow-hidden"
       >
         {/* Elementos de fondo animados */}
         <div className="absolute inset-0 opacity-5">
@@ -217,22 +217,22 @@ export default function HomePage() {
         
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div 
-            className={`text-center mb-16 transform transition-all duration-1200 ${
+            className={`text-center mb-8 sm:mb-12 lg:mb-16 transform transition-all duration-1200 ${
               isVisible.features ? 'translate-y-0 opacity-100 scale-100' : 'translate-y-12 opacity-0 scale-95'
             }`}
           >
-            <h2 className="text-3xl lg:text-4xl font-bold text-[#0A2463] mb-4 relative">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0A2463] mb-3 sm:mb-4 relative">
               {homePageContent.features.title}
               <div className={`absolute -bottom-2 left-1/2 transform -translate-x-1/2 h-1 bg-gradient-to-r from-[#0A2463] to-[#FAA916] rounded-full transition-all duration-1000 ${
                 isVisible.features ? 'w-24' : 'w-0'
               }`} style={{ transitionDelay: '500ms' }}></div>
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-base sm:text-lg lg:text-xl text-gray-600 max-w-3xl mx-auto">
               {homePageContent.features.description}
             </p>
           </div>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {homePageContent.features.items.map((feature, index) => (
               <div 
                 key={index}
@@ -264,7 +264,7 @@ export default function HomePage() {
       <section 
         id="stats"
         data-animate
-        className="py-20 bg-[#0A2463] text-white relative overflow-hidden"
+        className="py-12 sm:py-16 lg:py-20 bg-[#0A2463] text-white relative overflow-hidden"
       >
         <div className="absolute inset-0 bg-gradient-to-r from-blue-900/50 to-purple-900/50"></div>
         
@@ -274,11 +274,11 @@ export default function HomePage() {
         </div>
         
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 text-center">
             {homePageContent.stats.map((stat, index) => (
               <div 
                 key={index}
-                className={`transform transition-all duration-1000 hover:scale-110 group ${
+                className={`transform transition-all duration-1000 hover:scale-105 sm:hover:scale-110 group ${
                   isVisible.stats 
                     ? 'translate-y-0 opacity-100 scale-100' 
                     : 'translate-y-20 opacity-0 scale-90'
@@ -286,10 +286,10 @@ export default function HomePage() {
                 style={{ transitionDelay: `${index * 300}ms` }}
               >
                 <div className="relative">
-                  <div className="text-5xl font-bold text-[#FAA916] mb-2 transition-all duration-300 group-hover:text-6xl">
+                  <div className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#FAA916] mb-1 sm:mb-2 transition-all duration-300 group-hover:text-4xl sm:group-hover:text-5xl lg:group-hover:text-6xl">
                     {stat.number}
                   </div>
-                  <div className="text-xl transition-all duration-300 group-hover:text-[#FAA916]">{stat.label}</div>
+                  <div className="text-sm sm:text-base lg:text-xl transition-all duration-300 group-hover:text-[#FAA916]">{stat.label}</div>
                   
                   {/* Efecto de resplandor */}
                   <div className="absolute inset-0 bg-[#FAA916] rounded-full opacity-0 group-hover:opacity-20 blur-xl transition-all duration-500 scale-150"></div>
@@ -304,21 +304,21 @@ export default function HomePage() {
       <section 
         id="carousel"
         data-animate
-        className="py-20 bg-white relative overflow-hidden"
+        className="py-12 sm:py-16 lg:py-20 bg-white relative overflow-hidden"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div 
-            className={`text-center mb-12 transform transition-all duration-1000 ${
+            className={`text-center mb-8 sm:mb-10 lg:mb-12 transform transition-all duration-1000 ${
               isVisible.carousel ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
             }`}
           >
-            <h2 className="text-3xl lg:text-4xl font-bold text-[#0A2463] mb-4 relative">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0A2463] mb-3 sm:mb-4 relative">
               {homePageContent.carousel.title}
               <div className={`absolute -bottom-2 left-1/2 transform -translate-x-1/2 h-1 bg-gradient-to-r from-[#0A2463] to-[#FAA916] rounded-full transition-all duration-1000 ${
-                isVisible.carousel ? 'w-48' : 'w-0'
+                isVisible.carousel ? 'w-32 sm:w-48' : 'w-0'
               }`} style={{ transitionDelay: '500ms' }}></div>
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-base sm:text-lg lg:text-xl text-gray-600 max-w-3xl mx-auto">
               {homePageContent.carousel.description}
             </p>
           </div>
@@ -338,7 +338,7 @@ export default function HomePage() {
       <section 
         id="cta"
         data-animate
-        className="py-20 bg-gradient-to-r from-[#FAA916] to-[#ffb52e] relative overflow-hidden"
+        className="py-12 sm:py-16 lg:py-20 bg-gradient-to-r from-[#FAA916] to-[#ffb52e] relative overflow-hidden"
       >
         {/* Partículas flotantes - generadas en el cliente */}
         <div className="absolute inset-0">
@@ -361,17 +361,17 @@ export default function HomePage() {
             isVisible.cta ? 'translate-y-0 opacity-100 scale-100' : 'translate-y-20 opacity-0 scale-95'
           }`}
         >
-          <h2 className="text-3xl lg:text-4xl font-bold text-[#0A2463] mb-6">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0A2463] mb-4 sm:mb-6">
             {homePageContent.cta.title}
           </h2>
-          <p className="text-xl text-[#0A2463] mb-8 leading-relaxed">
+          <p className="text-base sm:text-lg lg:text-xl text-[#0A2463] mb-6 sm:mb-8 leading-relaxed">
             {homePageContent.cta.description}
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
             <Button 
               href="/admisiones" 
               variant="primary"
-              className="text-lg px-8 py-4 hover:shadow-2xl hover:shadow-[#0A2463]/25 transition-all duration-300"
+              className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 hover:shadow-2xl hover:shadow-[#0A2463]/25 transition-all duration-300"
             >
               {homePageContent.cta.buttons.primary}
             </Button>
