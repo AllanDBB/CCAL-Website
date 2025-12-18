@@ -68,6 +68,7 @@ export default function HomePage() {
       {/* Hero Section - sin padding top ya que el navbar es transparente */}
       <section 
         id="hero"
+        data-animate
         className="relative min-h-screen bg-gradient-to-br from-[#0A2463] via-[#0d2d73] to-[#1a4d99] text-white overflow-hidden flex items-center"
       >
         {/* Elementos flotantes con parallax y mouse tracking */}
@@ -204,7 +205,8 @@ export default function HomePage() {
 
       {/* Features Section */}
       <section 
-        id="features" 
+        id="features"
+        data-animate
         className="py-20 bg-white relative overflow-hidden"
       >
         {/* Elementos de fondo animados */}
@@ -261,6 +263,7 @@ export default function HomePage() {
       {/* Stats Section */}
       <section 
         id="stats"
+        data-animate
         className="py-20 bg-[#0A2463] text-white relative overflow-hidden"
       >
         <div className="absolute inset-0 bg-gradient-to-r from-blue-900/50 to-purple-900/50"></div>
@@ -300,6 +303,7 @@ export default function HomePage() {
       {/* Image Carousel Section */}
       <section 
         id="carousel"
+        data-animate
         className="py-20 bg-white relative overflow-hidden"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -333,6 +337,7 @@ export default function HomePage() {
       {/* CTA Section */}
       <section 
         id="cta"
+        data-animate
         className="py-20 bg-gradient-to-r from-[#FAA916] to-[#ffb52e] relative overflow-hidden"
       >
         {/* Partículas flotantes - generadas en el cliente */}
