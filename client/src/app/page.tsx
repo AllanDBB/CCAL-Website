@@ -2,19 +2,26 @@
 
 import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/buttons';
-import { FeatureCard, Card } from '@/components/ui/cards';
-import SocialMediaFeed from '@/components/features/SocialMediaFeed';
+import { FeatureCard } from '@/components/ui/cards';
+import { ImageCarousel } from '@/components/ui/carousel';
 import { homePageContent } from '@/lib/content/homepage';
+
+interface Particle {
+  left: number;
+  top: number;
+  delay: number;
+  duration: number;
+}
 
 export default function HomePage() {
   const [scrollY, setScrollY] = useState(0);
-  const [isVisible, setIsVisible] = useState({});
+  const [isVisible, setIsVisible] = useState<{ [key: string]: boolean }>({});
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [particles, setParticles] = useState([]);
+  const [particles, setParticles] = useState<Particle[]>([]);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
-    const handleMouseMove = (e) => {
+    const handleMouseMove = (e: MouseEvent) => {
       setMousePosition({ x: e.clientX, y: e.clientY });
     };
 
@@ -35,34 +42,24 @@ export default function HomePage() {
     };
   }, []);
 
-  const observeElement = (elementId: string) => {
-    useEffect(() => {
-      const observer = new IntersectionObserver(
-        ([entry]) => {
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
           setIsVisible(prev => ({
             ...prev,
-            [elementId]: entry.isIntersecting
+            [entry.target.id]: entry.isIntersecting
           }));
-        },
-        { threshold: 0.1, rootMargin: '50px' }
-      );
+        });
+      },
+      { threshold: 0.1, rootMargin: '50px' }
+    );
 
-      const element = document.getElementById(elementId);
-      if (element) observer.observe(element);
+    const elements = document.querySelectorAll('[data-animate]');
+    elements.forEach(el => observer.observe(el));
 
-      return () => {
-        if (element) observer.unobserve(element);
-      };
-    }, [elementId]);
-  };
-
-  // Observar elementos
-  observeElement('hero');
-  observeElement('features');
-  observeElement('stats');
-  observeElement('news');
-  observeElement('cta');
-  observeElement('testimonials');
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <div className="min-h-screen overflow-x-hidden">
@@ -208,7 +205,7 @@ export default function HomePage() {
       {/* Features Section */}
       <section 
         id="features" 
-        className="py-20 bg-gradient-to-b from-gray-50 to-white relative overflow-hidden"
+        className="py-20 bg-white relative overflow-hidden"
       >
         {/* Elementos de fondo animados */}
         <div className="absolute inset-0 opacity-5">
@@ -300,58 +297,35 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Social Media Section */}
+      {/* Image Carousel Section */}
       <section 
-        id="social"
-        className="py-20 bg-gradient-to-br from-blue-50 to-indigo-100 relative overflow-hidden"
+        id="carousel"
+        className="py-20 bg-white relative overflow-hidden"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div 
             className={`text-center mb-12 transform transition-all duration-1000 ${
-              isVisible.news ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
+              isVisible.carousel ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
             }`}
           >
             <h2 className="text-3xl lg:text-4xl font-bold text-[#0A2463] mb-4 relative">
-              {homePageContent.socialMedia.title}
+              {homePageContent.carousel.title}
               <div className={`absolute -bottom-2 left-1/2 transform -translate-x-1/2 h-1 bg-gradient-to-r from-[#0A2463] to-[#FAA916] rounded-full transition-all duration-1000 ${
-                isVisible.news ? 'w-48' : 'w-0'
+                isVisible.carousel ? 'w-48' : 'w-0'
               }`} style={{ transitionDelay: '500ms' }}></div>
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-              {homePageContent.socialMedia.description}
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              {homePageContent.carousel.description}
             </p>
-
-            {/* Social Media Links */}
-            <div className="flex justify-center gap-4 mb-12 flex-wrap">
-              {homePageContent.socialMedia.platforms.map((platform, index) => (
-                <a
-                  key={index}
-                  href={platform.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-white transition-all duration-300 hover:scale-105 hover:shadow-xl transform ${
-                    isVisible.news ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
-                  }`}
-                  style={{ 
-                    backgroundColor: platform.color,
-                    transitionDelay: `${(index + 1) * 200}ms`
-                  }}
-                >
-                  <span className="text-2xl">{platform.icon}</span>
-                  <span>{platform.name}</span>
-                </a>
-              ))}
-            </div>
           </div>
 
-          {/* SociableKit Embed */}
           <div 
-            className={`bg-white rounded-2xl shadow-xl p-8 transform transition-all duration-1000 ${
-              isVisible.news ? 'translate-y-0 opacity-100 scale-100' : 'translate-y-20 opacity-0 scale-95'
+            className={`transform transition-all duration-1000 ${
+              isVisible.carousel ? 'translate-y-0 opacity-100 scale-100' : 'translate-y-20 opacity-0 scale-95'
             }`}
-            style={{ transitionDelay: '800ms' }}
+            style={{ transitionDelay: '600ms' }}
           >
-            <SocialMediaFeed />
+            <ImageCarousel images={homePageContent.carousel.images} autoPlay={true} interval={5000} />
           </div>
         </div>
       </section>
@@ -399,51 +373,6 @@ export default function HomePage() {
             <button className="text-lg px-8 py-4 border-2 border-[#0A2463] text-[#0A2463] bg-white hover:bg-[#0A2463] hover:text-white rounded-full font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-2xl">
               {homePageContent.cta.buttons.secondary}
             </button>
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials Section */}
-      <section 
-        id="testimonials"
-        className="py-20 bg-gradient-to-b from-gray-50 to-white relative overflow-hidden"
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div 
-            className={`text-center mb-16 transform transition-all duration-1000 ${
-              isVisible.testimonials ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
-            }`}
-          >
-            <h2 className="text-3xl lg:text-4xl font-bold text-[#0A2463] mb-4 relative">
-              {homePageContent.testimonials.title}
-              <div className={`absolute -bottom-2 left-1/2 transform -translate-x-1/2 h-1 bg-gradient-to-r from-[#0A2463] to-[#FAA916] rounded-full transition-all duration-1000 ${
-                isVisible.testimonials ? 'w-40' : 'w-0'
-              }`} style={{ transitionDelay: '500ms' }}></div>
-            </h2>
-            <p className="text-xl text-gray-600">
-              {homePageContent.testimonials.description}
-            </p>
-          </div>
-          
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {homePageContent.testimonials.items.map((testimonial, index) => (
-              <div 
-                key={index}
-                className={`transform transition-all duration-700 hover:scale-105 ${
-                  isVisible.testimonials 
-                    ? 'translate-y-0 opacity-100 rotate-0' 
-                    : 'translate-y-20 opacity-0 rotate-1'
-                }`}
-                style={{ transitionDelay: `${index * 250}ms` }}
-              >
-                <div className="group">
-                  <Card
-                    title={testimonial.title}
-                    description={testimonial.description}
-                  />
-                </div>
-              </div>
-            ))}
           </div>
         </div>
       </section>

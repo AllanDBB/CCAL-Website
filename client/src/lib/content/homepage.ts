@@ -7,7 +7,7 @@ export const homePageContent = {
     },
     description: "Más de 19 años educando con excelencia académica. El Colegio Científico Costarricense Sede Alajuela, donde la ciencia transforma vidas.",
     buttons: {
-      primary: "🎓 Proceso de Admisión 2025",
+      primary: "Admisiones 2027",
       secondary: "Conócenos"
     },
     imageCard: {
@@ -33,37 +33,37 @@ export const homePageContent = {
       {
         title: "Excelencia Académica",
         description: "Programas de estudio rigurosos que preparan a nuestros estudiantes para los desafíos universitarios y profesionales.",
-        icon: "🏆",
+        icon: "01",
         color: "#FAA916"
       },
       {
         title: "Laboratorios Modernos",
         description: "Instalaciones de última generación para física, química, biología y ciencias de la computación.",
-        icon: "🔬",
+        icon: "02",
         color: "#0A2463"
       },
       {
         title: "Formación Integral",
         description: "Educación que combina conocimiento científico con desarrollo personal y principios éticos sólidos.",
-        icon: "🌟",
+        icon: "03",
         color: "#FAA916"
       },
       {
         title: "Docentes Especializados",
         description: "Profesores con amplia experiencia y formación continua en sus áreas de especialización.",
-        icon: "👨‍🏫",
+        icon: "04",
         color: "#0A2463"
       },
       {
         title: "Proyectos de Investigación",
         description: "Participación activa en ferias científicas y proyectos de investigación a nivel nacional e internacional.",
-        icon: "🧬",
+        icon: "05",
         color: "#FAA916"
       },
       {
         title: "Preparación Universitaria",
         description: "Alto porcentaje de graduados ingresando a las mejores universidades del país y el extranjero.",
-        icon: "🎓",
+        icon: "06",
         color: "#0A2463"
       }
     ]
@@ -76,6 +76,43 @@ export const homePageContent = {
     { number: "300+", label: "Premios Científicos" }
   ],
 
+  carousel: {
+    title: "Nuestra Comunidad CCAL",
+    description: "Conoce las instalaciones, actividades y momentos que hacen del CCAL un lugar especial.",
+    images: [
+      {
+        src: "/images/campus.jpeg",
+        alt: "Instalaciones del CCAL",
+        caption: "Modernas instalaciones para el aprendizaje"
+      },
+      {
+        src: "/images/lab.jpeg",
+        alt: "Laboratorio de Ciencias",
+        caption: "Laboratorios equipados con tecnología de punta"
+      },
+      {
+        src: "/images/estudiantes.jpeg",
+        alt: "Estudiantes en clase",
+        caption: "Formación académica de excelencia"
+      },
+      {
+        src: "/images/actividades.jpeg",
+        alt: "Actividades estudiantiles",
+        caption: "Desarrollo integral y vida estudiantil"
+      },
+      {
+        src: "/images/proyectos.jpeg",
+        alt: "Proyectos de investigación",
+        caption: "Proyectos científicos premiados a nivel nacional"
+      },
+      {
+        src: "/images/2.jpeg",
+        alt: "Vida estudiantil CCAL",
+        caption: "Comunidad CCAL en acción"
+      }
+    ]
+  },
+
   socialMedia: {
     title: "Síguenos en Redes Sociales",
     description: "Mantente conectado con nuestra comunidad y descubre lo último del CCAL.",
@@ -84,21 +121,21 @@ export const homePageContent = {
         name: "Instagram",
         handle: "@ccalajuela",
         url: "https://instagram.com/ccalajuela",
-        icon: "📸",
+        icon: "◉",
         color: "#E4405F"
       },
       {
         name: "Facebook",
         handle: "Colegio Científico Alajuela",
         url: "https://facebook.com/ccalajuela",
-        icon: "👥",
+        icon: "◉",
         color: "#1877F2"
       },
       {
         name: "LinkedIn",
         handle: "CCAL",
         url: "https://www.linkedin.com/company/colegio-científico-de-alajuela",
-        icon: "💼",
+        icon: "◉",
         color: "#0A66C2"
       }
     ]
@@ -106,29 +143,10 @@ export const homePageContent = {
 
   cta: {
     title: "¿Listo para formar parte de nuestra familia CCAL?",
-    description: "Únete a la comunidad educativa más prestigiosa de Alajuela. El proceso de admisión 2025 ya está abierto.",
+    description: "Únete a la comunidad educativa más prestigiosa de Alajuela. Pronto anunciaremos el proceso de admisión 2027.",
     buttons: {
-      primary: "Iniciar Proceso de Admisión",
-      secondary: "Agendar Visita"
+      primary: "Más Información",
+      secondary: "Conócenos"
     }
-  },
-
-  testimonials: {
-    title: "Lo que dicen nuestros graduados",
-    description: "Historias de éxito que nos motivan a seguir transformando vidas.",
-    items: [
-      {
-        title: "Dr. Ana Rodríguez - Médica",
-        description: "El CCAL me dio las bases científicas sólidas que me han llevado a ser la profesional que soy hoy."
-      },
-      {
-        title: "Ing. Carlos Méndez - Ingeniero en Software",
-        description: "La formación integral del CCAL me preparó académicamente para enfrentar cualquier desafío profesional."
-      },
-      {
-        title: "Dra. María Fernández - Investigadora",
-        description: "Los proyectos de investigación y la mentoría de los profesores despertaron mi pasión por la ciencia."
-      }
-    ]
   }
 };

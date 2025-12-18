@@ -31,7 +31,7 @@ export default function OfertaAcademicaPage() {
     {
       categoria: "Ciencias Básicas",
       color: "from-[#0A2463] to-[#1a4d99]",
-      icon: "🔬",
+      icon: "⚗",
       materias: [
         { nombre: "Física", nivel: "Nivel Universitario", descripcion: "Mecánica, electromagnetismo, termodinámica y física moderna" },
         { nombre: "Química", nivel: "Nivel Universitario", descripcion: "Química general, orgánica, inorgánica y analítica" },
@@ -41,7 +41,7 @@ export default function OfertaAcademicaPage() {
     {
       categoria: "Matemáticas",
       color: "from-purple-600 to-purple-800",
-      icon: "📐",
+      icon: "∑",
       materias: [
         { nombre: "Precálculo", nivel: "Fundamentos Avanzados", descripcion: "Funciones, trigonometría y análisis matemático" },
         { nombre: "Cálculo", nivel: "Nivel Universitario", descripcion: "Cálculo diferencial e integral" }
@@ -50,7 +50,7 @@ export default function OfertaAcademicaPage() {
     {
       categoria: "Tecnología",
       color: "from-blue-500 to-blue-700",
-      icon: "💻",
+      icon: "⌘",
       materias: [
         { nombre: "Programación", nivel: "Desarrollo de Software", descripcion: "Algoritmos, estructuras de datos y desarrollo de aplicaciones" },
         { nombre: "Robótica", nivel: "Diseño e Innovación", descripcion: "Construcción, programación y diseño de robots" }
@@ -59,7 +59,7 @@ export default function OfertaAcademicaPage() {
     {
       categoria: "Lenguaje y Comunicación",
       color: "from-[#FAA916] to-[#ffb52e]",
-      icon: "📚",
+      icon: "◆",
       materias: [
         { nombre: "Español", nivel: "Gramática y Comprensión", descripcion: "Análisis textual, redacción académica y comunicación efectiva" },
         { nombre: "Inglés", nivel: "Nivel Avanzado", descripcion: "Inglés conversacional, técnico y académico" }
@@ -68,7 +68,7 @@ export default function OfertaAcademicaPage() {
     {
       categoria: "Ciencias Sociales",
       color: "from-green-600 to-green-800",
-      icon: "🌍",
+      icon: "●",
       materias: [
         { nombre: "Historia", nivel: "Nacional y Universal", descripcion: "Análisis histórico y desarrollo del pensamiento crítico" },
         { nombre: "Geografía", nivel: "Física y Humana", descripcion: "Geografía mundial, recursos naturales y geopolítica" }
@@ -77,7 +77,7 @@ export default function OfertaAcademicaPage() {
     {
       categoria: "Educación Física",
       color: "from-red-500 to-red-700",
-      icon: "⚽",
+      icon: "◉",
       materias: [
         { nombre: "Deporte", nivel: "Desarrollo Integral", descripcion: "Actividad física, deportes y vida saludable" }
       ]

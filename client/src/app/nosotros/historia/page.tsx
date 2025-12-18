@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
+import { PhotoGrid } from '@/components/ui/gallery';
 
 export default function HistoriaPage() {
   const [isVisible, setIsVisible] = useState<{ [key: string]: boolean }>({});
@@ -157,6 +158,38 @@ export default function HistoriaPage() {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Galería Histórica */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div 
+            id="galeria"
+            data-animate
+            className={`text-center mb-12 transition-all duration-1000 ${
+              isVisible.galeria ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
+            }`}
+          >
+            <h2 className="text-3xl lg:text-4xl font-bold text-[#0A2463] mb-4">
+              19 Años de Historia en Imágenes
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+              Momentos memorables que han marcado nuestra trayectoria como institución educativa
+            </p>
+          </div>
+
+          <div
+            className={`transition-all duration-1000 ${
+              isVisible.galeria ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
+            }`}
+            style={{ transitionDelay: '400ms' }}
+          >
+            <PhotoGrid 
+              images={[]} 
+              columns={3}
+            />
           </div>
         </div>
       </section>

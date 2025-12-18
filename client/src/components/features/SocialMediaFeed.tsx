@@ -20,14 +20,14 @@ const SocialMediaFeed: React.FC<SocialMediaFeedProps> = ({ embedCode }) => {
   // Placeholder mientras se configura SociableKit
   return (
     <div className="text-center py-12">
-      <div className="text-6xl mb-4">📱</div>
+      <div className="text-6xl mb-4 text-[#0A2463]">◉</div>
       <h3 className="text-2xl font-bold text-[#0A2463] mb-4">Feed de Redes Sociales</h3>
       <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
         Aquí se mostrará el feed de SociableKit con los últimos posts de Instagram, Facebook y más.
       </p>
-      <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-6 max-w-2xl mx-auto">
+      <div className="bg-gray-50 rounded-lg p-6 max-w-2xl mx-auto border border-gray-200">
         <p className="text-sm text-gray-700 mb-4">
-          <strong>📋 Pasos para configurar SociableKit:</strong>
+          <strong>Pasos para configurar SociableKit:</strong>
         </p>
         <ol className="text-left text-sm text-gray-600 space-y-3 mb-6">
           <li className="flex items-start gap-2">

@@ -23,8 +23,8 @@ interface MenuItem {
       ]
     },
     {
-      title: "OFERTA ACADÉMICA",
-      link: "/oferta",
+      title: "EXCELENCIA CCAL",
+      link: "/excelencia",
     },
     {
       title: "ADMISIONES",
