@@ -71,7 +71,7 @@ export default function AdmisionesPage() {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl">
             <h1 className="text-5xl md:text-6xl font-bold leading-tight mb-6">
-              Admisiones 2027
+              Admisiones 2026
             </h1>
             <p className="text-xl md:text-2xl text-blue-100 leading-relaxed">
               ¡Sé parte de los Colegios Científicos Costarricenses!
@@ -93,22 +93,22 @@ export default function AdmisionesPage() {
             <div className="bg-white rounded-2xl shadow-xl p-8 border-t-4 border-[#FAA916]">
               <div className="bg-gradient-to-r from-[#FAA916] to-[#ffb52e] text-[#0A2463] rounded-xl p-6 mb-6 text-center">
                 <h2 className="text-2xl font-bold mb-2">
-                  Admisiones 2027
+                  Admisiones 2026
                 </h2>
                 <p className="text-lg font-semibold">
-                  Pronto anunciaremos las fechas y detalles del proceso de admisión 2027
+                  Pronto anunciaremos las fechas y detalles del proceso de admisión 2026
                 </p>
               </div>
               <h2 className="text-3xl font-bold text-[#0A2463] mb-4">
-                Proceso de Admisión 2027
+                Proceso de Admisión 2026
               </h2>
               <p className="text-gray-700 leading-relaxed mb-4">
                 El proceso de admisión estará dirigido a estudiantes que se encuentren <strong>cursando 9° año</strong> y 
-                desean formar parte de alguna de las 14 sedes de los Colegios Científicos de Costa Rica para el ciclo lectivo 2027.
+                desean formar parte de alguna de las 14 sedes de los Colegios Científicos de Costa Rica para el ciclo lectivo 2026.
               </p>
               <div className="bg-blue-50 border-l-4 border-[#0A2463] p-4 rounded">
                 <p className="text-[#0A2463] font-semibold">
-                  📅 Fecha de la PAA: 10 de Octubre de 2025
+                  📅 Fecha de la PAA: 10 de Octubre de 2026
                 </p>
                 <p className="text-gray-700 text-sm mt-1">
                   Las listas de admitidos se publicarán a finales de noviembre

@@ -128,7 +128,7 @@ export default function TerminosDeUsoPage() {
 
             {/* Footer Note */}
             <div className="mt-8 pt-6 border-t border-gray-200 text-center text-sm text-gray-500">
-              <p>Última actualización: Octubre 2025</p>
+              <p>Última actualización: Octubre 2026</p>
               <p className="mt-2">© {new Date().getFullYear()} Colegio Científico Costarricense Sede Alajuela</p>
             </div>
           </div>

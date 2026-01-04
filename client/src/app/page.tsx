@@ -98,15 +98,15 @@ export default function HomePage() {
           ></div>
         </div>
         
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 md:py-16 lg:py-20">
+          <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-center">
             <div 
               className={`text-center lg:text-left transform transition-all duration-1200 ease-out ${
                 isVisible.hero ? 'translate-y-0 opacity-100 scale-100' : 'translate-y-32 opacity-0 scale-95'
               }`}
             >
               <div className="overflow-hidden">
-                <h1 className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-4 sm:mb-6 transition-transform duration-1000 ${
+                <h1 className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight mb-3 sm:mb-4 md:mb-6 transition-transform duration-1000 ${
                   isVisible.hero ? 'translate-y-0' : 'translate-y-full'
                 }`}>
                   {homePageContent.hero.title.part1}
@@ -119,23 +119,23 @@ export default function HomePage() {
                 </h1>
               </div>
               
-              <p className={`text-base sm:text-lg lg:text-xl xl:text-2xl text-blue-100 mb-6 sm:mb-8 leading-relaxed transition-all duration-1000 delay-700 ${
+              <p className={`text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl text-blue-100 mb-4 sm:mb-6 md:mb-8 leading-relaxed px-2 sm:px-0 transition-all duration-1000 delay-700 ${
                 isVisible.hero ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
               }`}>
                 {homePageContent.hero.description}
               </p>
               
-              <div className={`flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start transition-all duration-1200 delay-1000 ${
+              <div className={`flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start px-2 sm:px-0 transition-all duration-1200 delay-1000 ${
                 isVisible.hero ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
               }`}>
                 <Button 
                   href="/admisiones" 
                   variant="secondary"
-                  className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 hover:shadow-2xl hover:shadow-[#FAA916]/25 transition-all duration-300"
+                  className="text-sm sm:text-base md:text-lg px-6 sm:px-7 md:px-8 py-2.5 sm:py-3 md:py-4 hover:shadow-2xl hover:shadow-[#FAA916]/25 transition-all duration-300 w-full sm:w-auto"
                 >
                   {homePageContent.hero.buttons.primary}
                 </Button>
-                <button className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 border-2 border-white text-white hover:bg-white hover:text-[#0A2463] rounded-full font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-2xl">
+                <button className="text-sm sm:text-base md:text-lg px-6 sm:px-7 md:px-8 py-2.5 sm:py-3 md:py-4 border-2 border-white text-white hover:bg-white hover:text-[#0A2463] rounded-full font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-2xl w-full sm:w-auto">
                   {homePageContent.hero.buttons.secondary}
                 </button>
               </div>
@@ -148,13 +148,13 @@ export default function HomePage() {
               style={{ transitionDelay: '600ms' }}
             >
               {/* Logo circular con efectos */}
-              <div className="relative w-full h-64 sm:h-72 lg:h-80 xl:h-96 flex items-center justify-center mt-8 lg:mt-0">
+              <div className="relative w-full h-56 sm:h-64 md:h-72 lg:h-80 xl:h-96 flex items-center justify-center mt-6 sm:mt-8 lg:mt-0">
                 <div className="relative group">
                   {/* Círculo de fondo con gradiente animado */}
                   <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/30 via-white/20 to-transparent blur-3xl animate-pulse-slow"></div>
                   
                   {/* Círculo principal */}
-                  <div className="relative w-56 h-56 sm:w-64 sm:h-64 md:w-72 md:h-72 lg:w-80 lg:h-80 rounded-full bg-white/10 backdrop-blur-lg border-4 border-white/30 flex items-center justify-center shadow-2xl overflow-hidden group-hover:scale-110 group-hover:border-white/50 transition-all duration-500">
+                  <div className="relative w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 lg:w-72 lg:h-72 xl:w-80 xl:h-80 rounded-full bg-white/10 backdrop-blur-lg border-2 sm:border-4 border-white/30 flex items-center justify-center shadow-2xl overflow-hidden group-hover:scale-110 group-hover:border-white/50 transition-all duration-500">
                     {/* Efecto de brillo giratorio */}
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent rotate-45 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
                     
@@ -175,18 +175,18 @@ export default function HomePage() {
               </div>
               
               {/* Floating stats con animaciones mejoradas */}
-              <div className={`absolute -bottom-6 -left-6 bg-white rounded-xl p-4 shadow-lg animate-float-up hover:shadow-2xl transition-all duration-300 ${
+              <div className={`absolute -bottom-4 sm:-bottom-6 -left-2 sm:-left-6 bg-white rounded-lg sm:rounded-xl p-3 sm:p-4 shadow-lg animate-float-up hover:shadow-2xl transition-all duration-300 ${
                 isVisible.hero ? 'scale-100 opacity-100' : 'scale-0 opacity-0'
               }`} style={{ transitionDelay: '1200ms' }}>
-                <div className="text-[#0A2463] font-bold text-2xl">{homePageContent.hero.stats.university.number}</div>
-                <div className="text-sm text-gray-600">{homePageContent.hero.stats.university.label}</div>
+                <div className="text-[#0A2463] font-bold text-xl sm:text-2xl">{homePageContent.hero.stats.university.number}</div>
+                <div className="text-xs sm:text-sm text-gray-600">{homePageContent.hero.stats.university.label}</div>
               </div>
               
-              <div className={`absolute -top-6 -right-6 bg-[#FAA916] rounded-xl p-4 shadow-lg animate-float-down hover:shadow-2xl transition-all duration-300 ${
+              <div className={`absolute -top-4 sm:-top-6 -right-2 sm:-right-6 bg-[#FAA916] rounded-lg sm:rounded-xl p-3 sm:p-4 shadow-lg animate-float-down hover:shadow-2xl transition-all duration-300 ${
                 isVisible.hero ? 'scale-100 opacity-100' : 'scale-0 opacity-0'
               }`} style={{ transitionDelay: '1400ms' }}>
-                <div className="text-[#0A2463] font-bold text-2xl">{homePageContent.hero.stats.experience.number}</div>
-                <div className="text-sm text-[#0A2463]">{homePageContent.hero.stats.experience.label}</div>
+                <div className="text-[#0A2463] font-bold text-xl sm:text-2xl">{homePageContent.hero.stats.experience.number}</div>
+                <div className="text-xs sm:text-sm text-[#0A2463]">{homePageContent.hero.stats.experience.label}</div>
               </div>
             </div>
           </div>
