@@ -11,8 +11,42 @@ export const metadata: Metadata = {
   title: "CCAL - Colegio Científico de Alajuela",
   description:
     "Educación científica de excelencia en Costa Rica. Formamos líderes del futuro con valores y conocimiento.",
+  keywords: [
+    "Colegio Científico",
+    "Alajuela",
+    "Costa Rica",
+    "educación científica",
+    "excelencia académica",
+    "CCAL",
+  ],
+  authors: [{ name: "CCAL" }],
+  creator: "CCAL",
+  publisher: "Colegio Científico de Alajuela",
   icons: {
     icon: '/favicon.ico',
+  },
+  metadataBase: new URL('https://www.ccalajuela.ed.cr'),
+  openGraph: {
+    type: 'website',
+    locale: 'es_CR',
+    url: 'https://www.ccalajuela.ed.cr',
+    title: 'CCAL - Colegio Científico de Alajuela',
+    description: 'Educación científica de excelencia en Costa Rica. Formamos líderes del futuro con valores y conocimiento.',
+    siteName: 'Colegio Científico de Alajuela',
+    images: [
+      {
+        url: '/images/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'CCAL - Colegio Científico de Alajuela',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'CCAL - Colegio Científico de Alajuela',
+    description: 'Educación científica de excelencia en Costa Rica. Formamos líderes del futuro con valores y conocimiento.',
+    images: ['/images/og-image.jpg'],
   },
 };
 
