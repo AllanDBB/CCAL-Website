@@ -1,52 +1,35 @@
 import type { Admission, AdmissionStatus } from "@/content/types";
-import { formatLongDate, isPast } from "@/lib/format";
-import { ArrowIcon, ButtonLink, Eyebrow } from "./ui";
+import { formatLongDate, formatNumericDate, isPast } from "@/lib/format";
+import { AccentSquare, ArrowIcon, ButtonLink, Container, Label } from "./ui";
 
-const statusLabel: Record<AdmissionStatus, string> = {
+export const statusLabel: Record<AdmissionStatus, string> = {
   proximamente: "Próximamente",
   abierta: "Inscripciones abiertas",
   cerrada: "Proceso cerrado",
   resultados: "Resultados publicados",
 };
 
+/** Tabla de fechas clave: fecha mono · evento · estado. */
 export function KeyDates({ admission, light = false }: { admission: Admission; light?: boolean }) {
   return (
-    <ol className="relative space-y-6">
-      {admission.keyDates.map((d, i) => {
+    <ol className={`border-t ${light ? "border-white/25" : "border-ink"}`}>
+      {admission.keyDates.map((d) => {
         const done = isPast(d.date);
-        const isLast = i === admission.keyDates.length - 1;
         return (
-          <li key={d.label} className="relative flex gap-4">
-            {!isLast && (
-              <span
-                className={`absolute left-[11px] top-7 h-[calc(100%-4px)] w-px ${light ? "bg-white/20" : "bg-line"}`}
-                aria-hidden="true"
-              />
-            )}
-            <span
-              className={`mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-2 ${
-                done
-                  ? light
-                    ? "border-white/40 bg-white/10"
-                    : "border-navy-900/30 bg-navy-50"
-                  : "border-gold-500 bg-gold-500"
-              }`}
-              aria-hidden="true"
-            >
-              {done && (
-                <svg className={`h-3 w-3 ${light ? "text-white" : "text-navy-900"}`} viewBox="0 0 12 12" fill="none">
-                  <path d="m2.5 6.5 2.5 2.5 4.5-6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-                </svg>
-              )}
+          <li
+            key={d.label}
+            className={`grid grid-cols-[7.5rem_1fr_auto] items-baseline gap-4 border-b py-5 ${light ? "border-white/25" : "border-line"}`}
+          >
+            <time dateTime={d.date} className={`font-mono text-[13px] ${light ? "text-white/70" : "text-muted"}`}>
+              {formatNumericDate(d.date)}
+            </time>
+            <span className={`text-lg font-medium leading-snug ${light ? "text-white" : "text-ink"}`}>
+              {d.label}
+              <span className="sr-only">, {formatLongDate(d.date)}</span>
             </span>
-            <div>
-              <p className={`text-sm ${light ? "text-navy-100" : "text-muted"}`}>
-                <span className="first-letter:uppercase">{formatLongDate(d.date)}</span>
-                {done && <span className="sr-only"> (completado)</span>}
-              </p>
-              <p className={`mt-0.5 text-lg font-semibold ${light ? "text-white" : "text-navy-950"}`}>{d.label}</p>
-              {d.note && <p className={`mt-1 text-sm ${light ? "text-navy-100" : "text-muted"}`}>{d.note}</p>}
-            </div>
+            <span className={`font-mono text-[11px] uppercase tracking-[0.08em] ${done ? (light ? "text-white/50" : "text-muted") : light ? "text-accent" : "text-accent-ink"}`}>
+              {done ? "Hecho" : "Próximo"}
+            </span>
           </li>
         );
       })}
@@ -54,37 +37,57 @@ export function KeyDates({ admission, light = false }: { admission: Admission; l
   );
 }
 
+/** Bloque negro de admisión para la portada. */
 export default function AdmissionPanel({ admission }: { admission: Admission }) {
+  const next = admission.keyDates.find((d) => !isPast(d.date));
+  const [day, month] = next ? formatNumericDate(next.date).split(".") : [];
+
   return (
-    <div className="grid gap-12 rounded-[28px] bg-navy-900 p-8 text-white sm:p-12 lg:grid-cols-12 lg:gap-16">
-      <div className="lg:col-span-7">
-        <div className="flex flex-wrap items-center gap-3">
-          <Eyebrow light>{admission.processName}</Eyebrow>
-          <span className="mb-4 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-white">
+    <section className="bg-ink py-20 text-white sm:py-28">
+      <Container>
+        <div className="grid gap-6 border-t border-white/25 pt-6 lg:grid-cols-12">
+          <Label light className="lg:col-span-3">
+            <span className="text-accent">01</span> — {admission.processName}
+          </Label>
+          <p className="flex items-center gap-2 font-mono text-[12px] uppercase tracking-[0.08em] text-white lg:col-span-9">
+            <AccentSquare className="h-2 w-2" />
             {statusLabel[admission.status]}
-          </span>
+          </p>
         </div>
-        <h2 className="text-3xl leading-tight text-white sm:text-4xl">{admission.headline}</h2>
-        <p className="mt-4 max-w-xl text-lg leading-relaxed text-navy-100">{admission.summary}</p>
-        <div className="mt-8 flex flex-wrap gap-3">
-          {admission.status === "resultados" && admission.resultsUrl ? (
-            <ButtonLink href={admission.resultsUrl} variant="gold">
-              Ver resultados <ArrowIcon />
-            </ButtonLink>
-          ) : (
-            <ButtonLink href="/admisiones" variant="gold">
-              Detalles del proceso <ArrowIcon />
-            </ButtonLink>
-          )}
-          <ButtonLink href="/admisiones#preguntas" variant="outline-light">
-            Preguntas frecuentes
-          </ButtonLink>
+
+        <div className="mt-12 grid gap-14 lg:grid-cols-12">
+          <div className="lg:col-span-7">
+            <h2 className="text-4xl leading-[1] sm:text-6xl lg:text-7xl">{admission.headline}</h2>
+            <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/70">{admission.summary}</p>
+            <div className="mt-10 flex flex-wrap gap-3">
+              {admission.status === "resultados" && admission.resultsUrl ? (
+                <ButtonLink href={admission.resultsUrl} variant="accent">
+                  Ver resultados <ArrowIcon />
+                </ButtonLink>
+              ) : (
+                <ButtonLink href="/admisiones" variant="accent">
+                  Detalles del proceso <ArrowIcon />
+                </ButtonLink>
+              )}
+              <ButtonLink href="/admisiones#preguntas" variant="outline-light">
+                Preguntas frecuentes <ArrowIcon />
+              </ButtonLink>
+            </div>
+          </div>
+
+          <div className="lg:col-span-5">
+            {next && (
+              <div className="mb-10">
+                <Label light>Próxima fecha — {next.label}</Label>
+                <p className="mt-3 font-display text-[7rem] font-semibold leading-[0.85] tracking-[-0.06em] text-accent sm:text-[9rem]">
+                  {day}.{month}
+                </p>
+              </div>
+            )}
+            <KeyDates admission={admission} light />
+          </div>
         </div>
-      </div>
-      <div className="lg:col-span-5 lg:border-l lg:border-white/15 lg:pl-12">
-        <p className="mb-6 text-xs font-semibold uppercase tracking-[0.18em] text-navy-100">Fechas clave</p>
-        <KeyDates admission={admission} light />
-      </div>
-    </div>
+      </Container>
+    </section>
   );
 }

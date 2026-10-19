@@ -3,7 +3,7 @@ import Link from "next/link";
 import { mainNav } from "@/content/navigation";
 import { getAdmission } from "@/lib/cms";
 import { formatLongDate } from "@/lib/format";
-import { ArrowIcon, ButtonLink, Container } from "./ui";
+import { AccentSquare, ArrowIcon, Container } from "./ui";
 import MobileNav from "./MobileNav";
 
 async function AnnouncementBar() {
@@ -12,31 +12,29 @@ async function AnnouncementBar() {
 
   const message =
     admission.status === "cerrada" && admission.resultsDate
-      ? `${admission.processName}: resultados el ${formatLongDate(admission.resultsDate)}`
+      ? `${admission.processName} — Resultados: ${formatLongDate(admission.resultsDate)}`
       : admission.status === "resultados"
-        ? `${admission.processName}: ya están disponibles los resultados`
-        : `${admission.processName}: inscripciones abiertas`;
+        ? `${admission.processName} — Resultados disponibles`
+        : `${admission.processName} — Inscripciones abiertas`;
 
   return (
-    <div className="bg-navy-950 text-white">
-      <Container className="flex min-h-10 items-center justify-center py-2 text-center text-sm">
-        <Link href="/admisiones" className="group inline-flex items-center gap-2 hover:text-gold-500">
-          <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-gold-500" aria-hidden="true" />
-          <span className="first-letter:uppercase">{message}</span>
-          <ArrowIcon className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
-        </Link>
+    <Link href="/admisiones" className="group block bg-accent text-ink">
+      <Container className="flex min-h-10 items-center justify-between gap-4 py-2 font-mono text-[12px] font-medium uppercase tracking-[0.08em]">
+        <span>{message}</span>
+        <ArrowIcon className="h-4 w-4 shrink-0 transition-transform group-hover:translate-x-1" />
       </Container>
-    </div>
+    </Link>
   );
 }
 
 export function Wordmark() {
   return (
     <Link href="/" className="flex items-center gap-3" aria-label="Colegio Científico de Alajuela, inicio">
-      <Image src="/Logo.svg" alt="" width={44} height={44} priority className="h-11 w-11" />
-      <span className="leading-tight">
-        <span className="block font-serif text-[17px] font-semibold text-navy-950">Colegio Científico</span>
-        <span className="block text-[13px] text-muted">Sede Alajuela</span>
+      <Image src="/Logo.svg" alt="" width={40} height={40} priority className="h-10 w-10" />
+      <span className="font-display text-[15px] font-semibold leading-[1.1] tracking-[-0.02em]">
+        Colegio Científico
+        <br />
+        de Alajuela
       </span>
     </Link>
   );
@@ -46,35 +44,32 @@ export default async function Header() {
   return (
     <>
       <AnnouncementBar />
-      <header className="sticky top-0 z-40 border-b border-line bg-paper/95 backdrop-blur supports-[backdrop-filter]:bg-paper/85">
+      <header className="sticky top-0 z-40 border-b border-ink/10 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/85">
         <Container className="flex h-[72px] items-center justify-between gap-6">
           <Wordmark />
 
           <nav aria-label="Principal" className="hidden lg:block">
-            <ul className="flex items-center gap-1">
+            <ul className="flex items-center">
               {mainNav.map((item) => (
                 <li key={item.href} className="group relative">
                   <Link
                     href={item.href}
-                    className="flex items-center gap-1 rounded-full px-3 py-2 text-[15px] font-medium text-ink/80 transition-colors hover:bg-navy-50 hover:text-navy-900"
+                    className="flex h-[72px] items-center gap-1 px-3.5 text-[15px] font-medium text-ink transition-colors hover:text-accent-ink"
                   >
                     {item.label}
-                    {item.children && (
-                      <svg className="h-3 w-3 opacity-60" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-                        <path d="m3 4.5 3 3 3-3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                      </svg>
-                    )}
                   </Link>
+                  <span className="absolute inset-x-3.5 bottom-0 h-0.5 origin-left scale-x-0 bg-accent transition-transform group-hover:scale-x-100" aria-hidden="true" />
                   {item.children && (
-                    <div className="invisible absolute left-0 top-full pt-2 opacity-0 transition-opacity group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100">
-                      <ul className="w-72 rounded-2xl border border-line bg-white p-2 shadow-lg shadow-navy-950/5">
+                    <div className="invisible absolute left-0 top-full opacity-0 transition-opacity group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100">
+                      <ul className="w-80 border border-ink bg-white">
                         {item.children.map((child) => (
-                          <li key={child.href}>
-                            <Link href={child.href} className="block rounded-xl px-4 py-3 hover:bg-navy-50">
-                              <span className="block text-[15px] font-semibold text-navy-950">{child.label}</span>
-                              {child.description && (
-                                <span className="mt-0.5 block text-sm text-muted">{child.description}</span>
-                              )}
+                          <li key={child.href} className="border-b border-line last:border-0">
+                            <Link href={child.href} className="flex items-start justify-between gap-4 px-5 py-4 hover:bg-surface">
+                              <span>
+                                <span className="block text-[15px] font-medium text-ink">{child.label}</span>
+                                {child.description && <span className="mt-0.5 block text-sm text-muted">{child.description}</span>}
+                              </span>
+                              <ArrowIcon className="mt-1 h-4 w-4 text-muted" />
                             </Link>
                           </li>
                         ))}
@@ -87,11 +82,13 @@ export default async function Header() {
           </nav>
 
           <div className="flex items-center gap-2">
-            <div className="hidden sm:block">
-              <ButtonLink href="/admisiones" variant="navy">
-                Admisión
-              </ButtonLink>
-            </div>
+            <Link
+              href="/admisiones"
+              className="hidden min-h-11 items-center gap-3 bg-ink px-5 text-[15px] font-medium text-white transition-colors hover:bg-accent hover:text-ink sm:flex"
+            >
+              <AccentSquare className="h-2 w-2" />
+              Admisión
+            </Link>
             <MobileNav items={mainNav} />
           </div>
         </Container>

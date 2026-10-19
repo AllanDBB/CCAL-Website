@@ -3,8 +3,8 @@ import type { Achievement, GalleryItem, Pillar, Stat, SubjectArea } from "./type
 // Cifras mostradas en la portada. Pendiente: confirmar con Dirección y citar fuente.
 export const stats: Stat[] = [
   { value: "2006", label: "Año de fundación" },
-  { value: "9.ª", label: "Sede del Sistema Nacional de Colegios Científicos" },
-  { value: "95 %", label: "Ingreso a la universidad" },
+  { value: "09", label: "Sede del Sistema Nacional de Colegios Científicos" },
+  { value: "95%", label: "Ingreso a la universidad" },
   { value: "400+", label: "Personas graduadas" },
 ];
 

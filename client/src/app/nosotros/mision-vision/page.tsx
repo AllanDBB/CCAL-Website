@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Container, Eyebrow, PageHero, SectionHeading } from "@/components/site/ui";
+import { Container, Label, PageHero, SectionHeader } from "@/components/site/ui";
 import { getInstitution } from "@/lib/cms";
 
 export const metadata: Metadata = {
@@ -13,40 +13,43 @@ export default async function MisionVisionPage() {
   return (
     <>
       <PageHero
-        eyebrow="Misión y visión"
+        label="Misión y visión"
         title="Llevar al límite el potencial de cada estudiante"
         lead="Buscamos la mejor formación académica para nuestros estudiantes, con un enfoque en ciencias, ingenierías e investigación."
       />
 
-      <section className="py-20 sm:py-24">
-        <Container className="grid gap-8 lg:grid-cols-2">
-          <article className="rounded-[28px] bg-navy-900 p-8 text-white sm:p-12">
-            <Eyebrow light>Misión</Eyebrow>
-            <p className="font-serif text-2xl leading-snug sm:text-[1.75rem]">{mission}</p>
-          </article>
-          <article className="rounded-[28px] border border-line bg-white p-8 sm:p-12">
-            <Eyebrow>Visión</Eyebrow>
-            <p className="font-serif text-2xl leading-snug text-navy-950 sm:text-[1.75rem]">{vision}</p>
-          </article>
+      <section className="pb-20 sm:pb-28">
+        <Container className="space-y-16">
+          {[
+            ["01", "Misión", mission],
+            ["02", "Visión", vision],
+          ].map(([index, label, text]) => (
+            <div key={label} className="grid gap-6 border-t border-ink pt-6 lg:grid-cols-12">
+              <Label className="lg:col-span-3">
+                <span className="text-ink">{index}</span> — {label}
+              </Label>
+              <p className="font-display text-3xl font-medium leading-[1.15] tracking-[-0.03em] sm:text-4xl lg:col-span-9">{text}</p>
+            </div>
+          ))}
         </Container>
       </section>
 
-      <section className="border-t border-line bg-white py-20 sm:py-24">
-        <Container className="grid gap-12 lg:grid-cols-12">
-          <SectionHeading
-            className="lg:col-span-5"
-            eyebrow="Competencias"
+      <section className="bg-surface py-20 sm:py-28">
+        <Container>
+          <SectionHeader
+            index="03"
+            label="Competencias"
             title="Habilidades para el siglo XXI"
             lead="Además del rigor académico, desarrollamos competencias que acompañan a nuestras personas graduadas en la universidad y en la vida."
           />
-          <ul className="grid grid-cols-1 gap-x-8 sm:grid-cols-2 lg:col-span-6 lg:col-start-7">
-            {skills.map((s) => (
-              <li key={s} className="flex items-center gap-3 border-b border-line py-4 text-lg text-navy-950">
-                <span className="h-1.5 w-1.5 rounded-full bg-gold-500" aria-hidden="true" />
+          <ol className="mt-12 grid border-t border-ink sm:grid-cols-2 lg:ml-[25%]">
+            {skills.map((s, i) => (
+              <li key={s} className="grid grid-cols-[3rem_1fr] items-baseline border-b border-ink/15 py-4 text-xl sm:odd:pr-8 sm:even:pl-8">
+                <span className="font-mono text-[12px] text-muted">{String(i + 1).padStart(2, "0")}</span>
                 {s}
               </li>
             ))}
-          </ul>
+          </ol>
         </Container>
       </section>
     </>

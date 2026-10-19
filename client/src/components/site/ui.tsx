@@ -1,28 +1,43 @@
+import Image from "next/image";
 import Link from "next/link";
 import type { ComponentProps, ReactNode } from "react";
+import type { ImageRef } from "@/content/types";
 
 export function Container({ className = "", children }: { className?: string; children: ReactNode }) {
-  return <div className={`mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8 ${className}`}>{children}</div>;
+  return <div className={`mx-auto w-full max-w-[1320px] px-5 sm:px-8 ${className}`}>{children}</div>;
 }
 
-type ButtonVariant = "gold" | "navy" | "outline" | "outline-light";
+/** Etiqueta en monoespaciada, mayúsculas. */
+export function Label({ children, className = "", light = false }: { children: ReactNode; className?: string; light?: boolean }) {
+  return (
+    <p className={`font-mono text-[12px] font-medium uppercase tracking-[0.08em] ${light ? "text-white/60" : "text-muted"} ${className}`}>
+      {children}
+    </p>
+  );
+}
+
+export function AccentSquare({ className = "h-3 w-3" }: { className?: string }) {
+  return <span className={`inline-block shrink-0 bg-accent ${className}`} aria-hidden="true" />;
+}
+
+type ButtonVariant = "ink" | "accent" | "outline" | "outline-light";
 
 const buttonStyles: Record<ButtonVariant, string> = {
-  gold: "bg-gold-500 text-navy-950 hover:bg-gold-200",
-  navy: "bg-navy-900 text-white hover:bg-navy-800",
-  outline: "border border-navy-900/25 text-navy-900 hover:border-navy-900 hover:bg-navy-50",
-  "outline-light": "border border-white/35 text-white hover:border-white hover:bg-white/10",
+  ink: "bg-ink text-white hover:bg-accent hover:text-ink",
+  accent: "bg-accent text-ink hover:bg-white",
+  outline: "border border-ink text-ink hover:bg-ink hover:text-white",
+  "outline-light": "border border-white/40 text-white hover:border-white hover:bg-white hover:text-ink",
 };
 
 export function ButtonLink({
-  variant = "navy",
+  variant = "ink",
   className = "",
   children,
   ...props
 }: ComponentProps<typeof Link> & { variant?: ButtonVariant }) {
   return (
     <Link
-      className={`inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-6 text-[15px] font-semibold transition-colors ${buttonStyles[variant]} ${className}`}
+      className={`inline-flex min-h-12 items-center justify-between gap-6 px-5 text-[15px] font-medium transition-colors ${buttonStyles[variant]} ${className}`}
       {...props}
     >
       {children}
@@ -30,72 +45,130 @@ export function ButtonLink({
   );
 }
 
-export function Eyebrow({ children, light = false }: { children: ReactNode; light?: boolean }) {
-  return (
-    <p
-      className={`mb-4 text-xs font-semibold uppercase tracking-[0.18em] ${light ? "text-gold-500" : "text-gold-600"}`}
-    >
-      {children}
-    </p>
-  );
-}
-
-export function SectionHeading({
-  eyebrow,
-  title,
-  lead,
-  light = false,
-  className = "",
-}: {
-  eyebrow?: string;
-  title: ReactNode;
-  lead?: ReactNode;
-  light?: boolean;
-  className?: string;
-}) {
-  return (
-    <div className={`max-w-2xl ${className}`}>
-      {eyebrow && <Eyebrow light={light}>{eyebrow}</Eyebrow>}
-      <h2 className={`text-3xl leading-tight sm:text-4xl ${light ? "text-white" : "text-navy-950"}`}>{title}</h2>
-      {lead && (
-        <p className={`mt-4 text-lg leading-relaxed ${light ? "text-navy-100" : "text-muted"}`}>{lead}</p>
-      )}
-    </div>
-  );
-}
-
 export function ArrowIcon({ className = "h-4 w-4" }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 16 16" fill="none" aria-hidden="true">
-      <path d="M3 8h10m-4-4 4 4-4 4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M2 8h11.5m-5-5 5 5-5 5" stroke="currentColor" strokeWidth="1.5" />
     </svg>
   );
 }
 
+/** Encabezado de sección suizo: índice + etiqueta a la izquierda, título grande a la derecha. */
+export function SectionHeader({
+  index,
+  label,
+  title,
+  lead,
+  action,
+  light = false,
+}: {
+  index?: string;
+  label: string;
+  title: ReactNode;
+  lead?: ReactNode;
+  action?: ReactNode;
+  light?: boolean;
+}) {
+  return (
+    <div className={`grid gap-6 border-t pt-6 lg:grid-cols-12 ${light ? "border-white/25" : "border-ink"}`}>
+      <Label light={light} className="lg:col-span-3">
+        {index && <span className={light ? "text-accent" : "text-ink"}>{index}</span>}
+        {index && " — "}
+        {label}
+      </Label>
+      <div className="lg:col-span-9">
+        <h2 className={`text-4xl leading-[1] sm:text-5xl lg:text-6xl ${light ? "text-white" : "text-ink"}`}>{title}</h2>
+        {lead && <p className={`mt-5 max-w-2xl text-lg leading-relaxed ${light ? "text-white/70" : "text-muted"}`}>{lead}</p>}
+        {action && <div className="mt-6">{action}</div>}
+      </div>
+    </div>
+  );
+}
+
+export function TextLink({ href, children, light = false }: { href: string; children: ReactNode; light?: boolean }) {
+  return (
+    <Link
+      href={href}
+      className={`group inline-flex items-center gap-2 border-b pb-1 text-[15px] font-medium transition-colors ${
+        light ? "border-white/40 text-white hover:border-accent" : "border-ink text-ink hover:border-accent"
+      }`}
+    >
+      {children}
+      <ArrowIcon className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+    </Link>
+  );
+}
+
+export function Photo({
+  image,
+  className = "",
+  sizes,
+  priority = false,
+  caption,
+}: {
+  image: ImageRef;
+  className?: string;
+  sizes: string;
+  priority?: boolean;
+  caption?: string;
+}) {
+  return (
+    <figure className={`group relative overflow-hidden bg-surface ${className}`}>
+      <Image
+        src={image.src}
+        alt={image.alt}
+        fill
+        priority={priority}
+        sizes={sizes}
+        className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+      />
+      {caption && (
+        <figcaption className="absolute bottom-0 left-0 bg-white px-3 py-2 font-mono text-[11px] uppercase tracking-[0.08em] text-ink">
+          {caption}
+        </figcaption>
+      )}
+    </figure>
+  );
+}
+
 export function PageHero({
-  eyebrow,
+  label,
   title,
   lead,
   aside,
+  image,
   children,
 }: {
-  eyebrow?: string;
+  label: string;
   title: string;
   lead?: string;
   aside?: ReactNode;
+  image?: ImageRef;
   children?: ReactNode;
 }) {
   return (
-    <section className="border-b border-line bg-paper">
-      <Container className="grid items-end gap-10 pt-14 pb-12 sm:pt-20 sm:pb-16 lg:grid-cols-12">
-        <div className={aside ? "lg:col-span-8" : "lg:col-span-12"}>
-          {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
-          <h1 className="max-w-3xl text-4xl leading-[1.08] text-navy-950 sm:text-5xl lg:text-6xl">{title}</h1>
-          {lead && <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted sm:text-xl">{lead}</p>}
-          {children}
+    <section>
+      <Container className="pt-12 pb-14 sm:pt-16 lg:pt-24 lg:pb-20">
+        <Label className="flex items-center gap-3">
+          <AccentSquare className="h-2.5 w-2.5" />
+          {label}
+        </Label>
+        <div className="mt-8 grid gap-10 lg:grid-cols-12">
+          <div className={aside ? "lg:col-span-8" : "lg:col-span-11"}>
+            <h1 className="text-[2.75rem] leading-[0.95] tracking-[-0.045em] sm:text-7xl lg:text-[6.25rem]">{title}</h1>
+          </div>
+          {aside && <div className="lg:col-span-4 lg:self-end">{aside}</div>}
         </div>
-        {aside && <div className="lg:col-span-4">{aside}</div>}
+        {(lead || children) && (
+          <div className="mt-10 grid gap-8 border-t border-line pt-8 lg:mt-14 lg:grid-cols-12">
+            {lead && <p className="text-lg leading-relaxed text-muted lg:col-span-6 lg:col-start-4 sm:text-xl">{lead}</p>}
+            {children && <div className="lg:col-span-3 lg:col-start-10">{children}</div>}
+          </div>
+        )}
       </Container>
+      {image && (
+        <Photo image={image} priority sizes="100vw" className="aspect-[16/9] w-full sm:aspect-[21/9]" />
+      )}
     </section>
   );
 }

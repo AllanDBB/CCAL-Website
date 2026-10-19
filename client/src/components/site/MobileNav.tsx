@@ -25,41 +25,42 @@ export default function MobileNav({ items }: { items: NavItem[] }) {
         onClick={() => setOpen(true)}
         aria-expanded={open}
         aria-controls="mobile-menu"
-        className="flex h-11 w-11 items-center justify-center rounded-full text-navy-950 hover:bg-navy-50"
+        className="flex h-11 items-center gap-2 px-2 font-mono text-[12px] font-medium uppercase tracking-[0.08em] text-ink"
       >
-        <span className="sr-only">Abrir menú</span>
-        <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+        Menú
+        <svg className="h-5 w-5" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+          <path d="M2 6h16M2 14h16" stroke="currentColor" strokeWidth="1.5" />
         </svg>
       </button>
 
       {open && (
-        <div id="mobile-menu" className="fixed inset-0 z-50 overflow-y-auto bg-paper">
-          <div className="flex h-[72px] items-center justify-between border-b border-line px-4 sm:px-6">
-            <span className="font-serif text-lg text-navy-950">Menú</span>
+        <div id="mobile-menu" className="fixed inset-0 z-50 flex flex-col overflow-y-auto bg-ink text-white">
+          <div className="flex h-[72px] shrink-0 items-center justify-between border-b border-white/15 px-5 sm:px-8">
+            <span className="font-mono text-[12px] uppercase tracking-[0.08em] text-white/60">CCAL</span>
             <button
               type="button"
               onClick={() => setOpen(false)}
-              className="flex h-11 w-11 items-center justify-center rounded-full text-navy-950 hover:bg-navy-50"
+              className="flex h-11 items-center gap-2 px-2 font-mono text-[12px] font-medium uppercase tracking-[0.08em]"
             >
-              <span className="sr-only">Cerrar menú</span>
-              <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M6 6l12 12M18 6 6 18" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+              Cerrar
+              <svg className="h-5 w-5" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path d="m4 4 12 12M16 4 4 16" stroke="currentColor" strokeWidth="1.5" />
               </svg>
             </button>
           </div>
-          <nav aria-label="Principal" className="px-4 py-6 sm:px-6">
-            <ul className="divide-y divide-line">
-              {items.map((item) => (
-                <li key={item.href} className="py-1">
-                  <Link href={item.href} className="block py-3 font-serif text-2xl text-navy-950">
-                    {item.label}
+          <nav aria-label="Principal" className="flex-1 px-5 py-6 sm:px-8">
+            <ol>
+              {items.map((item, i) => (
+                <li key={item.href} className="border-b border-white/15">
+                  <Link href={item.href} className="flex items-baseline gap-4 py-4">
+                    <span className="font-mono text-[12px] text-accent">{String(i + 1).padStart(2, "0")}</span>
+                    <span className="font-display text-3xl font-semibold tracking-[-0.03em]">{item.label}</span>
                   </Link>
                   {item.children && (
-                    <ul className="mb-3 space-y-1 pl-4">
+                    <ul className="-mt-1 mb-4 pl-9">
                       {item.children.map((child) => (
                         <li key={child.href}>
-                          <Link href={child.href} className="block py-2 text-base text-muted">
+                          <Link href={child.href} className="block py-1.5 text-white/70">
                             {child.label}
                           </Link>
                         </li>
@@ -68,14 +69,12 @@ export default function MobileNav({ items }: { items: NavItem[] }) {
                   )}
                 </li>
               ))}
-            </ul>
-            <Link
-              href="/admisiones"
-              className="mt-6 flex min-h-12 items-center justify-center rounded-full bg-navy-900 font-semibold text-white"
-            >
-              Información de admisión
-            </Link>
+            </ol>
           </nav>
+          <Link href="/admisiones" className="flex min-h-14 shrink-0 items-center justify-between bg-accent px-5 font-medium text-ink sm:px-8">
+            Información de admisión
+            <span aria-hidden="true">→</span>
+          </Link>
         </div>
       )}
     </div>

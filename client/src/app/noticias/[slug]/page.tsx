@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowIcon, Container } from "@/components/site/ui";
+import { ArrowIcon, Container, Label, Photo } from "@/components/site/ui";
 import { getNews, getNewsItem } from "@/lib/cms";
-import { formatDate } from "@/lib/format";
+import { formatNumericDate } from "@/lib/format";
 
 export async function generateStaticParams() {
   const news = await getNews();
@@ -29,32 +28,27 @@ export default async function NoticiaPage({ params }: PageProps<"/noticias/[slug
 
   return (
     <article>
-      <Container className="max-w-3xl pt-12 pb-10 sm:pt-16">
-        <Link href="/noticias" className="group inline-flex items-center gap-2 text-sm font-semibold text-navy-900">
-          <ArrowIcon className="h-4 w-4 rotate-180 transition-transform group-hover:-translate-x-0.5" />
+      <Container className="pt-12 pb-14 sm:pt-16 lg:pt-20">
+        <Link href="/noticias" className="group inline-flex items-center gap-2 font-mono text-[12px] uppercase tracking-[0.08em] text-muted hover:text-ink">
+          <ArrowIcon className="h-4 w-4 rotate-180 transition-transform group-hover:-translate-x-1" />
           Noticias
         </Link>
-        <div className="mt-8 flex items-center gap-3 text-sm">
-          <span className="font-semibold text-gold-600">{item.category}</span>
-          <span className="text-line" aria-hidden="true">
-            |
-          </span>
-          <time dateTime={item.date} className="text-muted">
-            {formatDate(item.date)}
-          </time>
-        </div>
-        <h1 className="mt-3 text-4xl leading-tight text-navy-950 sm:text-5xl">{item.title}</h1>
-        <p className="mt-5 text-xl leading-relaxed text-muted">{item.excerpt}</p>
-      </Container>
-      {item.image && (
-        <Container className="max-w-5xl">
-          <div className="relative aspect-[16/9] overflow-hidden rounded-[28px] bg-navy-50">
-            <Image src={item.image.src} alt={item.image.alt} fill priority sizes="(min-width: 1024px) 1024px, 100vw" className="object-cover" />
+        <div className="mt-10 grid gap-6 border-t border-ink pt-6 lg:grid-cols-12">
+          <Label className="lg:col-span-3">
+            <time dateTime={item.date} className="text-ink">
+              {formatNumericDate(item.date)}
+            </time>{" "}
+            — {item.category}
+          </Label>
+          <div className="lg:col-span-9">
+            <h1 className="text-4xl leading-[1] tracking-[-0.045em] sm:text-6xl lg:text-7xl">{item.title}</h1>
+            <p className="mt-6 max-w-2xl text-xl leading-relaxed text-muted">{item.excerpt}</p>
           </div>
-        </Container>
-      )}
-      <Container className="max-w-3xl py-12 sm:py-16">
-        <div className="space-y-6 text-lg leading-relaxed text-ink">
+        </div>
+      </Container>
+      {item.image && <Photo image={item.image} priority sizes="100vw" className="aspect-[16/9] w-full sm:aspect-[21/9]" />}
+      <Container className="py-14 sm:py-20">
+        <div className="space-y-6 text-xl leading-relaxed lg:ml-[25%] lg:max-w-[42rem]">
           {item.body.map((p) => (
             <p key={p}>{p}</p>
           ))}

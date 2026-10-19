@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import NewsCard from "@/components/site/NewsCard";
+import NewsRow from "@/components/site/NewsCard";
 import { Container, PageHero } from "@/components/site/ui";
 import { getNews } from "@/lib/cms";
 
@@ -13,12 +13,12 @@ export default async function NoticiasPage() {
 
   return (
     <>
-      <PageHero eyebrow="Noticias" title="Noticias y avisos" lead="Admisión, logros de nuestros estudiantes y la vida del colegio." />
-      <section className="py-16 sm:py-20">
+      <PageHero label="Noticias" title="Noticias y avisos" lead="Admisión, logros de nuestros estudiantes y la vida del colegio." />
+      <section className="pb-20 sm:pb-28">
         <Container>
-          <div className="grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="border-t border-ink">
             {news.map((item) => (
-              <NewsCard key={item.slug} item={item} />
+              <NewsRow key={item.slug} item={item} />
             ))}
           </div>
         </Container>

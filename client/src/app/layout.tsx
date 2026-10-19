@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Fraunces, Inter } from "next/font/google";
+import { IBM_Plex_Mono, Inter, Inter_Tight } from "next/font/google";
 import Header from "@/components/site/Header";
 import Footer from "@/components/site/Footer";
 import CookieBanner from "@/components/site/CookieBanner";
@@ -7,11 +7,12 @@ import GoogleAnalytics from "@/components/analytics/GoogleAnalytics";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
-const fraunces = Fraunces({
+const interTight = Inter_Tight({ subsets: ["latin"], variable: "--font-inter-tight", display: "swap" });
+const plexMono = IBM_Plex_Mono({
   subsets: ["latin"],
-  variable: "--font-fraunces",
+  weight: ["400", "500"],
+  variable: "--font-plex-mono",
   display: "swap",
-  axes: ["opsz"],
 });
 
 export const metadata: Metadata = {
@@ -88,7 +89,7 @@ export default function RootLayout({
   }
 
   return (
-    <html lang="es" className={`${inter.variable} ${fraunces.variable}`}>
+    <html lang="es" className={`${inter.variable} ${interTight.variable} ${plexMono.variable}`}>
       <head>
         <script
           type="application/ld+json"
@@ -98,7 +99,7 @@ export default function RootLayout({
       <body>
         <a
           href="#contenido"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-full focus:bg-navy-900 focus:px-5 focus:py-3 focus:text-white"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:bg-ink focus:px-5 focus:py-3 focus:text-white"
         >
           Saltar al contenido
         </a>

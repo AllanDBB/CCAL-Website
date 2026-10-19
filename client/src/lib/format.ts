@@ -39,3 +39,9 @@ export function isPast(iso: string) {
   const today = new Date(Date.now() - 6 * 3600 * 1000).toISOString().slice(0, 10);
   return iso < today;
 }
+
+/** "23.10.2026" */
+export function formatNumericDate(iso: string) {
+  const [y, m, d] = iso.split("-");
+  return `${d}.${m}.${y}`;
+}

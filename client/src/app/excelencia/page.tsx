@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import Image from "next/image";
-import { ArrowIcon, ButtonLink, Container, PageHero, SectionHeading } from "@/components/site/ui";
+import { ArrowIcon, ButtonLink, Container, PageHero, Photo, SectionHeader } from "@/components/site/ui";
 import { getInstitution } from "@/lib/cms";
 
 export const metadata: Metadata = {
@@ -9,83 +8,66 @@ export const metadata: Metadata = {
 };
 
 export default async function ExcelenciaPage() {
-  const { stats, achievements, gallery, pillars } = await getInstitution();
+  const { stats, achievements, gallery } = await getInstitution();
   const featured = [gallery[0], gallery[2], gallery[6]];
 
   return (
     <>
       <PageHero
-        eyebrow="Excelencia CCAL"
+        label="Excelencia CCAL"
         title="Resultados que hablan por nuestros estudiantes"
-        lead="Formación integral de alto nivel: pensamiento crítico, creatividad y pasión por la ciencia, con resultados en ferias, olimpiadas y el ingreso universitario."
+        lead="Pensamiento crítico, creatividad y pasión por la ciencia, con resultados en ferias, olimpiadas y el ingreso universitario."
       />
 
-      <section aria-label="Cifras" className="border-b border-line bg-white">
+      <section aria-label="Cifras" className="border-y border-ink">
         <Container>
           <dl className="grid grid-cols-2 lg:grid-cols-4">
-            {stats.map((s) => (
-              <div key={s.label} className="border-b border-line py-8 pr-6 lg:border-b-0">
-                <dt className="sr-only">{s.label}</dt>
-                <dd>
-                  <span className="block font-serif text-4xl text-navy-900 sm:text-5xl">{s.value}</span>
-                  <span className="mt-2 block text-sm text-muted">{s.label}</span>
-                </dd>
+            {stats.map((s, i) => (
+              <div
+                key={s.label}
+                className={`border-ink py-10 ${i % 2 === 0 ? "border-r pr-5" : "pl-5"} ${i < 2 ? "border-b lg:border-b-0" : ""} lg:border-r lg:px-6 lg:first:pl-0 lg:last:border-r-0`}
+              >
+                <dt className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted">{s.label}</dt>
+                <dd className="mt-6 font-display text-5xl font-semibold tracking-[-0.05em] sm:text-7xl">{s.value}</dd>
               </div>
             ))}
           </dl>
         </Container>
       </section>
 
-      <section className="py-20 sm:py-24">
+      <section className="py-20 sm:py-28">
         <Container>
-          <SectionHeading
-            eyebrow="Investigación"
+          <SectionHeader
+            index="01"
+            label="Investigación"
             title="Proyectos y competencias"
-            lead="Nuestros estudiantes llevan sus proyectos a ferias científicas y competencias nacionales e internacionales."
+            lead="Nuestros estudiantes llevan sus proyectos a ferias científicas y a competencias nacionales e internacionales."
           />
-          <div className="mt-12 grid gap-4 md:grid-cols-3">
-            {featured.map((img) => (
-              <figure key={img.src}>
-                <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-navy-50">
-                  <Image src={img.src} alt={img.alt} fill sizes="(min-width: 768px) 360px, 100vw" className="object-cover" />
-                </div>
-                <figcaption className="mt-3 font-semibold text-navy-950">{img.caption}</figcaption>
-              </figure>
-            ))}
-          </div>
         </Container>
+        <div className="mt-16 grid gap-px bg-ink md:grid-cols-3">
+          {featured.map((img) => (
+            <Photo key={img.src} image={img} caption={img.caption} sizes="(min-width: 768px) 33vw, 100vw" className="aspect-[4/5]" />
+          ))}
+        </div>
       </section>
 
-      <section className="border-y border-line bg-white py-20 sm:py-24">
-        <Container className="grid gap-12 lg:grid-cols-12">
-          <SectionHeading className="lg:col-span-5" eyebrow="Reconocimientos" title="Distinciones recientes" />
-          <ol className="lg:col-span-7">
+      <section className="pb-20 sm:pb-28">
+        <Container>
+          <SectionHeader index="02" label="Reconocimientos" title="Distinciones recientes" />
+          <ol className="mt-12 border-t border-ink lg:ml-[25%]">
             {achievements.map((a) => (
-              <li key={`${a.year}-${a.title}`} className="grid grid-cols-[5rem_1fr] gap-6 border-b border-line py-6 first:pt-0">
-                <span className="font-serif text-2xl text-gold-600">{a.year}</span>
-                <div>
-                  <h3 className="font-sans text-lg font-semibold text-navy-950">{a.title}</h3>
-                  <p className="mt-1 text-muted">{a.institution}</p>
-                </div>
+              <li key={`${a.year}-${a.title}`} className="grid grid-cols-[5rem_1fr] gap-6 border-b border-line py-6 sm:grid-cols-[6rem_1fr_1fr]">
+                <span className="font-mono text-[13px] text-muted">{a.year}</span>
+                <h3 className="font-sans text-xl font-medium tracking-normal">{a.title}</h3>
+                <p className="col-start-2 text-muted sm:col-start-auto">{a.institution}</p>
               </li>
             ))}
           </ol>
-        </Container>
-      </section>
-
-      <section className="py-20 sm:py-24">
-        <Container className="grid gap-10 md:grid-cols-3">
-          {pillars.map((p) => (
-            <div key={p.title} className="border-t-2 border-navy-900 pt-6">
-              <h3 className="text-2xl text-navy-950">{p.title}</h3>
-              <p className="mt-3 leading-relaxed text-muted">{p.body}</p>
-            </div>
-          ))}
-        </Container>
-        <Container className="mt-16 flex justify-center">
-          <ButtonLink href="/admisiones" variant="navy">
-            Información de admisión <ArrowIcon />
-          </ButtonLink>
+          <div className="mt-16 lg:ml-[25%]">
+            <ButtonLink href="/admisiones" variant="ink" className="min-w-64">
+              Información de admisión <ArrowIcon />
+            </ButtonLink>
+          </div>
         </Container>
       </section>
     </>

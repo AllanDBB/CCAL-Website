@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
-import Image from "next/image";
-import { Container, Eyebrow, PageHero } from "@/components/site/ui";
-import { getInstitution, getSite } from "@/lib/cms";
+import { Container, Label, PageHero, SectionHeader } from "@/components/site/ui";
+import { getInstitution } from "@/lib/cms";
 
 export const metadata: Metadata = {
   title: "Historia",
@@ -9,49 +8,34 @@ export const metadata: Metadata = {
 };
 
 export default async function HistoriaPage() {
-  const [{ history, gallery }, site] = await Promise.all([getInstitution(), getSite()]);
+  const { history, gallery } = await getInstitution();
 
   return (
     <>
-      <PageHero eyebrow="Historia" title={`Desde el ${history.foundedOn}`} lead={history.intro} />
+      <PageHero label="Historia" title={`Desde el ${history.foundedOn}`} lead={history.intro} image={gallery[9]} />
 
-      <section className="py-20 sm:py-24">
-        <Container className="grid gap-14 lg:grid-cols-12">
-          <div className="space-y-6 text-lg leading-relaxed text-ink lg:col-span-7">
-            {history.paragraphs.map((p) => (
-              <p key={p}>{p}</p>
-            ))}
-          </div>
-          <aside className="lg:col-span-4 lg:col-start-9">
-            <div className="rounded-3xl border border-line bg-white p-8">
-              <Eyebrow>Convenio fundacional</Eyebrow>
-              <ul className="space-y-4">
-                {history.founders.map((f) => (
-                  <li key={f} className="border-b border-line pb-4 font-serif text-lg leading-snug text-navy-950 last:border-0 last:pb-0">
+      <section className="py-20 sm:py-28">
+        <Container>
+          <SectionHeader index="01" label="Origen" title="Una sede para Alajuela y Heredia" />
+          <div className="mt-12 grid gap-16 lg:grid-cols-12">
+            <div className="space-y-6 text-xl leading-relaxed lg:col-span-6 lg:col-start-4">
+              {history.paragraphs.map((p) => (
+                <p key={p}>{p}</p>
+              ))}
+            </div>
+            <aside className="lg:col-span-3">
+              <Label>Convenio fundacional</Label>
+              <ol className="mt-4 border-t border-ink">
+                {history.founders.map((f, i) => (
+                  <li key={f} className="grid grid-cols-[2rem_1fr] border-b border-line py-4 font-medium leading-snug">
+                    <span className="font-mono text-[12px] text-muted">{String(i + 1).padStart(2, "0")}</span>
                     {f}
                   </li>
                 ))}
-              </ul>
-              <p className="mt-6 text-sm leading-relaxed text-muted">{history.foundersNote}</p>
-            </div>
-          </aside>
-        </Container>
-      </section>
-
-      <section className="pb-20 sm:pb-24">
-        <Container>
-          <figure className="relative aspect-[16/7] overflow-hidden rounded-[28px] bg-navy-50">
-            <Image src={gallery[9].src} alt={gallery[9].alt} fill sizes="(min-width: 1152px) 1104px, 100vw" className="object-cover" />
-          </figure>
-        </Container>
-      </section>
-
-      <section className="border-t border-line bg-white py-20 text-center sm:py-24">
-        <Container>
-          <blockquote className="mx-auto max-w-3xl font-serif text-3xl leading-snug text-navy-950 sm:text-4xl">
-            “{site.tagline}”
-          </blockquote>
-          <p className="mt-5 text-muted">Lema del Sistema Nacional de Colegios Científicos de Costa Rica</p>
+              </ol>
+              <p className="mt-4 text-sm leading-relaxed text-muted">{history.foundersNote}</p>
+            </aside>
+          </div>
         </Container>
       </section>
     </>

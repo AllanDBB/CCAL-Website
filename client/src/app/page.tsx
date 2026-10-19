@@ -1,173 +1,148 @@
 import Image from "next/image";
-import Link from "next/link";
 import AdmissionPanel from "@/components/site/AdmissionPanel";
-import NewsCard from "@/components/site/NewsCard";
-import { ArrowIcon, ButtonLink, Container, Eyebrow, SectionHeading } from "@/components/site/ui";
+import NewsRow from "@/components/site/NewsCard";
+import { AccentSquare, ArrowIcon, ButtonLink, Container, Label, Photo, SectionHeader, TextLink } from "@/components/site/ui";
 import { getAdmission, getInstitution, getNews, getSite } from "@/lib/cms";
 
 export const revalidate = 3600;
 
 export default async function HomePage() {
-  const [site, admission, news, { stats, pillars, gallery }] = await Promise.all([
+  const [site, admission, news, { stats, pillars, gallery, history }] = await Promise.all([
     getSite(),
     getAdmission(),
     getNews(3),
     getInstitution(),
   ]);
 
-  const mosaic = gallery.slice(1, 6);
+  const [hero, lab, travel, classroom, community, graduation, fair, football] = gallery;
 
   return (
     <>
-      {/* Portada */}
-      <section className="overflow-hidden">
-        <Container className="grid items-center gap-12 pt-12 pb-16 sm:pt-16 lg:grid-cols-12 lg:gap-10 lg:pt-20 lg:pb-24">
-          <div className="lg:col-span-6">
-            <Eyebrow>Colegio Científico de Costa Rica · Sede Alajuela</Eyebrow>
-            <h1 className="text-[2.75rem] leading-[1.04] text-navy-950 sm:text-6xl lg:text-[4.25rem]">
-              Formamos a la próxima generación de científicos de Costa Rica.
-            </h1>
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted sm:text-xl">{site.description}</p>
-            <div className="mt-9 flex flex-wrap gap-3">
-              <ButtonLink href="/admisiones" variant="navy">
+      {/* Portada: texto a la izquierda, foto hasta el borde derecho */}
+      <section className="grid lg:min-h-[calc(100svh-112px)] lg:grid-cols-[minmax(0,1fr)_minmax(0,42%)]">
+        <div className="flex flex-col justify-between px-5 pt-12 pb-12 sm:px-8 lg:pt-16 lg:pb-14 lg:pl-[max(2rem,calc((100vw-1320px)/2+2rem))] lg:pr-12">
+          <Label className="flex items-center gap-3">
+            <AccentSquare className="h-2.5 w-2.5" />
+            Sistema Nacional de Colegios Científicos — Sede 09
+          </Label>
+
+          <h1 className="my-12 text-[clamp(3.25rem,8.6vw,8.75rem)] leading-[0.92] tracking-[-0.045em] lg:my-16">
+            Colegio
+            <br />
+            Científico
+            <br />
+            de Alajuela<span className="text-accent">.</span>
+          </h1>
+
+          <div>
+            <p className="max-w-lg text-lg leading-relaxed text-muted sm:text-xl">{site.description}</p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <ButtonLink href="/admisiones" variant="ink" className="min-w-56">
                 Proceso de admisión <ArrowIcon />
               </ButtonLink>
-              <ButtonLink href="/nosotros" variant="outline">
-                Conocer el colegio
+              <ButtonLink href="/nosotros" variant="outline" className="min-w-56">
+                Conocer el colegio <ArrowIcon />
               </ButtonLink>
             </div>
+            <dl className="mt-12 grid grid-cols-3 border-t border-ink pt-4">
+              {[
+                ["Fundación", history.foundedOn.replace(" de ", " ").replace(" de ", " ")],
+                ["Sede", "09 del SNCCCR"],
+                ["Ubicación", "Alajuela, CR"],
+              ].map(([k, v]) => (
+                <div key={k} className="pr-3">
+                  <dt className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted">{k}</dt>
+                  <dd className="mt-1 text-[15px] font-medium leading-snug">{v}</dd>
+                </div>
+              ))}
+            </dl>
           </div>
-          <figure className="relative lg:col-span-6">
-            <div className="relative aspect-[4/5] overflow-hidden rounded-[28px] bg-navy-50 sm:aspect-[5/4] lg:aspect-[4/5]">
-              <Image
-                src={gallery[0].src}
-                alt={gallery[0].alt}
-                fill
-                priority
-                sizes="(min-width: 1024px) 560px, 100vw"
-                className="object-cover"
-              />
-            </div>
-            <figcaption className="absolute bottom-5 left-5 right-5 rounded-2xl bg-paper/95 px-5 py-4 shadow-lg shadow-navy-950/10 backdrop-blur sm:right-auto sm:max-w-xs">
-              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-gold-600">Desde {site.foundedYear}</p>
-              <p className="mt-1 font-serif text-lg leading-snug text-navy-950">{site.tagline}</p>
-            </figcaption>
-          </figure>
-        </Container>
-      </section>
+        </div>
 
-      {/* Cifras */}
-      <section aria-label="El CCAL en cifras" className="border-y border-line bg-white">
-        <Container>
-          <dl className="grid grid-cols-2 divide-line lg:grid-cols-4 lg:divide-x">
-            {stats.map((s, i) => (
-              <div
-                key={s.label}
-                className={`py-8 lg:px-8 lg:first:pl-0 ${i % 2 === 1 ? "pl-6" : "pr-6"} ${i < 2 ? "border-b border-line lg:border-b-0" : ""}`}
-              >
-                <dt className="sr-only">{s.label}</dt>
-                <dd>
-                  <span className="block font-serif text-4xl text-navy-900 sm:text-5xl">{s.value}</span>
-                  <span className="mt-2 block text-sm leading-snug text-muted">{s.label}</span>
-                </dd>
-              </div>
-            ))}
-          </dl>
-        </Container>
+        <div className="relative aspect-[4/5] bg-surface sm:aspect-[16/11] lg:aspect-auto">
+          <Image src={hero.src} alt={hero.alt} fill priority sizes="(min-width: 1024px) 42vw, 100vw" className="object-cover" />
+          <p className="absolute bottom-0 left-0 bg-white px-3 py-2 font-mono text-[11px] uppercase tracking-[0.08em]">
+            {hero.caption}
+          </p>
+        </div>
       </section>
 
       {/* Admisión */}
-      <section className="py-20 sm:py-24">
-        <Container>
-          <AdmissionPanel admission={admission} />
-        </Container>
+      <AdmissionPanel admission={admission} />
+
+      {/* Franja de fotos de borde a borde */}
+      <section aria-label="Fotografías del colegio" className="grid grid-cols-2 gap-px bg-ink lg:grid-cols-4">
+        {[lab, travel, classroom, fair].map((img) => (
+          <Photo key={img.src} image={img} caption={img.caption} sizes="(min-width: 1024px) 25vw, 50vw" className="aspect-[3/4]" />
+        ))}
       </section>
 
-      {/* Pilares */}
-      <section className="pb-20 sm:pb-28">
-        <Container className="grid gap-12 lg:grid-cols-12">
-          <SectionHeading
-            className="lg:col-span-5"
-            eyebrow="Por qué el CCAL"
+      {/* El colegio */}
+      <section className="py-20 sm:py-28">
+        <Container>
+          <SectionHeader
+            index="02"
+            label="El colegio"
             title="Una formación exigente, pensada para la universidad y para el país."
             lead="Somos parte del Sistema Nacional de Colegios Científicos: colegios públicos que reúnen a estudiantes con talento para la ciencia en todo Costa Rica."
+            action={<TextLink href="/nosotros">Conocer el colegio</TextLink>}
           />
-          <ol className="lg:col-span-6 lg:col-start-7">
+          <ol className="mt-20 grid gap-x-10 md:grid-cols-3">
             {pillars.map((p, i) => (
-              <li key={p.title} className="flex gap-6 border-t border-line py-7 last:border-b">
-                <span className="font-serif text-2xl text-gold-600" aria-hidden="true">
+              <li key={p.title}>
+                <span className="block border-t-2 border-ink pt-4 font-mono text-[12px] text-muted">
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                <div>
-                  <h3 className="text-2xl text-navy-950">{p.title}</h3>
-                  <p className="mt-2 leading-relaxed text-muted">{p.body}</p>
-                </div>
+                <h3 className="mt-10 text-3xl leading-[1.05]">{p.title}</h3>
+                <p className="mt-4 pb-8 leading-relaxed text-muted">{p.body}</p>
               </li>
             ))}
           </ol>
         </Container>
       </section>
 
-      {/* Vida estudiantil */}
-      <section className="bg-white py-20 sm:py-28">
+      {/* Cifras */}
+      <section aria-label="El CCAL en cifras" className="border-y border-ink">
         <Container>
-          <div className="flex flex-wrap items-end justify-between gap-6">
-            <SectionHeading
-              eyebrow="Vida estudiantil"
-              title="Laboratorio, competencia y comunidad."
-              lead="Del aula a las ferias científicas y a competencias internacionales, con espacio para el deporte y la convivencia."
-            />
-            <Link href="/vida-estudiantil" className="group inline-flex items-center gap-2 font-semibold text-navy-900">
-              Ver más fotos <ArrowIcon className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-            </Link>
-          </div>
-          <div className="mt-12 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4 lg:grid-rows-2">
-            {mosaic.map((img, i) => (
-              <figure
-                key={img.src}
-                className={`group relative overflow-hidden rounded-2xl bg-navy-50 ${
-                  i === 0 ? "col-span-2 aspect-[4/3] lg:row-span-2 lg:aspect-auto" : "aspect-square"
-                }`}
+          <dl className="grid grid-cols-2 lg:grid-cols-4">
+            {stats.map((s, i) => (
+              <div
+                key={s.label}
+                className={`border-ink py-10 ${i % 2 === 0 ? "border-r pr-5" : "pl-5"} ${i < 2 ? "border-b lg:border-b-0" : ""} lg:border-r lg:px-6 lg:first:pl-0 lg:last:border-r-0`}
               >
-                <Image
-                  src={img.src}
-                  alt={img.alt}
-                  fill
-                  sizes={i === 0 ? "(min-width: 1024px) 560px, 100vw" : "(min-width: 1024px) 280px, 50vw"}
-                  className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                />
-                <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-navy-950/70 to-transparent px-4 pt-10 pb-3 text-sm font-medium text-white">
-                  {img.caption}
-                </figcaption>
-              </figure>
+                <dt className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted">{s.label}</dt>
+                <dd className="mt-6 font-display text-5xl font-semibold tracking-[-0.05em] sm:text-7xl">{s.value}</dd>
+              </div>
             ))}
-          </div>
+          </dl>
         </Container>
       </section>
 
-      {/* Lema */}
+      {/* Vida estudiantil */}
       <section className="py-20 sm:py-28">
-        <Container className="text-center">
-          <span className="mx-auto block h-px w-16 bg-gold-500" aria-hidden="true" />
-          <blockquote className="mx-auto mt-10 max-w-3xl font-serif text-3xl leading-snug text-navy-950 sm:text-5xl">
-            “{site.tagline}”
-          </blockquote>
-          <p className="mt-6 text-muted">Lema del Sistema Nacional de Colegios Científicos de Costa Rica</p>
+        <Container>
+          <SectionHeader
+            index="03"
+            label="Vida estudiantil"
+            title="Laboratorio, competencia y comunidad."
+            action={<TextLink href="/vida-estudiantil">Ver galería</TextLink>}
+          />
+          <div className="mt-16 grid grid-cols-2 gap-2 lg:grid-cols-12 lg:grid-rows-[repeat(2,minmax(0,18rem))]">
+            <Photo image={community} caption={community.caption} sizes="(min-width: 1024px) 50vw, 100vw" className="col-span-2 aspect-[4/3] lg:col-span-6 lg:row-span-2 lg:aspect-auto" />
+            <Photo image={graduation} caption={graduation.caption} sizes="(min-width: 1024px) 50vw, 100vw" className="col-span-2 aspect-[16/9] lg:col-span-6 lg:aspect-auto" />
+            <Photo image={football} caption={football.caption} sizes="(min-width: 1024px) 25vw, 50vw" className="aspect-square lg:col-span-3 lg:aspect-auto" />
+            <Photo image={gallery[8]} caption={gallery[8].caption} sizes="(min-width: 1024px) 25vw, 50vw" className="aspect-square lg:col-span-3 lg:aspect-auto" />
+          </div>
         </Container>
       </section>
 
       {/* Noticias */}
-      <section className="border-t border-line bg-white py-20 sm:py-28">
+      <section className="pb-20 sm:pb-28">
         <Container>
-          <div className="flex flex-wrap items-end justify-between gap-6">
-            <SectionHeading eyebrow="Noticias" title="Lo más reciente" />
-            <Link href="/noticias" className="group inline-flex items-center gap-2 font-semibold text-navy-900">
-              Todas las noticias <ArrowIcon className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-            </Link>
-          </div>
-          <div className="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+          <SectionHeader index="04" label="Noticias" title="Lo más reciente" action={<TextLink href="/noticias">Todas las noticias</TextLink>} />
+          <div className="mt-10 border-t border-line">
             {news.map((item) => (
-              <NewsCard key={item.slug} item={item} />
+              <NewsRow key={item.slug} item={item} />
             ))}
           </div>
         </Container>

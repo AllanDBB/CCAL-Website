@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Container, PageHero } from "@/components/site/ui";
+import { Container, Label, PageHero } from "@/components/site/ui";
 
 export const metadata: Metadata = {
   title: "Términos de uso",
@@ -34,23 +34,23 @@ const sections = [
 export default function TerminosPage() {
   return (
     <>
-      <PageHero eyebrow="Legal" title="Términos de uso" lead="Información sobre el propósito y el uso de este sitio web." />
-      <Container className="max-w-3xl py-16 sm:py-20">
-        <div className="space-y-12">
-          {sections.map((s) => (
-            <section key={s.title}>
-              <h2 className="text-2xl text-navy-950 sm:text-3xl">{s.title}</h2>
-              <div className="mt-4 space-y-4 text-lg leading-relaxed text-ink">
-                {s.body.map((p) => (
-                  <p key={p}>{p}</p>
-                ))}
-              </div>
-            </section>
-          ))}
-        </div>
-        <p className="mt-14 border-t border-line pt-6 text-muted">
+      <PageHero label="Legal" title="Términos de uso" lead="Información sobre el propósito y el uso de este sitio web." />
+      <Container className="pb-20 sm:pb-28">
+        {sections.map((s, i) => (
+          <section key={s.title} className="grid gap-6 border-t border-ink py-8 lg:grid-cols-12">
+            <Label className="lg:col-span-3">
+              <span className="text-ink">{String(i + 1).padStart(2, "0")}</span> — {s.title}
+            </Label>
+            <div className="space-y-4 text-lg leading-relaxed lg:col-span-6">
+              {s.body.map((p) => (
+                <p key={p}>{p}</p>
+              ))}
+            </div>
+          </section>
+        ))}
+        <p className="border-t border-ink pt-6 text-muted lg:pl-[25%]">
           ¿Preguntas sobre el sitio?{" "}
-          <Link href="/contacto" className="font-semibold text-navy-900 underline underline-offset-4">
+          <Link href="/contacto" className="text-ink underline underline-offset-4">
             Contáctanos
           </Link>
           . Última actualización: octubre de 2026.

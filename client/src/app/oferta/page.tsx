@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ArrowIcon, ButtonLink, Container, PageHero, SectionHeading } from "@/components/site/ui";
+import { ArrowIcon, ButtonLink, Container, Label, PageHero, SectionHeader } from "@/components/site/ui";
 import { getInstitution } from "@/lib/cms";
 
 export const metadata: Metadata = {
@@ -8,28 +8,33 @@ export const metadata: Metadata = {
 };
 
 export default async function OfertaPage() {
-  const { subjectAreas, extraPrograms } = await getInstitution();
+  const { subjectAreas, extraPrograms, gallery } = await getInstitution();
 
   return (
     <>
       <PageHero
-        eyebrow="Oferta académica"
+        label="Oferta académica"
         title="Preparación preuniversitaria con estándares universitarios"
         lead="Un plan de estudios científico y riguroso, complementado con tecnología, humanidades y desarrollo personal."
+        image={gallery[1]}
       />
 
-      <section className="py-20 sm:py-24">
+      <section className="py-20 sm:py-28">
         <Container>
-          <div className="divide-y divide-line border-y border-line">
-            {subjectAreas.map((area) => (
-              <div key={area.name} className="grid gap-6 py-10 lg:grid-cols-12">
-                <h2 className="text-2xl text-navy-950 sm:text-3xl lg:col-span-4">{area.name}</h2>
-                <ul className="grid gap-6 sm:grid-cols-2 lg:col-span-8">
+          <SectionHeader index="01" label="Plan de estudios" title="Áreas y asignaturas" />
+          <div className="mt-12">
+            {subjectAreas.map((area, i) => (
+              <div key={area.name} className="grid gap-6 border-t border-ink py-8 lg:grid-cols-12">
+                <div className="lg:col-span-3">
+                  <Label>{String(i + 1).padStart(2, "0")}</Label>
+                  <h3 className="mt-2 text-3xl leading-tight">{area.name}</h3>
+                </div>
+                <ul className="grid gap-x-8 gap-y-6 sm:grid-cols-2 lg:col-span-9 lg:grid-cols-3">
                   {area.subjects.map((s) => (
                     <li key={s.name}>
-                      <p className="text-xs font-semibold uppercase tracking-[0.16em] text-gold-600">{s.level}</p>
-                      <h3 className="mt-1 font-sans text-lg font-semibold text-navy-950">{s.name}</h3>
-                      <p className="mt-1 leading-relaxed text-muted">{s.description}</p>
+                      <p className="text-xl font-medium">{s.name}</p>
+                      <p className="mt-1 font-mono text-[11px] uppercase tracking-[0.08em] text-accent-ink">{s.level}</p>
+                      <p className="mt-3 leading-relaxed text-muted">{s.description}</p>
                     </li>
                   ))}
                 </ul>
@@ -39,25 +44,19 @@ export default async function OfertaPage() {
         </Container>
       </section>
 
-      <section className="bg-navy-900 py-20 text-white sm:py-24">
-        <Container className="grid gap-12 lg:grid-cols-12">
-          <SectionHeading className="lg:col-span-5" light eyebrow="Más allá del aula" title="Programas adicionales" />
-          <div className="grid gap-10 sm:grid-cols-2 lg:col-span-7">
+      <section className="bg-ink py-20 text-white sm:py-28">
+        <Container>
+          <SectionHeader index="02" label="Más allá del aula" title="Programas adicionales" light />
+          <div className="mt-12 grid gap-12 sm:grid-cols-2 lg:ml-[25%]">
             {extraPrograms.map((p) => (
-              <div key={p.title} className="border-t border-white/20 pt-6">
-                <h3 className="text-2xl text-white">{p.title}</h3>
-                <p className="mt-3 leading-relaxed text-navy-100">{p.body}</p>
+              <div key={p.title} className="border-t border-white/25 pt-6">
+                <h3 className="text-3xl">{p.title}</h3>
+                <p className="mt-3 leading-relaxed text-white/70">{p.body}</p>
               </div>
             ))}
           </div>
-        </Container>
-      </section>
-
-      <section className="py-20 text-center sm:py-24">
-        <Container>
-          <h2 className="text-3xl text-navy-950 sm:text-4xl">¿Te interesa estudiar en el CCAL?</h2>
-          <div className="mt-8 flex justify-center">
-            <ButtonLink href="/admisiones" variant="navy">
+          <div className="mt-16 lg:ml-[25%]">
+            <ButtonLink href="/admisiones" variant="accent" className="min-w-64">
               Proceso de admisión <ArrowIcon />
             </ButtonLink>
           </div>
