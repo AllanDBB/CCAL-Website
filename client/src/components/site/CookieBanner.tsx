@@ -33,7 +33,7 @@ export default function CookieBanner() {
     <div
       role="dialog"
       aria-label="Aviso de cookies"
-      className="fixed inset-x-4 bottom-4 z-50 max-w-md border border-ink bg-white p-5 sm:left-6 sm:right-auto"
+      className="fixed inset-x-4 bottom-4 z-50 max-w-md border border-line bg-white p-5 shadow-lg shadow-blue/10 sm:left-6 sm:right-auto"
     >
       <p className="text-sm leading-relaxed text-muted">
         Usamos cookies de analítica para entender cómo se usa el sitio.{" "}
@@ -45,7 +45,7 @@ export default function CookieBanner() {
         <button
           type="button"
           onClick={() => decide(true)}
-          className="min-h-10 bg-ink px-5 text-sm font-medium text-white hover:bg-accent hover:text-ink"
+          className="min-h-10 bg-blue px-5 text-sm font-medium text-white hover:bg-blue-700"
         >
           Aceptar
         </button>

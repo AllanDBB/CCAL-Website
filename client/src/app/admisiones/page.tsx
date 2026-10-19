@@ -26,7 +26,7 @@ export default async function AdmisionesPage() {
           results && admission.status !== "resultados" ? (
             <div className="border-t border-line pt-4">
               <Label>Publicación de resultados</Label>
-              <p className="mt-2 font-display text-7xl font-semibold leading-[0.9] tracking-[-0.05em] sm:text-8xl">
+              <p className="mt-2 font-display text-7xl font-semibold leading-[0.9] tracking-[-0.05em] text-blue sm:text-8xl">
                 {results[0]}.{results[1]}
                 <span className="text-accent">.</span>
               </p>
@@ -103,7 +103,7 @@ export default async function AdmisionesPage() {
       </section>
 
       {/* PAA y nota */}
-      <section className="bg-surface py-20 sm:py-28">
+      <section className="bg-blue-50 py-20 sm:py-28">
         <Container>
           <SectionHeader label="La prueba" title="Prueba de Aptitud Académica" lead={admission.paa.description} />
           <div className="mt-16 grid gap-16 lg:ml-[25%] lg:grid-cols-2">
@@ -127,7 +127,7 @@ export default async function AdmisionesPage() {
               <Label>Nota de ingreso</Label>
               <div className="mt-4 flex h-3" aria-hidden="true">
                 {admission.scoreWeights.map((w, i) => (
-                  <span key={w.label} style={{ width: `${w.percent}%` }} className={i === 0 ? "bg-ink" : "bg-accent"} />
+                  <span key={w.label} style={{ width: `${w.percent}%` }} className={i === 0 ? "bg-blue" : "bg-accent"} />
                 ))}
               </div>
               <dl className="mt-6 border-t border-line">

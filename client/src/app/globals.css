@@ -10,6 +10,10 @@
   --color-surface: #f3f3f1;
   --color-line: #e2e2de;
   --color-muted: #5c6066;
+  --color-blue: #0a2463;
+  --color-blue-700: #1b3c8c;
+  --color-blue-50: #eef2fa;
+  --color-blue-100: #dbe3f3;
   --color-accent: #faa916;
   --color-accent-ink: #8a5a00;
 }

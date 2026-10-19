@@ -23,9 +23,9 @@ export function AccentSquare({ className = "h-3 w-3" }: { className?: string }) 
 type ButtonVariant = "ink" | "accent" | "outline" | "outline-light";
 
 const buttonStyles: Record<ButtonVariant, string> = {
-  ink: "bg-ink text-white hover:bg-accent hover:text-ink",
+  ink: "bg-blue text-white hover:bg-blue-700",
   accent: "bg-accent text-ink hover:bg-white",
-  outline: "border border-ink text-ink hover:bg-ink hover:text-white",
+  outline: "border border-blue text-blue hover:bg-blue hover:text-white",
   "outline-light": "border border-white/40 text-white hover:border-white hover:bg-white hover:text-ink",
 };
 
@@ -90,7 +90,7 @@ export function TextLink({ href, children, light = false }: { href: string; chil
     <Link
       href={href}
       className={`group inline-flex items-center gap-2 border-b pb-1 text-[15px] font-medium transition-colors ${
-        light ? "border-white/40 text-white hover:border-accent" : "border-ink text-ink hover:border-accent"
+        light ? "border-white/40 text-white hover:border-accent" : "border-blue text-blue hover:border-accent"
       }`}
     >
       {children}

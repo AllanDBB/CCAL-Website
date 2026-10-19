@@ -34,7 +34,7 @@ export default function MobileNav({ items }: { items: NavItem[] }) {
       </button>
 
       {open && (
-        <div id="mobile-menu" className="fixed inset-0 z-50 flex flex-col overflow-y-auto bg-ink text-white">
+        <div id="mobile-menu" className="fixed inset-0 z-50 flex flex-col overflow-y-auto bg-blue text-white">
           <div className="flex h-[72px] shrink-0 items-center justify-between border-b border-white/15 px-5 sm:px-8">
             <span className="font-mono text-[12px] uppercase tracking-[0.08em] text-white/60">CCAL</span>
             <button

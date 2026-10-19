@@ -12,13 +12,13 @@ export const statusLabel: Record<AdmissionStatus, string> = {
 /** Tabla de fechas clave: fecha mono · evento · estado. */
 export function KeyDates({ admission, light = false }: { admission: Admission; light?: boolean }) {
   return (
-    <ol className={`border-t ${light ? "border-white/25" : "border-line"}`}>
+    <ol className={`border-t ${light ? "border-white/25" : "border-blue-100"}`}>
       {admission.keyDates.map((d) => {
         const done = isPast(d.date);
         return (
           <li
             key={d.label}
-            className={`grid grid-cols-[6.5rem_1fr_auto] items-baseline gap-4 border-b py-4 ${light ? "border-white/25" : "border-line"}`}
+            className={`grid grid-cols-[6.5rem_1fr_auto] items-baseline gap-4 border-b py-4 ${light ? "border-white/25" : "border-blue-100"}`}
           >
             <time dateTime={d.date} className={`font-mono text-[13px] ${light ? "text-white/70" : "text-muted"}`}>
               {formatNumericDate(d.date)}
@@ -27,7 +27,7 @@ export function KeyDates({ admission, light = false }: { admission: Admission; l
               {d.label}
               <span className="sr-only">, {formatLongDate(d.date)}</span>
             </span>
-            <span className={`font-mono text-[11px] uppercase tracking-[0.08em] ${done ? (light ? "text-white/50" : "text-muted") : light ? "text-accent" : "text-accent-ink"}`}>
+            <span className={`font-mono text-[11px] uppercase tracking-[0.08em] ${done ? (light ? "text-white/50" : "text-muted") : light ? "text-accent" : "text-blue"}`}>
               {done ? "Hecho" : "Próximo"}
             </span>
           </li>
@@ -43,7 +43,7 @@ export default function AdmissionPanel({ admission }: { admission: Admission }) 
   const [day, month] = next ? formatNumericDate(next.date).split(".") : [];
 
   return (
-    <section className="bg-surface py-16 sm:py-24">
+    <section className="bg-blue-50 py-16 sm:py-24">
       <Container className="grid gap-12 lg:grid-cols-12">
         <div className="lg:col-span-7">
           <Label className="flex items-center gap-2">
@@ -69,7 +69,7 @@ export default function AdmissionPanel({ admission }: { admission: Admission }) 
           {next && (
             <div className="mb-8">
               <Label>{next.label}</Label>
-              <p className="mt-2 font-display text-8xl font-semibold leading-[0.9] tracking-[-0.05em]">
+              <p className="mt-2 font-display text-8xl font-semibold leading-[0.9] tracking-[-0.05em] text-blue">
                 {day}.{month}
                 <span className="text-accent">.</span>
               </p>

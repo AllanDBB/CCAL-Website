@@ -29,7 +29,7 @@ export default async function ContactoPage() {
                 </dt>
                 <dd className="mt-2">
                   {item.href ? (
-                    <a href={item.href} className="font-display text-3xl font-semibold tracking-[-0.03em] hover:text-accent-ink">
+                    <a href={item.href} className="font-display text-3xl font-semibold tracking-[-0.03em] hover:text-blue">
                       {item.value}
                     </a>
                   ) : (
@@ -48,7 +48,7 @@ export default async function ContactoPage() {
                       href={s.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex min-h-11 items-center border border-ink px-4 font-medium hover:bg-ink hover:text-white"
+                      className="inline-flex min-h-11 items-center border border-blue px-4 font-medium text-blue hover:bg-blue hover:text-white"
                     >
                       {s.name} ↗
                     </a>
@@ -57,7 +57,7 @@ export default async function ContactoPage() {
               </ul>
             </div>
           </dl>
-          <div className="relative min-h-[420px] border border-ink bg-surface lg:col-span-7">
+          <div className="relative min-h-[420px] border border-line bg-surface lg:col-span-7">
             <iframe
               src={site.mapEmbedUrl}
               title="Mapa de ubicación del Colegio Científico de Alajuela"

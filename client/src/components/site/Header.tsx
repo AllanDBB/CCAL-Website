@@ -18,7 +18,7 @@ async function AnnouncementBar() {
         : `${admission.processName} — Inscripciones abiertas`;
 
   return (
-    <Link href="/admisiones" className="group block bg-surface text-ink">
+    <Link href="/admisiones" className="group block bg-blue text-white">
       <Container className="flex min-h-9 items-center justify-center gap-3 py-2 text-[13px]">
         <AccentSquare className="h-2 w-2" />
         <span>{message}</span>
@@ -55,17 +55,17 @@ export default async function Header() {
                 <li key={item.href} className="group relative">
                   <Link
                     href={item.href}
-                    className="flex h-[72px] items-center gap-1 px-3.5 text-[15px] font-medium text-ink transition-colors hover:text-accent-ink"
+                    className="flex h-[72px] items-center gap-1 px-3.5 text-[15px] font-medium text-ink transition-colors hover:text-blue"
                   >
                     {item.label}
                   </Link>
                   <span className="absolute inset-x-3.5 bottom-0 h-0.5 origin-left scale-x-0 bg-accent transition-transform group-hover:scale-x-100" aria-hidden="true" />
                   {item.children && (
                     <div className="invisible absolute left-0 top-full opacity-0 transition-opacity group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100">
-                      <ul className="w-80 border border-ink bg-white">
+                      <ul className="w-80 border border-line bg-white shadow-lg shadow-blue/5">
                         {item.children.map((child) => (
                           <li key={child.href} className="border-b border-line last:border-0">
-                            <Link href={child.href} className="flex items-start justify-between gap-4 px-5 py-4 hover:bg-surface">
+                            <Link href={child.href} className="flex items-start justify-between gap-4 px-5 py-4 hover:bg-blue-50">
                               <span>
                                 <span className="block text-[15px] font-medium text-ink">{child.label}</span>
                                 {child.description && <span className="mt-0.5 block text-sm text-muted">{child.description}</span>}
@@ -85,7 +85,7 @@ export default async function Header() {
           <div className="flex items-center gap-2">
             <Link
               href="/admisiones"
-              className="hidden min-h-11 items-center gap-3 bg-ink px-5 text-[15px] font-medium text-white transition-colors hover:bg-accent hover:text-ink sm:flex"
+              className="hidden min-h-11 items-center gap-3 bg-blue px-5 text-[15px] font-medium text-white transition-colors hover:bg-blue-700 sm:flex"
             >
               <AccentSquare className="h-2 w-2" />
               Admisión

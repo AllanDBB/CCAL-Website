@@ -33,7 +33,7 @@ export default async function OfertaPage() {
                   {area.subjects.map((s) => (
                     <li key={s.name}>
                       <p className="text-xl font-medium">{s.name}</p>
-                      <p className="mt-1 font-mono text-[11px] uppercase tracking-[0.08em] text-accent-ink">{s.level}</p>
+                      <p className="mt-1 font-mono text-[11px] uppercase tracking-[0.08em] text-blue-700">{s.level}</p>
                       <p className="mt-3 leading-relaxed text-muted">{s.description}</p>
                     </li>
                   ))}
@@ -44,7 +44,7 @@ export default async function OfertaPage() {
         </Container>
       </section>
 
-      <section className="bg-surface py-20 sm:py-28">
+      <section className="bg-blue-50 py-20 sm:py-28">
         <Container>
           <SectionHeader label="Más allá del aula" title="Programas adicionales" />
           <div className="mt-12 grid gap-12 sm:grid-cols-2 lg:ml-[25%]">
