@@ -1,15 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'images.unsplash.com',
-        port: '',
-        pathname: '/**',
-      },
-    ],
+  async redirects() {
+    return [
+      // Páginas retiradas mientras no tengan contenido real.
+      { source: "/nosotros/equipo-docente", destination: "/nosotros", permanent: false },
+      { source: "/nosotros/trabajo", destination: "/contacto", permanent: false },
+    ];
   },
-}
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

@@ -76,20 +76,25 @@ export function PageHero({
   eyebrow,
   title,
   lead,
+  aside,
   children,
 }: {
   eyebrow?: string;
   title: string;
   lead?: string;
+  aside?: ReactNode;
   children?: ReactNode;
 }) {
   return (
     <section className="border-b border-line bg-paper">
-      <Container className="pt-14 pb-12 sm:pt-20 sm:pb-16">
-        {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
-        <h1 className="max-w-3xl text-4xl leading-[1.08] text-navy-950 sm:text-5xl lg:text-6xl">{title}</h1>
-        {lead && <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted sm:text-xl">{lead}</p>}
-        {children}
+      <Container className="grid items-end gap-10 pt-14 pb-12 sm:pt-20 sm:pb-16 lg:grid-cols-12">
+        <div className={aside ? "lg:col-span-8" : "lg:col-span-12"}>
+          {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
+          <h1 className="max-w-3xl text-4xl leading-[1.08] text-navy-950 sm:text-5xl lg:text-6xl">{title}</h1>
+          {lead && <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted sm:text-xl">{lead}</p>}
+          {children}
+        </div>
+        {aside && <div className="lg:col-span-4">{aside}</div>}
       </Container>
     </section>
   );

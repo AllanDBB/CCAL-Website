@@ -1,68 +1,26 @@
-import { MetadataRoute } from 'next'
- 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://www.ccalajuela.ed.cr'
-  
+import type { MetadataRoute } from "next";
+import { getNews } from "@/lib/cms";
+
+const baseUrl = "https://www.ccalajuela.ed.cr";
+
+const pages: { path: string; priority: number; changeFrequency: "weekly" | "monthly" | "yearly" }[] = [
+  { path: "", priority: 1, changeFrequency: "weekly" },
+  { path: "/admisiones", priority: 0.9, changeFrequency: "weekly" },
+  { path: "/nosotros", priority: 0.7, changeFrequency: "monthly" },
+  { path: "/nosotros/historia", priority: 0.7, changeFrequency: "monthly" },
+  { path: "/nosotros/mision-vision", priority: 0.7, changeFrequency: "monthly" },
+  { path: "/oferta", priority: 0.8, changeFrequency: "monthly" },
+  { path: "/excelencia", priority: 0.8, changeFrequency: "monthly" },
+  { path: "/vida-estudiantil", priority: 0.6, changeFrequency: "monthly" },
+  { path: "/noticias", priority: 0.8, changeFrequency: "weekly" },
+  { path: "/contacto", priority: 0.7, changeFrequency: "yearly" },
+  { path: "/terminos-de-uso", priority: 0.2, changeFrequency: "yearly" },
+];
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const news = await getNews();
   return [
-    {
-      url: baseUrl,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 1,
-    },
-    {
-      url: `${baseUrl}/nosotros/historia`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/nosotros/mision-vision`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/nosotros/equipo-docente`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/nosotros/trabajo`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/oferta`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/admisiones`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/excelencia`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/contacto`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/terminos-de-uso`,
-      lastModified: new Date(),
-      changeFrequency: 'yearly',
-      priority: 0.3,
-    },
-  ]
+    ...pages.map((p) => ({ url: `${baseUrl}${p.path}`, changeFrequency: p.changeFrequency, priority: p.priority })),
+    ...news.map((n) => ({ url: `${baseUrl}/noticias/${n.slug}`, lastModified: n.date, priority: 0.6 })),
+  ];
 }

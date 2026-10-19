@@ -28,7 +28,7 @@ export function dateParts(iso: string) {
   const d = new Date(`${iso}T00:00:00Z`);
   return {
     day: d.getUTCDate(),
-    month: new Intl.DateTimeFormat("es-CR", { month: "short", timeZone: "UTC" })
+    month: new Intl.DateTimeFormat("es-CR", { month: "long", timeZone: "UTC" })
       .format(d)
       .replace(".", ""),
   };
