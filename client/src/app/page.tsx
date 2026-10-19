@@ -1,386 +1,177 @@
-"use client";
+import Image from "next/image";
+import Link from "next/link";
+import AdmissionPanel from "@/components/site/AdmissionPanel";
+import NewsCard from "@/components/site/NewsCard";
+import { ArrowIcon, ButtonLink, Container, Eyebrow, SectionHeading } from "@/components/site/ui";
+import { getAdmission, getInstitution, getNews, getSite } from "@/lib/cms";
 
-import React, { useEffect, useState } from 'react';
-import { Button } from '@/components/ui/buttons';
-import { FeatureCard } from '@/components/ui/cards';
-import { ImageCarousel } from '@/components/ui/carousel';
-import { homePageContent } from '@/lib/content/homepage';
+export const revalidate = 3600;
 
-interface Particle {
-  left: number;
-  top: number;
-  delay: number;
-  duration: number;
-}
+export default async function HomePage() {
+  const [site, admission, news, { stats, pillars, gallery }] = await Promise.all([
+    getSite(),
+    getAdmission(),
+    getNews(3),
+    getInstitution(),
+  ]);
 
-export default function HomePage() {
-  const [scrollY, setScrollY] = useState(0);
-  const [isVisible, setIsVisible] = useState<{ [key: string]: boolean }>({});
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [particles, setParticles] = useState<Particle[]>([]);
-
-  useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    window.addEventListener('mousemove', handleMouseMove);
-    
-    // Generar partículas solo en el cliente
-    setParticles([...Array(10)].map(() => ({
-      left: Math.random() * 100,
-      top: Math.random() * 100,
-      delay: Math.random() * 5,
-      duration: 3 + Math.random() * 4
-    })));
-    
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('mousemove', handleMouseMove);
-    };
-  }, []);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          setIsVisible(prev => ({
-            ...prev,
-            [entry.target.id]: entry.isIntersecting
-          }));
-        });
-      },
-      { threshold: 0.1, rootMargin: '50px' }
-    );
-
-    const elements = document.querySelectorAll('[data-animate]');
-    elements.forEach(el => observer.observe(el));
-
-    return () => observer.disconnect();
-  }, []);
+  const mosaic = gallery.slice(1, 6);
 
   return (
-    <div className="min-h-screen overflow-x-hidden">
-      <div className="fixed inset-0 -z-10 bg-gradient-to-br from-[#0A2463] via-[#0d2d73] to-[#1a4d99]"></div>
-
-      {/* Hero Section - sin padding top ya que el navbar es transparente */}
-      <section 
-        id="hero"
-        data-animate
-        className="relative min-h-screen bg-gradient-to-br from-[#0A2463] via-[#0d2d73] to-[#1a4d99] text-white overflow-hidden flex items-center"
-      >
-        {/* Elementos flotantes con parallax y mouse tracking */}
-        <div 
-          className="absolute inset-0"
-          style={{
-            transform: `translate3d(${scrollY * 0.05}px, ${scrollY * 0.1}px, 0)`,
-          }}
-        >
-          <div 
-            className="absolute top-20 left-10 w-32 h-32 bg-[#FAA916] rounded-full opacity-10 blur-sm animate-float-slow"
-            style={{
-              transform: `translate(${mousePosition.x * 0.01}px, ${mousePosition.y * 0.01}px)`
-            }}
-          ></div>
-          <div 
-            className="absolute top-40 right-20 w-24 h-24 bg-blue-300 rounded-full opacity-15 blur-sm animate-float-medium"
-            style={{
-              transform: `translate(${mousePosition.x * -0.008}px, ${mousePosition.y * 0.008}px)`
-            }}
-          ></div>
-          <div 
-            className="absolute bottom-20 left-1/4 w-16 h-16 bg-purple-400 rounded-full opacity-20 blur-sm animate-float-fast"
-            style={{
-              transform: `translate(${mousePosition.x * 0.005}px, ${mousePosition.y * -0.005}px)`
-            }}
-          ></div>
-        </div>
-        
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 md:py-16 lg:py-20">
-          <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-center">
-            <div 
-              className={`text-center lg:text-left transform transition-all duration-1200 ease-out ${
-                isVisible.hero ? 'translate-y-0 opacity-100 scale-100' : 'translate-y-32 opacity-0 scale-95'
-              }`}
-            >
-              <div className="overflow-hidden">
-                <h1 className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight mb-3 sm:mb-4 md:mb-6 transition-transform duration-1000 ${
-                  isVisible.hero ? 'translate-y-0' : 'translate-y-full'
-                }`}>
-                  {homePageContent.hero.title.part1}
-                  <span className={`text-[#FAA916] block transition-transform duration-1200 delay-300 ${
-                    isVisible.hero ? 'translate-x-0' : 'translate-x-full'
-                  }`}>{homePageContent.hero.title.part2}</span>
-                  <span className={`block transition-transform duration-1400 delay-500 ${
-                    isVisible.hero ? 'translate-x-0' : '-translate-x-full'
-                  }`}>{homePageContent.hero.title.part3}</span>
-                </h1>
-              </div>
-              
-              <p className={`text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl text-blue-100 mb-4 sm:mb-6 md:mb-8 leading-relaxed px-2 sm:px-0 transition-all duration-1000 delay-700 ${
-                isVisible.hero ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
-              }`}>
-                {homePageContent.hero.description}
-              </p>
-              
-              <div className={`flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start px-2 sm:px-0 transition-all duration-1200 delay-1000 ${
-                isVisible.hero ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
-              }`}>
-                <Button 
-                  href="/admisiones" 
-                  variant="secondary"
-                  className="text-sm sm:text-base md:text-lg px-6 sm:px-7 md:px-8 py-2.5 sm:py-3 md:py-4 hover:shadow-2xl hover:shadow-[#FAA916]/25 transition-all duration-300 w-full sm:w-auto"
-                >
-                  {homePageContent.hero.buttons.primary}
-                </Button>
-                <button className="text-sm sm:text-base md:text-lg px-6 sm:px-7 md:px-8 py-2.5 sm:py-3 md:py-4 border-2 border-white text-white hover:bg-white hover:text-[#0A2463] rounded-full font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-2xl w-full sm:w-auto">
-                  {homePageContent.hero.buttons.secondary}
-                </button>
-              </div>
-            </div>
-            
-            <div 
-              className={`relative transform transition-all duration-1500 ease-out ${
-                isVisible.hero ? 'translate-x-0 opacity-100 rotate-0' : 'translate-x-20 opacity-0 rotate-3'
-              }`}
-              style={{ transitionDelay: '600ms' }}
-            >
-              {/* Logo circular con efectos */}
-              <div className="relative w-full h-56 sm:h-64 md:h-72 lg:h-80 xl:h-96 flex items-center justify-center mt-6 sm:mt-8 lg:mt-0">
-                <div className="relative group">
-                  {/* Círculo de fondo con gradiente animado */}
-                  <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/30 via-white/20 to-transparent blur-3xl animate-pulse-slow"></div>
-                  
-                  {/* Círculo principal */}
-                  <div className="relative w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 lg:w-72 lg:h-72 xl:w-80 xl:h-80 rounded-full bg-white/10 backdrop-blur-lg border-2 sm:border-4 border-white/30 flex items-center justify-center shadow-2xl overflow-hidden group-hover:scale-110 group-hover:border-white/50 transition-all duration-500">
-                    {/* Efecto de brillo giratorio */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent rotate-45 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
-                    
-                    {/* Logo */}
-                    <div className="relative z-10 p-12">
-                      <img 
-                        src="/Logo.svg" 
-                        alt="CCAL Logo" 
-                        className="w-full h-full object-contain filter drop-shadow-2xl transition-transform duration-500 group-hover:scale-105"
-                      />
-                    </div>
-                  </div>
-                  
-                  {/* Anillos decorativos */}
-                  <div className="absolute inset-0 rounded-full border-2 border-white/20 scale-110 animate-ping-slow"></div>
-                  <div className="absolute inset-0 rounded-full border border-white/10 scale-125"></div>
-                </div>
-              </div>
-              
-              {/* Floating stats con animaciones mejoradas */}
-              <div className={`absolute -bottom-4 sm:-bottom-6 -left-2 sm:-left-6 bg-white rounded-lg sm:rounded-xl p-3 sm:p-4 shadow-lg animate-float-up hover:shadow-2xl transition-all duration-300 ${
-                isVisible.hero ? 'scale-100 opacity-100' : 'scale-0 opacity-0'
-              }`} style={{ transitionDelay: '1200ms' }}>
-                <div className="text-[#0A2463] font-bold text-xl sm:text-2xl">{homePageContent.hero.stats.university.number}</div>
-                <div className="text-xs sm:text-sm text-gray-600">{homePageContent.hero.stats.university.label}</div>
-              </div>
-              
-              <div className={`absolute -top-4 sm:-top-6 -right-2 sm:-right-6 bg-[#FAA916] rounded-lg sm:rounded-xl p-3 sm:p-4 shadow-lg animate-float-down hover:shadow-2xl transition-all duration-300 ${
-                isVisible.hero ? 'scale-100 opacity-100' : 'scale-0 opacity-0'
-              }`} style={{ transitionDelay: '1400ms' }}>
-                <div className="text-[#0A2463] font-bold text-xl sm:text-2xl">{homePageContent.hero.stats.experience.number}</div>
-                <div className="text-xs sm:text-sm text-[#0A2463]">{homePageContent.hero.stats.experience.label}</div>
-              </div>
+    <>
+      {/* Portada */}
+      <section className="overflow-hidden">
+        <Container className="grid items-center gap-12 pt-12 pb-16 sm:pt-16 lg:grid-cols-12 lg:gap-10 lg:pt-20 lg:pb-24">
+          <div className="lg:col-span-6">
+            <Eyebrow>Colegio Científico de Costa Rica · Sede Alajuela</Eyebrow>
+            <h1 className="text-[2.75rem] leading-[1.04] text-navy-950 sm:text-6xl lg:text-[4.25rem]">
+              Formamos a la próxima generación de científicos de Costa Rica.
+            </h1>
+            <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted sm:text-xl">{site.description}</p>
+            <div className="mt-9 flex flex-wrap gap-3">
+              <ButtonLink href="/admisiones" variant="navy">
+                Proceso de admisión <ArrowIcon />
+              </ButtonLink>
+              <ButtonLink href="/nosotros" variant="outline">
+                Conocer el colegio
+              </ButtonLink>
             </div>
           </div>
-        </div>
-
-        {/* Scroll Indicator mejorado */}
-        <div className={`absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce transition-all duration-1000 delay-1600 ${
-          isVisible.hero ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-        }`}>
-          <div className="w-6 h-10 border-2 border-white rounded-full flex justify-center relative">
-            <div className="w-1 h-3 bg-white rounded-full mt-2 animate-pulse"></div>
-          </div>
-          <div className="text-xs text-white/70 mt-2 text-center">{homePageContent.hero.scrollIndicator}</div>
-        </div>
+          <figure className="relative lg:col-span-6">
+            <div className="relative aspect-[4/5] overflow-hidden rounded-[28px] bg-navy-50 sm:aspect-[5/4] lg:aspect-[4/5]">
+              <Image
+                src={gallery[0].src}
+                alt={gallery[0].alt}
+                fill
+                priority
+                sizes="(min-width: 1024px) 560px, 100vw"
+                className="object-cover"
+              />
+            </div>
+            <figcaption className="absolute bottom-5 left-5 right-5 rounded-2xl bg-paper/95 px-5 py-4 shadow-lg shadow-navy-950/10 backdrop-blur sm:right-auto sm:max-w-xs">
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-gold-600">Desde {site.foundedYear}</p>
+              <p className="mt-1 font-serif text-lg leading-snug text-navy-950">{site.tagline}</p>
+            </figcaption>
+          </figure>
+        </Container>
       </section>
 
-      {/* Features Section */}
-      <section 
-        id="features"
-        data-animate
-        className="py-12 sm:py-16 lg:py-20 bg-white relative overflow-hidden"
-      >
-        {/* Elementos de fondo animados */}
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute top-10 right-10 w-64 h-64 bg-[#0A2463] rounded-full animate-pulse-slow"></div>
-          <div className="absolute bottom-10 left-10 w-48 h-48 bg-[#FAA916] rounded-full animate-pulse-slow" style={{ animationDelay: '2s' }}></div>
-        </div>
-        
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div 
-            className={`text-center mb-8 sm:mb-12 lg:mb-16 transform transition-all duration-1200 ${
-              isVisible.features ? 'translate-y-0 opacity-100 scale-100' : 'translate-y-12 opacity-0 scale-95'
-            }`}
-          >
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0A2463] mb-3 sm:mb-4 relative">
-              {homePageContent.features.title}
-              <div className={`absolute -bottom-2 left-1/2 transform -translate-x-1/2 h-1 bg-gradient-to-r from-[#0A2463] to-[#FAA916] rounded-full transition-all duration-1000 ${
-                isVisible.features ? 'w-24' : 'w-0'
-              }`} style={{ transitionDelay: '500ms' }}></div>
-            </h2>
-            <p className="text-base sm:text-lg lg:text-xl text-gray-600 max-w-3xl mx-auto">
-              {homePageContent.features.description}
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-            {homePageContent.features.items.map((feature, index) => (
-              <div 
-                key={index}
-                className={`transform transition-all duration-700 hover:scale-105 ${
-                  isVisible.features 
-                    ? 'translate-y-0 opacity-100 rotate-0' 
-                    : 'translate-y-20 opacity-0 rotate-1'
-                }`}
-                style={{ 
-                  transitionDelay: `${index * 200}ms`,
-                  animationDelay: `${index * 200}ms`
-                }}
+      {/* Cifras */}
+      <section aria-label="El CCAL en cifras" className="border-y border-line bg-white">
+        <Container>
+          <dl className="grid grid-cols-2 divide-line lg:grid-cols-4 lg:divide-x">
+            {stats.map((s, i) => (
+              <div
+                key={s.label}
+                className={`py-8 lg:px-8 lg:first:pl-0 ${i % 2 === 1 ? "pl-6" : "pr-6"} ${i < 2 ? "border-b border-line lg:border-b-0" : ""}`}
               >
-                <div className="group">
-                  <FeatureCard
-                    title={feature.title}
-                    description={feature.description}
-                    icon={<span className="text-4xl transition-transform duration-300 group-hover:scale-110">{feature.icon}</span>}
-                    accentColor={feature.color}
-                  />
-                </div>
+                <dt className="sr-only">{s.label}</dt>
+                <dd>
+                  <span className="block font-serif text-4xl text-navy-900 sm:text-5xl">{s.value}</span>
+                  <span className="mt-2 block text-sm leading-snug text-muted">{s.label}</span>
+                </dd>
               </div>
             ))}
-          </div>
-        </div>
+          </dl>
+        </Container>
       </section>
 
-      {/* Stats Section */}
-      <section 
-        id="stats"
-        data-animate
-        className="py-12 sm:py-16 lg:py-20 bg-[#0A2463] text-white relative overflow-hidden"
-      >
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-900/50 to-purple-900/50"></div>
-        
-        {/* Elementos de fondo animados */}
-        <div className="absolute inset-0">
-          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-transparent via-blue-500/5 to-transparent animate-pulse-slow"></div>
-        </div>
-        
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 text-center">
-            {homePageContent.stats.map((stat, index) => (
-              <div 
-                key={index}
-                className={`transform transition-all duration-1000 hover:scale-105 sm:hover:scale-110 group ${
-                  isVisible.stats 
-                    ? 'translate-y-0 opacity-100 scale-100' 
-                    : 'translate-y-20 opacity-0 scale-90'
-                }`}
-                style={{ transitionDelay: `${index * 300}ms` }}
-              >
-                <div className="relative">
-                  <div className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#FAA916] mb-1 sm:mb-2 transition-all duration-300 group-hover:text-4xl sm:group-hover:text-5xl lg:group-hover:text-6xl">
-                    {stat.number}
-                  </div>
-                  <div className="text-sm sm:text-base lg:text-xl transition-all duration-300 group-hover:text-[#FAA916]">{stat.label}</div>
-                  
-                  {/* Efecto de resplandor */}
-                  <div className="absolute inset-0 bg-[#FAA916] rounded-full opacity-0 group-hover:opacity-20 blur-xl transition-all duration-500 scale-150"></div>
+      {/* Admisión */}
+      <section className="py-20 sm:py-24">
+        <Container>
+          <AdmissionPanel admission={admission} />
+        </Container>
+      </section>
+
+      {/* Pilares */}
+      <section className="pb-20 sm:pb-28">
+        <Container className="grid gap-12 lg:grid-cols-12">
+          <SectionHeading
+            className="lg:col-span-5"
+            eyebrow="Por qué el CCAL"
+            title="Una formación exigente, pensada para la universidad y para el país."
+            lead="Somos parte del Sistema Nacional de Colegios Científicos: colegios públicos que reúnen a estudiantes con talento para la ciencia en todo Costa Rica."
+          />
+          <ol className="lg:col-span-6 lg:col-start-7">
+            {pillars.map((p, i) => (
+              <li key={p.title} className="flex gap-6 border-t border-line py-7 last:border-b">
+                <span className="font-serif text-2xl text-gold-600" aria-hidden="true">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <div>
+                  <h3 className="text-2xl text-navy-950">{p.title}</h3>
+                  <p className="mt-2 leading-relaxed text-muted">{p.body}</p>
                 </div>
-              </div>
+              </li>
+            ))}
+          </ol>
+        </Container>
+      </section>
+
+      {/* Vida estudiantil */}
+      <section className="bg-white py-20 sm:py-28">
+        <Container>
+          <div className="flex flex-wrap items-end justify-between gap-6">
+            <SectionHeading
+              eyebrow="Vida estudiantil"
+              title="Laboratorio, competencia y comunidad."
+              lead="Del aula a las ferias científicas y a competencias internacionales, con espacio para el deporte y la convivencia."
+            />
+            <Link href="/vida-estudiantil" className="group inline-flex items-center gap-2 font-semibold text-navy-900">
+              Ver más fotos <ArrowIcon className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+            </Link>
+          </div>
+          <div className="mt-12 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4 lg:grid-rows-2">
+            {mosaic.map((img, i) => (
+              <figure
+                key={img.src}
+                className={`group relative overflow-hidden rounded-2xl bg-navy-50 ${
+                  i === 0 ? "col-span-2 aspect-[4/3] lg:row-span-2 lg:aspect-auto" : "aspect-square"
+                }`}
+              >
+                <Image
+                  src={img.src}
+                  alt={img.alt}
+                  fill
+                  sizes={i === 0 ? "(min-width: 1024px) 560px, 100vw" : "(min-width: 1024px) 280px, 50vw"}
+                  className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                />
+                <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-navy-950/70 to-transparent px-4 pt-10 pb-3 text-sm font-medium text-white">
+                  {img.caption}
+                </figcaption>
+              </figure>
             ))}
           </div>
-        </div>
+        </Container>
       </section>
 
-      {/* Image Carousel Section */}
-      <section 
-        id="carousel"
-        data-animate
-        className="py-12 sm:py-16 lg:py-20 bg-white relative overflow-hidden"
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div 
-            className={`text-center mb-8 sm:mb-10 lg:mb-12 transform transition-all duration-1000 ${
-              isVisible.carousel ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
-            }`}
-          >
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0A2463] mb-3 sm:mb-4 relative">
-              {homePageContent.carousel.title}
-              <div className={`absolute -bottom-2 left-1/2 transform -translate-x-1/2 h-1 bg-gradient-to-r from-[#0A2463] to-[#FAA916] rounded-full transition-all duration-1000 ${
-                isVisible.carousel ? 'w-32 sm:w-48' : 'w-0'
-              }`} style={{ transitionDelay: '500ms' }}></div>
-            </h2>
-            <p className="text-base sm:text-lg lg:text-xl text-gray-600 max-w-3xl mx-auto">
-              {homePageContent.carousel.description}
-            </p>
-          </div>
-
-          <div 
-            className={`transform transition-all duration-1000 ${
-              isVisible.carousel ? 'translate-y-0 opacity-100 scale-100' : 'translate-y-20 opacity-0 scale-95'
-            }`}
-            style={{ transitionDelay: '600ms' }}
-          >
-            <ImageCarousel images={homePageContent.carousel.images} autoPlay={true} interval={5000} />
-          </div>
-        </div>
+      {/* Lema */}
+      <section className="py-20 sm:py-28">
+        <Container className="text-center">
+          <span className="mx-auto block h-px w-16 bg-gold-500" aria-hidden="true" />
+          <blockquote className="mx-auto mt-10 max-w-3xl font-serif text-3xl leading-snug text-navy-950 sm:text-5xl">
+            “{site.tagline}”
+          </blockquote>
+          <p className="mt-6 text-muted">Lema del Sistema Nacional de Colegios Científicos de Costa Rica</p>
+        </Container>
       </section>
 
-      {/* CTA Section */}
-      <section 
-        id="cta"
-        data-animate
-        className="py-12 sm:py-16 lg:py-20 bg-gradient-to-r from-[#FAA916] to-[#ffb52e] relative overflow-hidden"
-      >
-        {/* Partículas flotantes - generadas en el cliente */}
-        <div className="absolute inset-0">
-          {particles.map((particle, i) => (
-            <div
-              key={i}
-              className="absolute w-2 h-2 bg-white rounded-full opacity-20 animate-float-particle"
-              style={{
-                left: `${particle.left}%`,
-                top: `${particle.top}%`,
-                animationDelay: `${particle.delay}s`,
-                animationDuration: `${particle.duration}s`
-              }}
-            ></div>
-          ))}
-        </div>
-        
-        <div 
-          className={`relative max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8 transform transition-all duration-1000 ${
-            isVisible.cta ? 'translate-y-0 opacity-100 scale-100' : 'translate-y-20 opacity-0 scale-95'
-          }`}
-        >
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0A2463] mb-4 sm:mb-6">
-            {homePageContent.cta.title}
-          </h2>
-          <p className="text-base sm:text-lg lg:text-xl text-[#0A2463] mb-6 sm:mb-8 leading-relaxed">
-            {homePageContent.cta.description}
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
-            <Button 
-              href="/admisiones" 
-              variant="primary"
-              className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 hover:shadow-2xl hover:shadow-[#0A2463]/25 transition-all duration-300"
-            >
-              {homePageContent.cta.buttons.primary}
-            </Button>
-            <button className="text-lg px-8 py-4 border-2 border-[#0A2463] text-[#0A2463] bg-white hover:bg-[#0A2463] hover:text-white rounded-full font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-2xl">
-              {homePageContent.cta.buttons.secondary}
-            </button>
+      {/* Noticias */}
+      <section className="border-t border-line bg-white py-20 sm:py-28">
+        <Container>
+          <div className="flex flex-wrap items-end justify-between gap-6">
+            <SectionHeading eyebrow="Noticias" title="Lo más reciente" />
+            <Link href="/noticias" className="group inline-flex items-center gap-2 font-semibold text-navy-900">
+              Todas las noticias <ArrowIcon className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+            </Link>
           </div>
-        </div>
+          <div className="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+            {news.map((item) => (
+              <NewsCard key={item.slug} item={item} />
+            ))}
+          </div>
+        </Container>
       </section>
-    </div>
+    </>
   );
 }

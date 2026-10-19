@@ -1,16 +1,24 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import Navbar from "@/components/layout/Navbar";
-import Footer from "@/components/layout/Footer";
-import CookieBanner from "@/components/layout/CookieBanner";
+import { Fraunces, Inter } from "next/font/google";
+import Header from "@/components/site/Header";
+import Footer from "@/components/site/Footer";
+import CookieBanner from "@/components/site/CookieBanner";
 import GoogleAnalytics from "@/components/analytics/GoogleAnalytics";
-import { LoadingProvider } from "@/components/providers/LoadingProvider";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
+const fraunces = Fraunces({
+  subsets: ["latin"],
+  variable: "--font-fraunces",
+  display: "swap",
+  axes: ["opsz"],
+});
 
 export const metadata: Metadata = {
-  title: "CCAL - Colegio Científico de Alajuela",
+  title: {
+    default: "Colegio Científico de Alajuela (CCAL)",
+    template: "%s · CCAL",
+  },
   description:
     "Educación científica de excelencia en Costa Rica. Formamos líderes del futuro con valores y conocimiento.",
   keywords: [
@@ -80,21 +88,25 @@ export default function RootLayout({
   }
 
   return (
-    <html lang="es">
+    <html lang="es" className={`${inter.variable} ${fraunces.variable}`}>
       <head>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className={inter.className}>
+      <body>
+        <a
+          href="#contenido"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-full focus:bg-navy-900 focus:px-5 focus:py-3 focus:text-white"
+        >
+          Saltar al contenido
+        </a>
         <GoogleAnalytics />
-        <LoadingProvider>
-          <Navbar />
-          <main>{children}</main>
-          <Footer />
-          <CookieBanner />
-        </LoadingProvider>
+        <Header />
+        <main id="contenido">{children}</main>
+        <Footer />
+        <CookieBanner />
       </body>
     </html>
   );
