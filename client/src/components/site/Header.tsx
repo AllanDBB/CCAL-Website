@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { mainNav } from "@/content/navigation";
-import { getAdmission } from "@/lib/cms";
+import { getAdmission, getNavigation } from "@/lib/cms";
 import { formatLongDate } from "@/lib/format";
 import { AccentSquare, ArrowIcon, Container } from "./ui";
 import MobileNav from "./MobileNav";
@@ -42,6 +41,7 @@ export function Wordmark() {
 }
 
 export default async function Header() {
+  const mainNav = await getNavigation();
   return (
     <>
       <AnnouncementBar />

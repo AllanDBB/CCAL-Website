@@ -1,12 +1,14 @@
 import type { GlobalConfig } from "payload";
 import { allow, anyone } from "../access";
 import { revalidateGlobal } from "../revalidate";
+import { rowLabel } from "../rowLabel";
 
 export const SiteSettings: GlobalConfig = {
   slug: "site",
   label: "Datos del colegio",
   admin: {
     group: "Configuración",
+    preview: () => "/contacto",
     description: "Contacto, redes sociales y textos que aparecen en todo el sitio (pie de página, encabezado).",
   },
   access: { read: anyone, update: allow("direccion") },
@@ -49,6 +51,7 @@ export const SiteSettings: GlobalConfig = {
       label: "Redes sociales",
       type: "array",
       labels: { singular: "Red", plural: "Redes" },
+      admin: rowLabel("name"),
       fields: [
         {
           type: "row",

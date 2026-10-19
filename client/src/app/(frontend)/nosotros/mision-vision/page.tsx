@@ -1,22 +1,15 @@
-import type { Metadata } from "next";
 import { Container, Label, PageHero, SectionHeader } from "@/components/site/ui";
-import { getInstitution } from "@/lib/cms";
+import { heroMetadata } from "@/lib/metadata";
+import { getInstitution, getPages } from "@/lib/cms";
 
-export const metadata: Metadata = {
-  title: "Misión y visión",
-  description: "La misión, la visión y las competencias que guían la formación en el Colegio Científico de Alajuela.",
-};
+export const generateMetadata = heroMetadata((p) => p.missionVision.hero);
 
 export default async function MisionVisionPage() {
-  const { mission, vision, skills } = await getInstitution();
+  const [{ mission, vision, skills }, { missionVision: text }] = await Promise.all([getInstitution(), getPages()]);
 
   return (
     <>
-      <PageHero
-        label="Misión y visión"
-        title="Llevar al límite el potencial de cada estudiante"
-        lead="Buscamos la mejor formación académica para nuestros estudiantes, con un enfoque en ciencias, ingenierías e investigación."
-      />
+      <PageHero label={text.hero.label} title={text.hero.title} lead={text.hero.lead} />
 
       <section className="pb-20 sm:pb-28">
         <Container className="space-y-16">
@@ -35,9 +28,9 @@ export default async function MisionVisionPage() {
       <section className="pb-20 sm:pb-28">
         <Container>
           <SectionHeader
-            label="Competencias"
-            title="Habilidades para el siglo XXI"
-            lead="Además del rigor académico, desarrollamos competencias que acompañan a nuestras personas graduadas en la universidad y en la vida."
+            label={text.skills.label}
+            title={text.skills.title}
+            lead={text.skills.lead}
           />
           <ol className="mt-12 grid border-t border-line sm:grid-cols-2 lg:ml-[25%]">
             {skills.map((s, i) => (

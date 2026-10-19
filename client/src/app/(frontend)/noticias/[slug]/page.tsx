@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { RichText } from "@payloadcms/richtext-lexical/react";
+import { draftMode } from "next/headers";
 import { notFound } from "next/navigation";
 import { ArrowIcon, Container, Label, Photo } from "@/components/site/ui";
 import { getNews, getNewsItem } from "@/lib/cms";
@@ -26,11 +27,22 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function NoticiaPage({ params }: Props) {
   const { slug } = await params;
-  const item = await getNewsItem(slug);
+  const { isEnabled: preview } = await draftMode();
+  const item = await getNewsItem(slug, preview);
   if (!item) notFound();
 
   return (
     <article>
+      {preview && (
+        <div className="bg-accent text-ink">
+          <Container className="flex min-h-11 flex-wrap items-center justify-between gap-2 py-2 text-sm font-medium">
+            <span>Vista previa: así se verá la noticia al publicarla.</span>
+            <a href={`/vista-previa/salir?ruta=/noticias/${slug}`} className="underline underline-offset-2">
+              Salir de la vista previa
+            </a>
+          </Container>
+        </div>
+      )}
       <Container className="pt-12 pb-14 sm:pt-16 lg:pt-20">
         <Link href="/noticias" className="group inline-flex items-center gap-2 font-mono text-[12px] uppercase tracking-[0.08em] text-muted hover:text-ink">
           <ArrowIcon className="h-4 w-4 rotate-180 transition-transform group-hover:-translate-x-1" />

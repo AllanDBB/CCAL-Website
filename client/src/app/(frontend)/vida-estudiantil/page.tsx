@@ -1,24 +1,21 @@
-import type { Metadata } from "next";
 import { Container, PageHero, Photo } from "@/components/site/ui";
-import { getInstitution } from "@/lib/cms";
+import { getInstitution, getPages } from "@/lib/cms";
+import { heroMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Vida estudiantil",
-  description: "Laboratorios, competencias, deporte y comunidad en el Colegio Científico de Alajuela.",
-};
+export const generateMetadata = heroMetadata((p) => p.studentLife.hero);
 
 // Patrón de tamaños que se repite: una foto ancha y dos normales.
 const spans = ["lg:col-span-2 lg:row-span-2", "", "", "lg:col-span-2", "", "", "lg:row-span-2", "lg:col-span-2", "", ""];
 
 export default async function VidaEstudiantilPage() {
-  const { gallery } = await getInstitution();
+  const [{ gallery }, { studentLife: text }] = await Promise.all([getInstitution(), getPages()]);
 
   return (
     <>
       <PageHero
-        label="Vida estudiantil"
-        title="Laboratorio, competencia y comunidad"
-        lead="La vida en el CCAL va del laboratorio a las ferias científicas, de las competencias internacionales a la cancha."
+        label={text.hero.label}
+        title={text.hero.title}
+        lead={text.hero.lead}
       />
       <Container className="pb-20 sm:pb-28">
         <section aria-label="Galería" className="grid auto-rows-[45vw] grid-cols-2 gap-3 sm:auto-rows-[30vw] lg:auto-rows-[18rem] lg:grid-cols-4">

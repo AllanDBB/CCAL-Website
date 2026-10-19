@@ -1,22 +1,19 @@
-import type { Metadata } from "next";
 import { ArrowIcon, ButtonLink, Container, PageHero, Photo, SectionHeader } from "@/components/site/ui";
-import { getInstitution } from "@/lib/cms";
+import { getInstitution, getPages } from "@/lib/cms";
+import { heroMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Excelencia",
-  description: "Logros, reconocimientos y proyectos de investigación de estudiantes del Colegio Científico de Alajuela.",
-};
+export const generateMetadata = heroMetadata((p) => p.excellence.hero);
 
 export default async function ExcelenciaPage() {
-  const { stats, achievements, gallery } = await getInstitution();
-  const featured = [gallery[0], gallery[2], gallery[6]];
+  const [{ stats, achievements, gallery }, { excellence: text }] = await Promise.all([getInstitution(), getPages()]);
+  const featured = gallery.slice(0, 3);
 
   return (
     <>
       <PageHero
-        label="Excelencia CCAL"
-        title="Resultados que hablan por nuestros estudiantes"
-        lead="Pensamiento crítico, creatividad y pasión por la ciencia, con resultados en ferias, olimpiadas y el ingreso universitario."
+        label={text.hero.label}
+        title={text.hero.title}
+        lead={text.hero.lead}
       />
 
       <section aria-label="Cifras" className="border-y border-line">
@@ -38,9 +35,9 @@ export default async function ExcelenciaPage() {
       <section className="py-20 sm:py-28">
         <Container>
           <SectionHeader
-            label="Investigación"
-            title="Proyectos y competencias"
-            lead="Nuestros estudiantes llevan sus proyectos a ferias científicas y a competencias nacionales e internacionales."
+            label={text.research.label}
+            title={text.research.title}
+            lead={text.research.lead}
           />
         </Container>
         <Container className="mt-12 grid gap-3 md:grid-cols-3">
@@ -52,7 +49,7 @@ export default async function ExcelenciaPage() {
 
       <section className="pb-20 sm:pb-28">
         <Container>
-          <SectionHeader label="Reconocimientos" title="Distinciones recientes" />
+          <SectionHeader label={text.awards.label} title={text.awards.title} />
           <ol className="mt-12 border-t border-line lg:ml-[25%]">
             {achievements.map((a) => (
               <li key={`${a.year}-${a.title}`} className="grid grid-cols-[5rem_1fr] gap-6 border-b border-line py-6 sm:grid-cols-[6rem_1fr_1fr]">
@@ -64,7 +61,7 @@ export default async function ExcelenciaPage() {
           </ol>
           <div className="mt-16 lg:ml-[25%]">
             <ButtonLink href="/admisiones" variant="ink" className="min-w-64">
-              Información de admisión <ArrowIcon />
+              {text.ctaButton} <ArrowIcon />
             </ButtonLink>
           </div>
         </Container>

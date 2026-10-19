@@ -106,3 +106,54 @@ export interface SubjectArea {
 export interface GalleryItem extends ImageRef {
   caption: string;
 }
+
+/** Encabezado de página: etiqueta pequeña, titular y entrada. */
+export interface PageHero {
+  label: string;
+  title: string;
+  lead: string;
+}
+
+/** Encabezado de sección dentro de una página. */
+export interface SectionText {
+  label: string;
+  title: string;
+  lead?: string;
+  linkText?: string;
+}
+
+export interface PagesContent {
+  home: {
+    heroLabel: string;
+    heroTitle: string;
+    heroImage?: ImageRef;
+    primaryButton: string;
+    secondaryButton: string;
+    facts: { label: string; value: string }[];
+    school: SectionText;
+    photos: SectionText;
+    news: SectionText;
+  };
+  admissions: {
+    dates: SectionText;
+    steps: SectionText;
+    requirements: SectionText;
+    paa: SectionText;
+    faq: SectionText;
+  };
+  school: { hero: PageHero };
+  history: { hero: PageHero; image?: ImageRef; origin: SectionText; foundersLabel: string };
+  missionVision: { hero: PageHero; skills: SectionText };
+  programs: { hero: PageHero; image?: ImageRef; areas: SectionText; extra: SectionText; ctaButton: string };
+  excellence: { hero: PageHero; research: SectionText; awards: SectionText; ctaButton: string };
+  studentLife: { hero: PageHero };
+  news: { hero: PageHero };
+  contact: { hero: PageHero; hoursNote: string };
+  terms: { hero: PageHero; sections: { title: string; body: string }[]; updated: string };
+}
+
+export interface NavItem {
+  label: string;
+  href: string;
+  children?: { label: string; href: string; description?: string }[];
+}

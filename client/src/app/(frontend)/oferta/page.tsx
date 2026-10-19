@@ -1,27 +1,24 @@
-import type { Metadata } from "next";
 import { ArrowIcon, ButtonLink, Container, Label, PageHero, SectionHeader } from "@/components/site/ui";
-import { getInstitution } from "@/lib/cms";
+import { getInstitution, getPages } from "@/lib/cms";
+import { heroMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Oferta académica",
-  description: "Plan de estudios preuniversitario con ciencias, matemáticas y tecnología de nivel universitario.",
-};
+export const generateMetadata = heroMetadata((p) => p.programs.hero);
 
 export default async function OfertaPage() {
-  const { subjectAreas, extraPrograms, gallery } = await getInstitution();
+  const [{ subjectAreas, extraPrograms }, { programs: text }] = await Promise.all([getInstitution(), getPages()]);
 
   return (
     <>
       <PageHero
-        label="Oferta académica"
-        title="Preparación preuniversitaria con estándares universitarios"
-        lead="Un plan de estudios científico y riguroso, complementado con tecnología, humanidades y desarrollo personal."
-        image={gallery[1]}
+        label={text.hero.label}
+        title={text.hero.title}
+        lead={text.hero.lead}
+        image={text.image}
       />
 
       <section className="py-20 sm:py-28">
         <Container>
-          <SectionHeader label="Plan de estudios" title="Áreas y asignaturas" />
+          <SectionHeader label={text.areas.label} title={text.areas.title} />
           <div className="mt-12">
             {subjectAreas.map((area, i) => (
               <div key={area.name} className="grid gap-6 border-t border-line py-8 lg:grid-cols-12">
@@ -46,7 +43,7 @@ export default async function OfertaPage() {
 
       <section className="bg-blue-50 py-20 sm:py-28">
         <Container>
-          <SectionHeader label="Más allá del aula" title="Programas adicionales" />
+          <SectionHeader label={text.extra.label} title={text.extra.title} />
           <div className="mt-12 grid gap-12 sm:grid-cols-2 lg:ml-[25%]">
             {extraPrograms.map((p) => (
               <div key={p.title} className="border-t border-line pt-6">
@@ -57,7 +54,7 @@ export default async function OfertaPage() {
           </div>
           <div className="mt-16 lg:ml-[25%]">
             <ButtonLink href="/admisiones" variant="ink" className="min-w-64">
-              Proceso de admisión <ArrowIcon />
+              {text.ctaButton} <ArrowIcon />
             </ButtonLink>
           </div>
         </Container>

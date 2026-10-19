@@ -7,6 +7,8 @@ export const Media: CollectionConfig = {
   admin: {
     group: "Contenido",
     description: "Fotos y PDF del sitio. Las fotos se optimizan automáticamente.",
+    defaultColumns: ["filename", "alt", "updatedAt"],
+    listSearchableFields: ["alt", "filename"],
   },
   access: {
     read: anyone,

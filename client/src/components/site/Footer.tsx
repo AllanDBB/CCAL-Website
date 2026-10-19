@@ -1,10 +1,9 @@
 import Link from "next/link";
-import { mainNav } from "@/content/navigation";
-import { getSite } from "@/lib/cms";
+import { getNavigation, getSite } from "@/lib/cms";
 import { AccentSquare, Container, Label } from "./ui";
 
 export default async function Footer() {
-  const site = await getSite();
+  const [site, mainNav] = await Promise.all([getSite(), getNavigation()]);
   const year = new Date().getFullYear();
 
   return (

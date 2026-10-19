@@ -91,13 +91,17 @@ export interface Config {
   fallbackLocale: null;
   globals: {
     admission: Admission;
+    pages: Page;
     institution: Institution;
     site: Site;
+    navigation: Navigation;
   };
   globalsSelect: {
     admission: AdmissionSelect<false> | AdmissionSelect<true>;
+    pages: PagesSelect<false> | PagesSelect<true>;
     institution: InstitutionSelect<false> | InstitutionSelect<true>;
     site: SiteSelect<false> | SiteSelect<true>;
+    navigation: NavigationSelect<false> | NavigationSelect<true>;
   };
   locale: null;
   widgets: {
@@ -526,6 +530,237 @@ export interface Admission {
   createdAt?: string | null;
 }
 /**
+ * Titulares, textos de introducción y títulos de sección de cada página del sitio.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages".
+ */
+export interface Page {
+  id: number;
+  home: {
+    heroLabel: string;
+    /**
+     * Si se deja vacía se usa la primera foto de la galería.
+     */
+    heroImage?: (number | null) | Media;
+    /**
+     * Cada línea del texto es una línea del titular.
+     */
+    heroTitle: string;
+    primaryButton: string;
+    secondaryButton: string;
+    facts?:
+      | {
+          label: string;
+          value: string;
+          id?: string | null;
+        }[]
+      | null;
+    school: {
+      label: string;
+      title: string;
+      lead?: string | null;
+      linkText?: string | null;
+    };
+    photos: {
+      label: string;
+      title: string;
+      linkText?: string | null;
+    };
+    news: {
+      label: string;
+      title: string;
+      linkText?: string | null;
+    };
+  };
+  admissions: {
+    dates: {
+      label: string;
+      title: string;
+    };
+    steps: {
+      label: string;
+      title: string;
+    };
+    requirements: {
+      label: string;
+      title: string;
+      lead?: string | null;
+    };
+    paa: {
+      label: string;
+      title: string;
+    };
+    faq: {
+      label: string;
+      title: string;
+      lead?: string | null;
+    };
+  };
+  school: {
+    hero: {
+      /**
+       * Texto pequeño sobre el titular.
+       */
+      label: string;
+      title: string;
+      /**
+       * También se usa como descripción para Google.
+       */
+      lead: string;
+    };
+  };
+  history: {
+    hero: {
+      /**
+       * Texto pequeño sobre el titular.
+       */
+      label: string;
+      title: string;
+      /**
+       * También se usa como descripción para Google.
+       */
+      lead: string;
+    };
+    image?: (number | null) | Media;
+    origin: {
+      label: string;
+      title: string;
+    };
+    foundersLabel: string;
+  };
+  missionVision: {
+    hero: {
+      /**
+       * Texto pequeño sobre el titular.
+       */
+      label: string;
+      title: string;
+      /**
+       * También se usa como descripción para Google.
+       */
+      lead: string;
+    };
+    skills: {
+      label: string;
+      title: string;
+      lead?: string | null;
+    };
+  };
+  programs: {
+    hero: {
+      /**
+       * Texto pequeño sobre el titular.
+       */
+      label: string;
+      title: string;
+      /**
+       * También se usa como descripción para Google.
+       */
+      lead: string;
+    };
+    image?: (number | null) | Media;
+    areas: {
+      label: string;
+      title: string;
+    };
+    extra: {
+      label: string;
+      title: string;
+    };
+    ctaButton: string;
+  };
+  excellence: {
+    hero: {
+      /**
+       * Texto pequeño sobre el titular.
+       */
+      label: string;
+      title: string;
+      /**
+       * También se usa como descripción para Google.
+       */
+      lead: string;
+    };
+    research: {
+      label: string;
+      title: string;
+      lead?: string | null;
+    };
+    awards: {
+      label: string;
+      title: string;
+    };
+    ctaButton: string;
+  };
+  studentLife: {
+    hero: {
+      /**
+       * Texto pequeño sobre el titular.
+       */
+      label: string;
+      title: string;
+      /**
+       * También se usa como descripción para Google.
+       */
+      lead: string;
+    };
+  };
+  news: {
+    hero: {
+      /**
+       * Texto pequeño sobre el titular.
+       */
+      label: string;
+      title: string;
+      /**
+       * También se usa como descripción para Google.
+       */
+      lead: string;
+    };
+  };
+  contact: {
+    hero: {
+      /**
+       * Texto pequeño sobre el titular.
+       */
+      label: string;
+      title: string;
+      /**
+       * También se usa como descripción para Google.
+       */
+      lead: string;
+    };
+    hoursNote?: string | null;
+  };
+  terms: {
+    hero: {
+      /**
+       * Texto pequeño sobre el titular.
+       */
+      label: string;
+      title: string;
+      /**
+       * También se usa como descripción para Google.
+       */
+      lead: string;
+    };
+    sections?:
+      | {
+          title: string;
+          /**
+           * Deja una línea en blanco entre párrafos.
+           */
+          body: string;
+          id?: string | null;
+        }[]
+      | null;
+    updated?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * Historia, misión, oferta académica, cifras, reconocimientos y galería de fotos.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -605,7 +840,7 @@ export interface Institution {
       }[]
     | null;
   /**
-   * El orden importa: la primera es la foto grande de la portada; las siguientes aparecen en la portada y en Vida estudiantil.
+   * El orden importa: las primeras aparecen en la portada; todas aparecen en Vida estudiantil.
    */
   gallery?:
     | {
@@ -644,6 +879,35 @@ export interface Site {
         name: 'Facebook' | 'Instagram' | 'LinkedIn' | 'YouTube';
         handle?: string | null;
         url: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Enlaces del menú principal y del pie de página. Arrastra para cambiar el orden.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "navigation".
+ */
+export interface Navigation {
+  id: number;
+  items?:
+    | {
+        label: string;
+        /**
+         * Ej.: /admisiones
+         */
+        href: string;
+        children?:
+          | {
+              label: string;
+              href: string;
+              description?: string | null;
+              id?: string | null;
+            }[]
+          | null;
         id?: string | null;
       }[]
     | null;
@@ -716,6 +980,240 @@ export interface AdmissionSelect<T extends boolean = true> {
         question?: T;
         answer?: T;
         id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages_select".
+ */
+export interface PagesSelect<T extends boolean = true> {
+  home?:
+    | T
+    | {
+        heroLabel?: T;
+        heroImage?: T;
+        heroTitle?: T;
+        primaryButton?: T;
+        secondaryButton?: T;
+        facts?:
+          | T
+          | {
+              label?: T;
+              value?: T;
+              id?: T;
+            };
+        school?:
+          | T
+          | {
+              label?: T;
+              title?: T;
+              lead?: T;
+              linkText?: T;
+            };
+        photos?:
+          | T
+          | {
+              label?: T;
+              title?: T;
+              linkText?: T;
+            };
+        news?:
+          | T
+          | {
+              label?: T;
+              title?: T;
+              linkText?: T;
+            };
+      };
+  admissions?:
+    | T
+    | {
+        dates?:
+          | T
+          | {
+              label?: T;
+              title?: T;
+            };
+        steps?:
+          | T
+          | {
+              label?: T;
+              title?: T;
+            };
+        requirements?:
+          | T
+          | {
+              label?: T;
+              title?: T;
+              lead?: T;
+            };
+        paa?:
+          | T
+          | {
+              label?: T;
+              title?: T;
+            };
+        faq?:
+          | T
+          | {
+              label?: T;
+              title?: T;
+              lead?: T;
+            };
+      };
+  school?:
+    | T
+    | {
+        hero?:
+          | T
+          | {
+              label?: T;
+              title?: T;
+              lead?: T;
+            };
+      };
+  history?:
+    | T
+    | {
+        hero?:
+          | T
+          | {
+              label?: T;
+              title?: T;
+              lead?: T;
+            };
+        image?: T;
+        origin?:
+          | T
+          | {
+              label?: T;
+              title?: T;
+            };
+        foundersLabel?: T;
+      };
+  missionVision?:
+    | T
+    | {
+        hero?:
+          | T
+          | {
+              label?: T;
+              title?: T;
+              lead?: T;
+            };
+        skills?:
+          | T
+          | {
+              label?: T;
+              title?: T;
+              lead?: T;
+            };
+      };
+  programs?:
+    | T
+    | {
+        hero?:
+          | T
+          | {
+              label?: T;
+              title?: T;
+              lead?: T;
+            };
+        image?: T;
+        areas?:
+          | T
+          | {
+              label?: T;
+              title?: T;
+            };
+        extra?:
+          | T
+          | {
+              label?: T;
+              title?: T;
+            };
+        ctaButton?: T;
+      };
+  excellence?:
+    | T
+    | {
+        hero?:
+          | T
+          | {
+              label?: T;
+              title?: T;
+              lead?: T;
+            };
+        research?:
+          | T
+          | {
+              label?: T;
+              title?: T;
+              lead?: T;
+            };
+        awards?:
+          | T
+          | {
+              label?: T;
+              title?: T;
+            };
+        ctaButton?: T;
+      };
+  studentLife?:
+    | T
+    | {
+        hero?:
+          | T
+          | {
+              label?: T;
+              title?: T;
+              lead?: T;
+            };
+      };
+  news?:
+    | T
+    | {
+        hero?:
+          | T
+          | {
+              label?: T;
+              title?: T;
+              lead?: T;
+            };
+      };
+  contact?:
+    | T
+    | {
+        hero?:
+          | T
+          | {
+              label?: T;
+              title?: T;
+              lead?: T;
+            };
+        hoursNote?: T;
+      };
+  terms?:
+    | T
+    | {
+        hero?:
+          | T
+          | {
+              label?: T;
+              title?: T;
+              lead?: T;
+            };
+        sections?:
+          | T
+          | {
+              title?: T;
+              body?: T;
+              id?: T;
+            };
+        updated?: T;
       };
   updatedAt?: T;
   createdAt?: T;
@@ -829,6 +1327,30 @@ export interface SiteSelect<T extends boolean = true> {
         name?: T;
         handle?: T;
         url?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "navigation_select".
+ */
+export interface NavigationSelect<T extends boolean = true> {
+  items?:
+    | T
+    | {
+        label?: T;
+        href?: T;
+        children?:
+          | T
+          | {
+              label?: T;
+              href?: T;
+              description?: T;
+              id?: T;
+            };
         id?: T;
       };
   updatedAt?: T;

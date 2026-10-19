@@ -1,6 +1,7 @@
 import type { GlobalConfig } from "payload";
 import { allow, anyone } from "../access";
 import { revalidateGlobal } from "../revalidate";
+import { rowLabel } from "../rowLabel";
 
 const dayOnly = { date: { pickerAppearance: "dayOnly" as const, displayFormat: "dd/MM/yyyy" } };
 
@@ -9,6 +10,7 @@ export const Admission: GlobalConfig = {
   label: "Proceso de admisión",
   admin: {
     group: "Contenido",
+    preview: () => "/admisiones",
     description:
       "Controla la página de Admisiones, la barra superior y el bloque de admisión de la portada. Cambia el estado para que el sitio muestre el mensaje correcto.",
   },
@@ -53,6 +55,7 @@ export const Admission: GlobalConfig = {
               label: "Fechas clave",
               type: "array",
               labels: { singular: "Fecha", plural: "Fechas" },
+              admin: rowLabel("label"),
               fields: [
                 {
                   type: "row",
@@ -103,6 +106,7 @@ export const Admission: GlobalConfig = {
               label: "Requisitos",
               type: "array",
               labels: { singular: "Requisito", plural: "Requisitos" },
+              admin: rowLabel("text"),
               fields: [{ name: "text", label: "Requisito", type: "text", required: true }],
             },
             {
@@ -110,6 +114,7 @@ export const Admission: GlobalConfig = {
               label: "Pasos del proceso",
               type: "array",
               labels: { singular: "Paso", plural: "Pasos" },
+              admin: rowLabel("title"),
               fields: [
                 { name: "title", label: "Título", type: "text", required: true },
                 { name: "description", label: "Descripción", type: "textarea", required: true },
@@ -120,6 +125,7 @@ export const Admission: GlobalConfig = {
               label: "Composición de la nota de ingreso",
               type: "array",
               labels: { singular: "Componente", plural: "Componentes" },
+              admin: rowLabel("label"),
               fields: [
                 {
                   type: "row",
@@ -147,12 +153,14 @@ export const Admission: GlobalConfig = {
                   name: "areas",
                   label: "Áreas que evalúa",
                   type: "array",
+                  admin: rowLabel("text"),
                   fields: [{ name: "text", label: "Área", type: "text", required: true }],
                 },
                 {
                   name: "facts",
                   label: "Datos importantes",
                   type: "array",
+                  admin: rowLabel("text"),
                   fields: [{ name: "text", label: "Dato", type: "text", required: true }],
                 },
               ],
@@ -167,6 +175,7 @@ export const Admission: GlobalConfig = {
               label: "Preguntas",
               type: "array",
               labels: { singular: "Pregunta", plural: "Preguntas" },
+              admin: rowLabel("question"),
               fields: [
                 { name: "question", label: "Pregunta", type: "text", required: true },
                 { name: "answer", label: "Respuesta", type: "textarea", required: true },

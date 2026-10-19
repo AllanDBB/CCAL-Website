@@ -2,19 +2,22 @@ import Image from "next/image";
 import AdmissionPanel from "@/components/site/AdmissionPanel";
 import NewsRow from "@/components/site/NewsCard";
 import { AccentSquare, ArrowIcon, ButtonLink, Container, Label, Photo, SectionHeader, TextLink } from "@/components/site/ui";
-import { getAdmission, getInstitution, getNews, getSite } from "@/lib/cms";
+import { getAdmission, getInstitution, getNews, getPages, getSite } from "@/lib/cms";
 
 export const revalidate = 3600;
 
 export default async function HomePage() {
-  const [site, admission, news, { pillars, gallery, history }] = await Promise.all([
+  const [site, admission, news, { pillars, gallery }, { home }] = await Promise.all([
     getSite(),
     getAdmission(),
     getNews(3),
     getInstitution(),
+    getPages(),
   ]);
 
-  const [hero, lab, travel, classroom, community, , fair] = gallery;
+  const hero = home.heroImage ?? gallery[0];
+  const photos = gallery.filter((g) => g.src !== hero?.src).slice(0, 5);
+  const titleLines = home.heroTitle.replace(/\.\s*$/, "").split("\n");
 
   return (
     <>
@@ -23,36 +26,33 @@ export default async function HomePage() {
         <div className="flex flex-col justify-between px-5 pt-12 pb-12 sm:px-8 lg:pt-16 lg:pb-14 lg:pl-[max(2rem,calc((100vw-1320px)/2+2rem))] lg:pr-12">
           <Label className="flex items-center gap-3">
             <AccentSquare className="h-2.5 w-2.5" />
-            Sistema Nacional de Colegios Científicos — Sede 09
+            {home.heroLabel}
           </Label>
 
           <h1 className="my-12 text-[clamp(3rem,7vw,7rem)] leading-[0.95] tracking-[-0.045em] lg:my-14">
-            Colegio
-            <br />
-            Científico
-            <br />
-            de Alajuela<span className="text-accent">.</span>
+            {titleLines.map((line, i) => (
+              <span key={i} className="block">
+                {line}
+                {i === titleLines.length - 1 && <span className="text-accent">.</span>}
+              </span>
+            ))}
           </h1>
 
           <div>
             <p className="max-w-lg text-lg leading-relaxed text-muted sm:text-xl">{site.description}</p>
             <div className="mt-8 flex flex-wrap gap-3">
               <ButtonLink href="/admisiones" variant="ink" className="min-w-56">
-                Proceso de admisión <ArrowIcon />
+                {home.primaryButton} <ArrowIcon />
               </ButtonLink>
               <ButtonLink href="/nosotros" variant="outline" className="min-w-56">
-                Conocer el colegio <ArrowIcon />
+                {home.secondaryButton} <ArrowIcon />
               </ButtonLink>
             </div>
             <dl className="mt-12 grid grid-cols-3 border-t border-line pt-4">
-              {[
-                ["Fundación", history.foundedOn.replace(" de ", " ").replace(" de ", " ")],
-                ["Sede", "09 del SNCCCR"],
-                ["Ubicación", "Alajuela, CR"],
-              ].map(([k, v]) => (
-                <div key={k} className="pr-3">
-                  <dt className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted">{k}</dt>
-                  <dd className="mt-1 text-[15px] font-medium leading-snug">{v}</dd>
+              {home.facts.map((f) => (
+                <div key={f.label} className="pr-3">
+                  <dt className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted">{f.label}</dt>
+                  <dd className="mt-1 text-[15px] font-medium leading-snug">{f.value}</dd>
                 </div>
               ))}
             </dl>
@@ -60,22 +60,21 @@ export default async function HomePage() {
         </div>
 
         <div className="relative aspect-[4/5] bg-surface sm:aspect-[16/11] lg:aspect-auto">
-          <Image src={hero.src} alt={hero.alt} fill priority sizes="(min-width: 1024px) 42vw, 100vw" className="object-cover" />
+          {hero && <Image src={hero.src} alt={hero.alt} fill priority sizes="(min-width: 1024px) 42vw, 100vw" className="object-cover" />}
         </div>
       </section>
 
       {/* Admisión */}
       <AdmissionPanel admission={admission} />
 
-
       {/* El colegio */}
       <section className="py-20 sm:py-28">
         <Container>
           <SectionHeader
-            label="El colegio"
-            title="Una formación exigente, pensada para la universidad y para el país."
-            lead="Somos parte del Sistema Nacional de Colegios Científicos: colegios públicos que reúnen a estudiantes con talento para la ciencia en todo Costa Rica."
-            action={<TextLink href="/nosotros">Conocer el colegio</TextLink>}
+            label={home.school.label}
+            title={home.school.title}
+            lead={home.school.lead}
+            action={home.school.linkText && <TextLink href="/nosotros">{home.school.linkText}</TextLink>}
           />
           <ul className="mt-14 grid gap-x-10 gap-y-10 md:grid-cols-3 lg:ml-[25%]">
             {pillars.map((p) => (
@@ -91,17 +90,26 @@ export default async function HomePage() {
       {/* Fotos */}
       <section className="pb-20 sm:pb-28">
         <Container>
-          <SectionHeader label="Vida estudiantil" title="Laboratorio, competencia y comunidad." action={<TextLink href="/vida-estudiantil">Ver galería</TextLink>} />
+          <SectionHeader
+            label={home.photos.label}
+            title={home.photos.title}
+            action={home.photos.linkText && <TextLink href="/vida-estudiantil">{home.photos.linkText}</TextLink>}
+          />
           <div className="mt-12 grid grid-cols-2 gap-3 lg:grid-cols-4">
-            {[lab, travel, classroom, fair].map((img, i) => (
+            {photos.map((img, i) => (
               <Photo
                 key={img.src}
                 image={img}
                 sizes="(min-width: 1024px) 25vw, 50vw"
-                className={i === 0 ? "col-span-2 aspect-[4/3] lg:col-span-2 lg:row-span-2 lg:aspect-auto" : "aspect-square"}
+                className={
+                  i === 0
+                    ? "col-span-2 aspect-[4/3] lg:col-span-2 lg:row-span-2 lg:aspect-auto"
+                    : i === 4
+                      ? "hidden aspect-square lg:block"
+                      : "aspect-square"
+                }
               />
             ))}
-            <Photo image={community} sizes="(min-width: 1024px) 25vw, 50vw" className="hidden aspect-square lg:block" />
           </div>
         </Container>
       </section>
@@ -109,7 +117,11 @@ export default async function HomePage() {
       {/* Noticias */}
       <section className="pb-20 sm:pb-28">
         <Container>
-          <SectionHeader label="Noticias" title="Lo más reciente" action={<TextLink href="/noticias">Todas las noticias</TextLink>} />
+          <SectionHeader
+            label={home.news.label}
+            title={home.news.title}
+            action={home.news.linkText && <TextLink href="/noticias">{home.news.linkText}</TextLink>}
+          />
           <div className="mt-8 border-t border-line">
             {news.map((item) => (
               <NewsRow key={item.slug} item={item} />

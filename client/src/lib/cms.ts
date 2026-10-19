@@ -6,9 +6,11 @@ import { getPayload } from "payload";
 import { cache } from "react";
 import { admission as localAdmission } from "@/content/admission";
 import * as localInstitution from "@/content/institution";
+import { mainNav as localNav } from "@/content/navigation";
 import { news as localNews } from "@/content/news";
+import { pages as localPages } from "@/content/pages";
 import { site as localSite } from "@/content/site";
-import type { Admission, GalleryItem, ImageRef, NewsItem, SiteSettings } from "@/content/types";
+import type { Admission, GalleryItem, ImageRef, NavItem, NewsItem, PagesContent, SiteSettings } from "@/content/types";
 import type { News } from "@/payload-types";
 
 const payload = cache(() => getPayload({ config }));
@@ -45,6 +47,23 @@ function toDay(value?: string | null) {
 }
 
 const texts = (rows?: { text: string }[] | null) => (rows ?? []).map((r) => r.text);
+
+/**
+ * Completa lo que viene del panel con el contenido por defecto: un campo
+ * vacío muestra el texto original en lugar de dejar un hueco en la página.
+ */
+function withDefaults<T>(defaults: T, value: unknown): T {
+  if (value === null || value === undefined || value === "") return defaults;
+  if (Array.isArray(defaults)) return (Array.isArray(value) && value.length ? value : defaults) as T;
+  if (typeof defaults === "object" && defaults !== null && typeof value === "object") {
+    const out: Record<string, unknown> = { ...(value as Record<string, unknown>) };
+    for (const [key, def] of Object.entries(defaults)) {
+      out[key] = withDefaults(def, (value as Record<string, unknown>)[key]);
+    }
+    return out as T;
+  }
+  return value as T;
+}
 
 export const getSite = cache(async (): Promise<SiteSettings> => {
   if (!(await cmsReady())) return localSite;
@@ -142,13 +161,44 @@ export const getNews = cache(async (limit?: number): Promise<NewsItem[]> => {
   return res.docs.map((doc) => toNewsItem(doc));
 });
 
-export const getNewsItem = cache(async (slug: string): Promise<NewsItem | undefined> => {
+/** Con `draft` devuelve también borradores (vista previa desde el panel). */
+export const getNewsItem = cache(async (slug: string, draft = false): Promise<NewsItem | undefined> => {
   if (!(await cmsReady())) return localNews.find((item) => item.slug === slug);
   const res = await (await payload()).find({
     collection: "news",
-    where: { slug: { equals: slug }, _status: { equals: "published" } },
+    where: draft ? { slug: { equals: slug } } : { slug: { equals: slug }, _status: { equals: "published" } },
+    draft,
     limit: 1,
     depth: 1,
   });
   return res.docs[0] ? toNewsItem(res.docs[0]) : undefined;
+});
+
+export const getPages = cache(async (): Promise<PagesContent> => {
+  if (!(await cmsReady())) return localPages;
+  const p = await (await payload()).findGlobal({ slug: "pages", depth: 1 });
+  // Las fotos se resuelven aparte: el panel devuelve documentos de «media».
+  const merged = withDefaults(localPages, {
+    ...p,
+    home: { ...p.home, heroImage: undefined },
+    history: { ...p.history, image: undefined },
+    programs: { ...p.programs, image: undefined },
+  });
+  merged.home.heroImage = toImage(p.home?.heroImage);
+  merged.history.image = toImage(p.history?.image) ?? localPages.history.image;
+  merged.programs.image = toImage(p.programs?.image) ?? localPages.programs.image;
+  return merged;
+});
+
+export const getNavigation = cache(async (): Promise<NavItem[]> => {
+  if (!(await cmsReady())) return localNav;
+  const n = await (await payload()).findGlobal({ slug: "navigation", depth: 0 });
+  if (!n.items?.length) return localNav;
+  return n.items.map((item) => ({
+    label: item.label,
+    href: item.href,
+    children: item.children?.length
+      ? item.children.map((c) => ({ label: c.label, href: c.href, description: c.description ?? undefined }))
+      : undefined,
+  }));
 });

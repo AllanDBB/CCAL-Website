@@ -1,8 +1,6 @@
-export interface NavItem {
-  label: string;
-  href: string;
-  children?: { label: string; href: string; description?: string }[];
-}
+import type { NavItem } from "./types";
+
+export type { NavItem };
 
 export const mainNav: NavItem[] = [
   { label: "Admisiones", href: "/admisiones" },

@@ -7,7 +7,9 @@ import path from "node:path";
 import { getPayload } from "payload";
 import { admission } from "./content/admission";
 import * as institution from "./content/institution";
+import { mainNav } from "./content/navigation";
 import { news } from "./content/news";
+import { pages } from "./content/pages";
 import { site } from "./content/site";
 
 const context = { disableRevalidate: true };
@@ -136,7 +138,20 @@ await payload.updateGlobal({
     gallery,
   },
 });
-console.log("Globales cargados: datos del colegio, admisión, el colegio.");
+const { home, history, programs, ...restPages } = pages;
+await payload.updateGlobal({
+  slug: "pages",
+  context,
+  data: {
+    ...restPages,
+    home: { ...home, heroImage: home.heroImage ? await media(home.heroImage.src, home.heroImage.alt) : undefined },
+    history: { ...history, image: history.image ? await media(history.image.src, history.image.alt) : undefined },
+    programs: { ...programs, image: programs.image ? await media(programs.image.src, programs.image.alt) : undefined },
+  },
+});
+
+await payload.updateGlobal({ slug: "navigation", context, data: { items: mainNav } });
+console.log("Globales cargados: datos del colegio, admisión, el colegio, páginas, menú.");
 
 // 4. Noticias
 for (const item of news) {

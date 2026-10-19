@@ -21,7 +21,11 @@ export const News: CollectionConfig = {
     useAsTitle: "title",
     defaultColumns: ["title", "category", "date", "_status"],
     description: "Las noticias publicadas aparecen en la portada y en /noticias.",
+    listSearchableFields: ["title", "excerpt"],
+    // «Vista previa» abre la noticia tal como está, aunque sea un borrador.
+    preview: (doc) => (doc?.slug ? `/vista-previa?ruta=/noticias/${doc.slug}` : null),
   },
+  defaultSort: "-date",
   versions: { drafts: true, maxPerDoc: 25 },
   access: {
     // El público solo ve noticias publicadas; el personal ve también borradores.

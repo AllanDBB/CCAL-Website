@@ -11,6 +11,8 @@ import { News } from "./payload/collections/News";
 import { Users } from "./payload/collections/Users";
 import { Admission } from "./payload/globals/Admission";
 import { Institution } from "./payload/globals/Institution";
+import { Navigation } from "./payload/globals/Navigation";
+import { Pages } from "./payload/globals/Pages";
 import { SiteSettings } from "./payload/globals/SiteSettings";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -23,12 +25,13 @@ export default buildConfig({
     components: {
       graphics: { Logo: "/payload/components/Logo", Icon: "/payload/components/Icon" },
       beforeDashboard: ["/payload/components/Dashboard"],
+      afterNavLinks: ["/payload/components/ViewSiteLink"],
     },
     importMap: { baseDir: path.resolve(dirname) },
   },
   i18n: { supportedLanguages: { es }, fallbackLanguage: "es" },
   collections: [News, Media, Users],
-  globals: [Admission, Institution, SiteSettings],
+  globals: [Admission, Pages, Institution, SiteSettings, Navigation],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || "",
   typescript: { outputFile: path.resolve(dirname, "payload-types.ts") },

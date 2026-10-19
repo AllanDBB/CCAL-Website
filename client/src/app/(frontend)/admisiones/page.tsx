@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { KeyDates, statusLabel } from "@/components/site/AdmissionPanel";
 import { AccentSquare, ArrowIcon, ButtonLink, Container, Label, PageHero, SectionHeader } from "@/components/site/ui";
-import { getAdmission, getSite } from "@/lib/cms";
+import { getAdmission, getPages, getSite } from "@/lib/cms";
 import { formatLongDate, formatNumericDate } from "@/lib/format";
 
 export const revalidate = 3600;
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 };
 
 export default async function AdmisionesPage() {
-  const [admission, site] = await Promise.all([getAdmission(), getSite()]);
+  const [admission, site, { admissions: text }] = await Promise.all([getAdmission(), getSite(), getPages()]);
   const results = admission.resultsDate ? formatNumericDate(admission.resultsDate).split(".") : null;
 
   return (
@@ -58,7 +58,7 @@ export default async function AdmisionesPage() {
       {/* Fechas */}
       <section className="pb-20 sm:pb-28">
         <Container>
-          <SectionHeader label="Fechas clave" title="Calendario del proceso" />
+          <SectionHeader label={text.dates.label} title={text.dates.title} />
           <div className="mt-12 lg:ml-[25%]">
             <KeyDates admission={admission} />
           </div>
@@ -68,7 +68,7 @@ export default async function AdmisionesPage() {
       {/* Pasos */}
       <section className="pb-20 sm:pb-28">
         <Container>
-          <SectionHeader label="Cómo funciona" title="El proceso en cuatro pasos" />
+          <SectionHeader label={text.steps.label} title={text.steps.title} />
           <ol className="mt-16 grid gap-x-8 sm:grid-cols-2 lg:grid-cols-4">
             {admission.steps.map((step, i) => (
               <li key={step.title}>
@@ -87,9 +87,9 @@ export default async function AdmisionesPage() {
       <section id="requisitos" className="scroll-mt-28 py-20 sm:py-28">
         <Container>
           <SectionHeader
-            label="Requisitos"
-            title="Quién puede aplicar"
-            lead="El proceso está dirigido a estudiantes que cursan noveno año y cumplen todos estos requisitos."
+            label={text.requirements.label}
+            title={text.requirements.title}
+            lead={text.requirements.lead}
           />
           <ol className="mt-12 border-t border-line lg:ml-[25%]">
             {admission.requirements.map((req, i) => (
@@ -105,7 +105,7 @@ export default async function AdmisionesPage() {
       {/* PAA y nota */}
       <section className="bg-blue-50 py-20 sm:py-28">
         <Container>
-          <SectionHeader label="La prueba" title="Prueba de Aptitud Académica" lead={admission.paa.description} />
+          <SectionHeader label={text.paa.label} title={text.paa.title} lead={admission.paa.description} />
           <div className="mt-16 grid gap-16 lg:ml-[25%] lg:grid-cols-2">
             <div>
               <Label>Evalúa</Label>
@@ -151,11 +151,11 @@ export default async function AdmisionesPage() {
       <section id="preguntas" className="scroll-mt-28 py-20 sm:py-28">
         <Container>
           <SectionHeader
-            label="Preguntas frecuentes"
-            title="Lo que más nos preguntan"
+            label={text.faq.label}
+            title={text.faq.title}
             lead={
               <>
-                ¿No encuentras tu respuesta? Escríbenos a{" "}
+                {text.faq.lead} Escríbenos a{" "}
                 <a href={`mailto:${site.email}`} className="text-ink underline underline-offset-4">
                   {site.email}
                 </a>{" "}

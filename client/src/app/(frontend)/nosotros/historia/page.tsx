@@ -1,22 +1,19 @@
-import type { Metadata } from "next";
 import { Container, Label, PageHero, SectionHeader } from "@/components/site/ui";
-import { getInstitution } from "@/lib/cms";
+import { heroMetadata } from "@/lib/metadata";
+import { getInstitution, getPages } from "@/lib/cms";
 
-export const metadata: Metadata = {
-  title: "Historia",
-  description: "El Colegio Científico de Alajuela nació el 11 de abril de 2006 como novena sede del Sistema Nacional de Colegios Científicos.",
-};
+export const generateMetadata = heroMetadata((p) => p.history.hero);
 
 export default async function HistoriaPage() {
-  const { history, gallery } = await getInstitution();
+  const [{ history }, { history: text }] = await Promise.all([getInstitution(), getPages()]);
 
   return (
     <>
-      <PageHero label="Historia" title={`Desde el ${history.foundedOn}`} lead={history.intro} image={gallery[9]} />
+      <PageHero label={text.hero.label} title={text.hero.title} lead={text.hero.lead} image={text.image} />
 
       <section className="py-20 sm:py-28">
         <Container>
-          <SectionHeader label="Origen" title="Una sede para Alajuela y Heredia" />
+          <SectionHeader label={text.origin.label} title={text.origin.title} />
           <div className="mt-12 grid gap-16 lg:grid-cols-12">
             <div className="space-y-6 text-xl leading-relaxed lg:col-span-6 lg:col-start-4">
               {history.paragraphs.map((p) => (
@@ -24,7 +21,7 @@ export default async function HistoriaPage() {
               ))}
             </div>
             <aside className="lg:col-span-3">
-              <Label>Convenio fundacional</Label>
+              <Label>{text.foundersLabel}</Label>
               <ol className="mt-4 border-t border-line">
                 {history.founders.map((f, i) => (
                   <li key={f} className="grid grid-cols-[2rem_1fr] border-b border-line py-4 font-medium leading-snug">

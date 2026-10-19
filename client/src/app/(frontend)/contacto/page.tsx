@@ -1,24 +1,21 @@
-import type { Metadata } from "next";
 import { Container, Label, PageHero } from "@/components/site/ui";
-import { getSite } from "@/lib/cms";
+import { getPages, getSite } from "@/lib/cms";
+import { heroMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Contacto",
-  description: "Dirección, teléfono, correo y horario de atención del Colegio Científico de Alajuela.",
-};
+export const generateMetadata = heroMetadata((p) => p.contact.hero);
 
 export default async function ContactoPage() {
-  const site = await getSite();
+  const [site, { contact: text }] = await Promise.all([getSite(), getPages()]);
   const items = [
     { label: "Teléfono", value: site.phone, href: `tel:+506${site.phone.replace(/\D/g, "")}` },
     { label: "Correo", value: site.email, href: `mailto:${site.email}` },
     { label: "Dirección", value: site.address, detail: site.addressDetail },
-    { label: "Horario", value: site.hours, detail: "Puede variar en vacaciones y feriados." },
+    { label: "Horario", value: site.hours, detail: text.hoursNote },
   ];
 
   return (
     <>
-      <PageHero label="Contacto" title="Estamos para ayudarte" lead="Escríbenos o llámanos con tus preguntas sobre el colegio o el proceso de admisión." />
+      <PageHero label={text.hero.label} title={text.hero.title} lead={text.hero.lead} />
       <section className="pb-20 sm:pb-28">
         <Container className="grid gap-12 lg:grid-cols-12">
           <dl className="border-t border-line lg:col-span-5">

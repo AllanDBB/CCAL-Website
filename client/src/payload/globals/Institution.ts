@@ -1,12 +1,14 @@
 import type { GlobalConfig } from "payload";
 import { allow, anyone } from "../access";
 import { revalidateGlobal } from "../revalidate";
+import { rowLabel } from "../rowLabel";
 
 const textList = (name: string, label: string, itemLabel: string) => ({
   name,
   label,
   type: "array" as const,
   labels: { singular: itemLabel, plural: label },
+  admin: rowLabel("text"),
   fields: [{ name: "text", label: itemLabel, type: "text" as const, required: true }],
 });
 
@@ -15,6 +17,7 @@ export const Institution: GlobalConfig = {
   label: "El colegio",
   admin: {
     group: "Contenido",
+    preview: () => "/nosotros",
     description: "Historia, misión, oferta académica, cifras, reconocimientos y galería de fotos.",
   },
   access: { read: anyone, update: allow("direccion") },
@@ -31,7 +34,7 @@ export const Institution: GlobalConfig = {
               label: "Cifras",
               type: "array",
               labels: { singular: "Cifra", plural: "Cifras" },
-              admin: { description: "Usa solo datos verificables." },
+              admin: { description: "Usa solo datos verificables.", ...rowLabel("label") },
               fields: [
                 {
                   type: "row",
@@ -47,6 +50,7 @@ export const Institution: GlobalConfig = {
               label: "Por qué el CCAL",
               type: "array",
               labels: { singular: "Pilar", plural: "Pilares" },
+              admin: rowLabel("title"),
               fields: [
                 { name: "title", label: "Título", type: "text", required: true },
                 { name: "body", label: "Texto", type: "textarea", required: true },
@@ -87,6 +91,7 @@ export const Institution: GlobalConfig = {
               label: "Áreas",
               type: "array",
               labels: { singular: "Área", plural: "Áreas" },
+              admin: rowLabel("name"),
               fields: [
                 { name: "name", label: "Área", type: "text", required: true },
                 {
@@ -94,6 +99,7 @@ export const Institution: GlobalConfig = {
                   label: "Asignaturas",
                   type: "array",
                   labels: { singular: "Asignatura", plural: "Asignaturas" },
+                  admin: rowLabel("name"),
                   fields: [
                     {
                       type: "row",
@@ -112,6 +118,7 @@ export const Institution: GlobalConfig = {
               label: "Programas adicionales",
               type: "array",
               labels: { singular: "Programa", plural: "Programas" },
+              admin: rowLabel("title"),
               fields: [
                 { name: "title", label: "Programa", type: "text", required: true },
                 { name: "body", label: "Descripción", type: "textarea", required: true },
@@ -127,6 +134,7 @@ export const Institution: GlobalConfig = {
               label: "Reconocimientos",
               type: "array",
               labels: { singular: "Reconocimiento", plural: "Reconocimientos" },
+              admin: rowLabel("title"),
               fields: [
                 {
                   type: "row",
@@ -150,7 +158,8 @@ export const Institution: GlobalConfig = {
               labels: { singular: "Foto", plural: "Fotos" },
               admin: {
                 description:
-                  "El orden importa: la primera es la foto grande de la portada; las siguientes aparecen en la portada y en Vida estudiantil.",
+                  "El orden importa: las primeras aparecen en la portada; todas aparecen en Vida estudiantil.",
+                ...rowLabel("caption"),
               },
               fields: [
                 { name: "image", label: "Foto", type: "upload", relationTo: "media", required: true },
