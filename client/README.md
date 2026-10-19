@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Sitio del Colegio Científico de Alajuela
 
-## Getting Started
+Next.js 16 + [Payload CMS 3](https://payloadcms.com). El sitio público está en `src/app/(frontend)` y el panel de contenido en `/admin` (`src/app/(payload)`).
 
-First, run the development server:
+## Contenido
+
+El personal edita en `/admin` con su correo y contraseña:
+
+| Rol | Puede editar |
+| --- | --- |
+| Administrador | Todo, incluidos usuarios y roles |
+| Dirección | Todo el contenido |
+| Comunicación | Noticias y fotos |
+| Admisiones | Proceso de admisión |
+| Docente | Noticias en borrador (Comunicación o Dirección las publican) |
+
+Los cambios regeneran las páginas al guardar; no hace falta volver a desplegar.
+
+`src/lib/cms.ts` es el único punto de lectura. Sin `DATABASE_URL` usa el contenido de `src/content`, que también es la carga inicial del panel.
+
+## Desarrollo local
 
 ```bash
+docker run -d --name ccal-postgres -e POSTGRES_USER=ccal -e POSTGRES_PASSWORD=ccal \
+  -e POSTGRES_DB=ccal -p 5434:5432 postgres:16
+cp .env.example .env          # DATABASE_URL=postgres://ccal:ccal@localhost:5434/ccal
+npm install
+npx payload migrate           # crea las tablas
+npm run seed                  # contenido inicial + primer administrador (imprime la contraseña)
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Al cambiar colecciones o globales en `src/payload/`:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npx payload migrate:create nombre-del-cambio
+npm run generate:types
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Despliegue (Vercel)
 
-## Learn More
+Variables necesarias en el proyecto de Vercel:
 
-To learn more about Next.js, take a look at the following resources:
+- `DATABASE_URL`: Storage → Neon (Postgres)
+- `BLOB_READ_WRITE_TOKEN`: Storage → Blob (fotos y PDF)
+- `PAYLOAD_SECRET`: cadena aleatoria larga
+- `NEXT_PUBLIC_SERVER_URL`: URL pública del sitio
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+`npm run build` aplica las migraciones pendientes antes de compilar. La primera vez, ejecuta `npm run seed` con `DATABASE_URL` y `BLOB_READ_WRITE_TOKEN` de producción para cargar el contenido y crear el administrador.

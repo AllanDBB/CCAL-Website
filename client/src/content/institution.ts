@@ -41,10 +41,10 @@ export const history = {
     "El convenio fundacional lo firmó como rector Rodrigo Arias Camacho, de la UNED, gran aliado de los Colegios Científicos.",
 };
 
-export const mission =
+export const mission: string =
   "Brindar a los estudiantes un excelente servicio académico enfocado en las ciencias, las ingenierías y la investigación, formándolos de manera integral desde los más altos valores costarricenses, y cultivando la creación, preservación, transmisión y búsqueda del conocimiento en ciencia y tecnología.";
 
-export const vision =
+export const vision: string =
   "Lograr una adecuada inserción de los jóvenes en la realidad nacional, formando líderes capaces, creativos y con espíritu crítico, con interés en la innovación tecnológica y la gestión del conocimiento sustentada en las ciencias y las humanidades, que causen un impacto positivo en la sociedad.";
 
 export const skills = [

@@ -1,3 +1,5 @@
+import type { SerializedEditorState } from "@payloadcms/richtext-lexical/lexical";
+
 // Tipos del contenido editable. Cada tipo corresponde a una colección o
 // "global" del futuro panel /admin (Payload CMS), para que el cambio de
 // archivos locales a base de datos no toque los componentes.
@@ -80,7 +82,8 @@ export interface NewsItem {
   category: NewsCategory;
   excerpt: string;
   image?: ImageRef;
-  body: string[];
+  /** Párrafos (contenido local) o texto enriquecido de Payload (Lexical). */
+  body: string[] | SerializedEditorState;
 }
 
 export interface Achievement {

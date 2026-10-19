@@ -1,0 +1,41 @@
+// Accesos rápidos del inicio del panel, con el azul del CCAL.
+.ccal-dashboard {
+  margin-bottom: 2.5rem;
+
+  h2 {
+    margin: 0 0 1rem;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 0.75rem;
+  }
+
+  &__card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding: 1.1rem 1.25rem;
+    border: 1px solid var(--theme-elevation-150);
+    border-left: 4px solid #0a2463;
+    background: var(--theme-elevation-0);
+    text-decoration: none;
+    color: inherit;
+    transition: background 0.15s;
+
+    &:hover {
+      background: var(--theme-elevation-50);
+    }
+
+    span {
+      opacity: 0.7;
+      font-size: 0.9rem;
+    }
+  }
+
+  &__note {
+    margin-top: 1rem;
+    opacity: 0.7;
+  }
+}
