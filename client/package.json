@@ -10,8 +10,9 @@
     "lint": "next lint",
     "payload": "payload",
     "seed": "payload run src/seed.ts",
-    "generate:types": "payload generate:types",
-    "generate:importmap": "payload generate:importmap"
+    "generate:types": "sh -c 'BLOB_READ_WRITE_TOKEN=${BLOB_READ_WRITE_TOKEN:-vercel_blob_rw_placeholder_placeholder} payload generate:types'",
+    "generate:importmap": "payload generate:importmap",
+    "migrate:create": "sh -c 'BLOB_READ_WRITE_TOKEN=${BLOB_READ_WRITE_TOKEN:-vercel_blob_rw_placeholder_placeholder} payload migrate:create \"$@\"' --"
   },
   "dependencies": {
     "@payloadcms/db-postgres": "3.91.0",
