@@ -11,9 +11,15 @@ import { site as localSite } from "@/content/site";
 import type { Admission, GalleryItem, ImageRef, NewsItem, SiteSettings } from "@/content/types";
 import type { News } from "@/payload-types";
 
-const useCMS = Boolean(process.env.DATABASE_URL);
-
 const payload = cache(() => getPayload({ config }));
+
+// El panel se usa solo cuando hay base de datos y ya tiene el contenido
+// inicial; mientras tanto el sitio sigue mostrando src/content.
+const cmsReady = cache(async () => {
+  if (!process.env.DATABASE_URL) return false;
+  const site = await (await payload()).findGlobal({ slug: "site", depth: 0 });
+  return Boolean(site.name);
+});
 
 type MediaDoc = { url?: string | null; alt?: string | null } | number | null | undefined;
 
@@ -41,7 +47,7 @@ function toDay(value?: string | null) {
 const texts = (rows?: { text: string }[] | null) => (rows ?? []).map((r) => r.text);
 
 export const getSite = cache(async (): Promise<SiteSettings> => {
-  if (!useCMS) return localSite;
+  if (!(await cmsReady())) return localSite;
   const s = await (await payload()).findGlobal({ slug: "site" });
   return {
     name: s.name,
@@ -60,7 +66,7 @@ export const getSite = cache(async (): Promise<SiteSettings> => {
 });
 
 export const getAdmission = cache(async (): Promise<Admission> => {
-  if (!useCMS) return localAdmission;
+  if (!(await cmsReady())) return localAdmission;
   const a = await (await payload()).findGlobal({ slug: "admission", depth: 1 });
   return {
     status: a.status,
@@ -81,7 +87,7 @@ export const getAdmission = cache(async (): Promise<Admission> => {
 });
 
 export const getInstitution = cache(async (): Promise<typeof localInstitution> => {
-  if (!useCMS) return localInstitution;
+  if (!(await cmsReady())) return localInstitution;
   const i = await (await payload()).findGlobal({ slug: "institution", depth: 1 });
   return {
     stats: (i.stats ?? []).map((s) => ({ value: s.value, label: s.label })),
@@ -122,7 +128,7 @@ function toNewsItem(doc: News): NewsItem {
 }
 
 export const getNews = cache(async (limit?: number): Promise<NewsItem[]> => {
-  if (!useCMS) {
+  if (!(await cmsReady())) {
     const sorted = [...localNews].sort((a, b) => b.date.localeCompare(a.date));
     return limit ? sorted.slice(0, limit) : sorted;
   }
@@ -137,7 +143,7 @@ export const getNews = cache(async (limit?: number): Promise<NewsItem[]> => {
 });
 
 export const getNewsItem = cache(async (slug: string): Promise<NewsItem | undefined> => {
-  if (!useCMS) return localNews.find((item) => item.slug === slug);
+  if (!(await cmsReady())) return localNews.find((item) => item.slug === slug);
   const res = await (await payload()).find({
     collection: "news",
     where: { slug: { equals: slug }, _status: { equals: "published" } },
