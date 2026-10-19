@@ -16,7 +16,7 @@ export default async function NoticiasPage() {
       <PageHero label="Noticias" title="Noticias y avisos" lead="Admisión, logros de nuestros estudiantes y la vida del colegio." />
       <section className="pb-20 sm:pb-28">
         <Container>
-          <div className="border-t border-ink">
+          <div className="border-t border-line">
             {news.map((item) => (
               <NewsRow key={item.slug} item={item} />
             ))}

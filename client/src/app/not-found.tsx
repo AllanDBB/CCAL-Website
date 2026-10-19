@@ -9,7 +9,7 @@ export default function NotFound() {
         <br />
         encontrada<span className="text-accent">.</span>
       </h1>
-      <div className="mt-12 flex flex-wrap gap-3 border-t border-ink pt-8">
+      <div className="mt-12 flex flex-wrap gap-3 border-t border-line pt-8">
         <ButtonLink href="/" variant="ink" className="min-w-56">
           Ir al inicio <ArrowIcon />
         </ButtonLink>

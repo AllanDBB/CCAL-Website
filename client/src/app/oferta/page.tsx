@@ -21,13 +21,13 @@ export default async function OfertaPage() {
 
       <section className="py-20 sm:py-28">
         <Container>
-          <SectionHeader index="01" label="Plan de estudios" title="Áreas y asignaturas" />
+          <SectionHeader label="Plan de estudios" title="Áreas y asignaturas" />
           <div className="mt-12">
             {subjectAreas.map((area, i) => (
-              <div key={area.name} className="grid gap-6 border-t border-ink py-8 lg:grid-cols-12">
+              <div key={area.name} className="grid gap-6 border-t border-line py-8 lg:grid-cols-12">
                 <div className="lg:col-span-3">
                   <Label>{String(i + 1).padStart(2, "0")}</Label>
-                  <h3 className="mt-2 text-3xl leading-tight">{area.name}</h3>
+                  <h3 className="mt-2 text-2xl leading-tight tracking-[-0.02em]">{area.name}</h3>
                 </div>
                 <ul className="grid gap-x-8 gap-y-6 sm:grid-cols-2 lg:col-span-9 lg:grid-cols-3">
                   {area.subjects.map((s) => (
@@ -44,19 +44,19 @@ export default async function OfertaPage() {
         </Container>
       </section>
 
-      <section className="bg-ink py-20 text-white sm:py-28">
+      <section className="bg-surface py-20 sm:py-28">
         <Container>
-          <SectionHeader index="02" label="Más allá del aula" title="Programas adicionales" light />
+          <SectionHeader label="Más allá del aula" title="Programas adicionales" />
           <div className="mt-12 grid gap-12 sm:grid-cols-2 lg:ml-[25%]">
             {extraPrograms.map((p) => (
-              <div key={p.title} className="border-t border-white/25 pt-6">
-                <h3 className="text-3xl">{p.title}</h3>
-                <p className="mt-3 leading-relaxed text-white/70">{p.body}</p>
+              <div key={p.title} className="border-t border-line pt-6">
+                <h3 className="text-2xl tracking-[-0.02em]">{p.title}</h3>
+                <p className="mt-3 leading-relaxed text-muted">{p.body}</p>
               </div>
             ))}
           </div>
           <div className="mt-16 lg:ml-[25%]">
-            <ButtonLink href="/admisiones" variant="accent" className="min-w-64">
+            <ButtonLink href="/admisiones" variant="ink" className="min-w-64">
               Proceso de admisión <ArrowIcon />
             </ButtonLink>
           </div>

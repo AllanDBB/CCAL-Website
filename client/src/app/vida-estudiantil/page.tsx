@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { PageHero, Photo } from "@/components/site/ui";
+import { Container, PageHero, Photo } from "@/components/site/ui";
 import { getInstitution } from "@/lib/cms";
 
 export const metadata: Metadata = {
@@ -20,11 +20,13 @@ export default async function VidaEstudiantilPage() {
         title="Laboratorio, competencia y comunidad"
         lead="La vida en el CCAL va del laboratorio a las ferias científicas, de las competencias internacionales a la cancha."
       />
-      <section aria-label="Galería" className="grid auto-rows-[60vw] grid-cols-2 gap-px border-t border-ink bg-ink sm:auto-rows-[40vw] lg:auto-rows-[22vw] lg:grid-cols-4">
-        {gallery.map((img, i) => (
-          <Photo key={img.src} image={img} caption={img.caption} sizes="(min-width: 1024px) 50vw, 50vw" className={spans[i % spans.length]} />
-        ))}
-      </section>
+      <Container className="pb-20 sm:pb-28">
+        <section aria-label="Galería" className="grid auto-rows-[45vw] grid-cols-2 gap-3 sm:auto-rows-[30vw] lg:auto-rows-[18rem] lg:grid-cols-4">
+          {gallery.map((img, i) => (
+            <Photo key={img.src} image={img} caption={img.caption} sizes="(min-width: 1024px) 640px, 50vw" className={spans[i % spans.length]} />
+          ))}
+        </section>
+      </Container>
     </>
   );
 }

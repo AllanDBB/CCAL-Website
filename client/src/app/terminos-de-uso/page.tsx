@@ -36,10 +36,10 @@ export default function TerminosPage() {
     <>
       <PageHero label="Legal" title="Términos de uso" lead="Información sobre el propósito y el uso de este sitio web." />
       <Container className="pb-20 sm:pb-28">
-        {sections.map((s, i) => (
-          <section key={s.title} className="grid gap-6 border-t border-ink py-8 lg:grid-cols-12">
+        {sections.map((s) => (
+          <section key={s.title} className="grid gap-6 border-t border-line py-8 lg:grid-cols-12">
             <Label className="lg:col-span-3">
-              <span className="text-ink">{String(i + 1).padStart(2, "0")}</span> — {s.title}
+              {s.title}
             </Label>
             <div className="space-y-4 text-lg leading-relaxed lg:col-span-6">
               {s.body.map((p) => (
@@ -48,7 +48,7 @@ export default function TerminosPage() {
             </div>
           </section>
         ))}
-        <p className="border-t border-ink pt-6 text-muted lg:pl-[25%]">
+        <p className="border-t border-line pt-6 text-muted lg:pl-[25%]">
           ¿Preguntas sobre el sitio?{" "}
           <Link href="/contacto" className="text-ink underline underline-offset-4">
             Contáctanos

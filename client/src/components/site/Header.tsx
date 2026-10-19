@@ -18,10 +18,11 @@ async function AnnouncementBar() {
         : `${admission.processName} — Inscripciones abiertas`;
 
   return (
-    <Link href="/admisiones" className="group block bg-accent text-ink">
-      <Container className="flex min-h-10 items-center justify-between gap-4 py-2 font-mono text-[12px] font-medium uppercase tracking-[0.08em]">
+    <Link href="/admisiones" className="group block bg-surface text-ink">
+      <Container className="flex min-h-9 items-center justify-center gap-3 py-2 text-[13px]">
+        <AccentSquare className="h-2 w-2" />
         <span>{message}</span>
-        <ArrowIcon className="h-4 w-4 shrink-0 transition-transform group-hover:translate-x-1" />
+        <ArrowIcon className="h-3.5 w-3.5 shrink-0 transition-transform group-hover:translate-x-1" />
       </Container>
     </Link>
   );
@@ -44,7 +45,7 @@ export default async function Header() {
   return (
     <>
       <AnnouncementBar />
-      <header className="sticky top-0 z-40 border-b border-ink/10 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/85">
+      <header className="sticky top-0 z-40 border-b border-line bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/85">
         <Container className="flex h-[72px] items-center justify-between gap-6">
           <Wordmark />
 

@@ -12,18 +12,18 @@ export const statusLabel: Record<AdmissionStatus, string> = {
 /** Tabla de fechas clave: fecha mono · evento · estado. */
 export function KeyDates({ admission, light = false }: { admission: Admission; light?: boolean }) {
   return (
-    <ol className={`border-t ${light ? "border-white/25" : "border-ink"}`}>
+    <ol className={`border-t ${light ? "border-white/25" : "border-line"}`}>
       {admission.keyDates.map((d) => {
         const done = isPast(d.date);
         return (
           <li
             key={d.label}
-            className={`grid grid-cols-[7.5rem_1fr_auto] items-baseline gap-4 border-b py-5 ${light ? "border-white/25" : "border-line"}`}
+            className={`grid grid-cols-[6.5rem_1fr_auto] items-baseline gap-4 border-b py-4 ${light ? "border-white/25" : "border-line"}`}
           >
             <time dateTime={d.date} className={`font-mono text-[13px] ${light ? "text-white/70" : "text-muted"}`}>
               {formatNumericDate(d.date)}
             </time>
-            <span className={`text-lg font-medium leading-snug ${light ? "text-white" : "text-ink"}`}>
+            <span className={`font-medium leading-snug ${light ? "text-white" : "text-ink"}`}>
               {d.label}
               <span className="sr-only">, {formatLongDate(d.date)}</span>
             </span>
@@ -37,55 +37,45 @@ export function KeyDates({ admission, light = false }: { admission: Admission; l
   );
 }
 
-/** Bloque negro de admisión para la portada. */
+/** Bloque de admisión para la portada. */
 export default function AdmissionPanel({ admission }: { admission: Admission }) {
   const next = admission.keyDates.find((d) => !isPast(d.date));
   const [day, month] = next ? formatNumericDate(next.date).split(".") : [];
 
   return (
-    <section className="bg-ink py-20 text-white sm:py-28">
-      <Container>
-        <div className="grid gap-6 border-t border-white/25 pt-6 lg:grid-cols-12">
-          <Label light className="lg:col-span-3">
-            <span className="text-accent">01</span> — {admission.processName}
-          </Label>
-          <p className="flex items-center gap-2 font-mono text-[12px] uppercase tracking-[0.08em] text-white lg:col-span-9">
+    <section className="bg-surface py-16 sm:py-24">
+      <Container className="grid gap-12 lg:grid-cols-12">
+        <div className="lg:col-span-7">
+          <Label className="flex items-center gap-2">
             <AccentSquare className="h-2 w-2" />
-            {statusLabel[admission.status]}
-          </p>
+            {admission.processName} — {statusLabel[admission.status]}
+          </Label>
+          <h2 className="mt-6 text-3xl leading-[1.05] sm:text-4xl lg:text-5xl">{admission.headline}</h2>
+          <p className="mt-5 max-w-xl text-lg leading-relaxed text-muted">{admission.summary}</p>
+          <div className="mt-8">
+            {admission.status === "resultados" && admission.resultsUrl ? (
+              <ButtonLink href={admission.resultsUrl} variant="ink" className="min-w-60">
+                Ver resultados <ArrowIcon />
+              </ButtonLink>
+            ) : (
+              <ButtonLink href="/admisiones" variant="ink" className="min-w-60">
+                Detalles del proceso <ArrowIcon />
+              </ButtonLink>
+            )}
+          </div>
         </div>
 
-        <div className="mt-12 grid gap-14 lg:grid-cols-12">
-          <div className="lg:col-span-7">
-            <h2 className="text-4xl leading-[1] sm:text-6xl lg:text-7xl">{admission.headline}</h2>
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/70">{admission.summary}</p>
-            <div className="mt-10 flex flex-wrap gap-3">
-              {admission.status === "resultados" && admission.resultsUrl ? (
-                <ButtonLink href={admission.resultsUrl} variant="accent">
-                  Ver resultados <ArrowIcon />
-                </ButtonLink>
-              ) : (
-                <ButtonLink href="/admisiones" variant="accent">
-                  Detalles del proceso <ArrowIcon />
-                </ButtonLink>
-              )}
-              <ButtonLink href="/admisiones#preguntas" variant="outline-light">
-                Preguntas frecuentes <ArrowIcon />
-              </ButtonLink>
+        <div className="lg:col-span-4 lg:col-start-9">
+          {next && (
+            <div className="mb-8">
+              <Label>{next.label}</Label>
+              <p className="mt-2 font-display text-8xl font-semibold leading-[0.9] tracking-[-0.05em]">
+                {day}.{month}
+                <span className="text-accent">.</span>
+              </p>
             </div>
-          </div>
-
-          <div className="lg:col-span-5">
-            {next && (
-              <div className="mb-10">
-                <Label light>Próxima fecha — {next.label}</Label>
-                <p className="mt-3 font-display text-[7rem] font-semibold leading-[0.85] tracking-[-0.06em] text-accent sm:text-[9rem]">
-                  {day}.{month}
-                </p>
-              </div>
-            )}
-            <KeyDates admission={admission} light />
-          </div>
+          )}
+          <KeyDates admission={admission} />
         </div>
       </Container>
     </section>

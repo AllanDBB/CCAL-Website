@@ -21,30 +21,27 @@ export default async function MisionVisionPage() {
       <section className="pb-20 sm:pb-28">
         <Container className="space-y-16">
           {[
-            ["01", "Misión", mission],
-            ["02", "Visión", vision],
-          ].map(([index, label, text]) => (
-            <div key={label} className="grid gap-6 border-t border-ink pt-6 lg:grid-cols-12">
-              <Label className="lg:col-span-3">
-                <span className="text-ink">{index}</span> — {label}
-              </Label>
-              <p className="font-display text-3xl font-medium leading-[1.15] tracking-[-0.03em] sm:text-4xl lg:col-span-9">{text}</p>
+            ["Misión", mission],
+            ["Visión", vision],
+          ].map(([label, text]) => (
+            <div key={label} className="grid gap-6 border-t border-line pt-6 lg:grid-cols-12">
+              <Label className="lg:col-span-3">{label}</Label>
+              <p className="font-display text-2xl font-medium leading-[1.25] tracking-[-0.02em] sm:text-3xl lg:col-span-9">{text}</p>
             </div>
           ))}
         </Container>
       </section>
 
-      <section className="bg-surface py-20 sm:py-28">
+      <section className="pb-20 sm:pb-28">
         <Container>
           <SectionHeader
-            index="03"
             label="Competencias"
             title="Habilidades para el siglo XXI"
             lead="Además del rigor académico, desarrollamos competencias que acompañan a nuestras personas graduadas en la universidad y en la vida."
           />
-          <ol className="mt-12 grid border-t border-ink sm:grid-cols-2 lg:ml-[25%]">
+          <ol className="mt-12 grid border-t border-line sm:grid-cols-2 lg:ml-[25%]">
             {skills.map((s, i) => (
-              <li key={s} className="grid grid-cols-[3rem_1fr] items-baseline border-b border-ink/15 py-4 text-xl sm:odd:pr-8 sm:even:pl-8">
+              <li key={s} className="grid grid-cols-[3rem_1fr] items-baseline border-b border-line py-4 text-lg sm:odd:pr-8 sm:even:pl-8">
                 <span className="font-mono text-[12px] text-muted">{String(i + 1).padStart(2, "0")}</span>
                 {s}
               </li>

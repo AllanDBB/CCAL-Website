@@ -7,14 +7,14 @@ import { getAdmission, getInstitution, getNews, getSite } from "@/lib/cms";
 export const revalidate = 3600;
 
 export default async function HomePage() {
-  const [site, admission, news, { stats, pillars, gallery, history }] = await Promise.all([
+  const [site, admission, news, { pillars, gallery, history }] = await Promise.all([
     getSite(),
     getAdmission(),
     getNews(3),
     getInstitution(),
   ]);
 
-  const [hero, lab, travel, classroom, community, graduation, fair, football] = gallery;
+  const [hero, lab, travel, classroom, community, , fair] = gallery;
 
   return (
     <>
@@ -26,7 +26,7 @@ export default async function HomePage() {
             Sistema Nacional de Colegios Científicos — Sede 09
           </Label>
 
-          <h1 className="my-12 text-[clamp(3.25rem,8.6vw,8.75rem)] leading-[0.92] tracking-[-0.045em] lg:my-16">
+          <h1 className="my-12 text-[clamp(3rem,7vw,7rem)] leading-[0.95] tracking-[-0.045em] lg:my-14">
             Colegio
             <br />
             Científico
@@ -44,7 +44,7 @@ export default async function HomePage() {
                 Conocer el colegio <ArrowIcon />
               </ButtonLink>
             </div>
-            <dl className="mt-12 grid grid-cols-3 border-t border-ink pt-4">
+            <dl className="mt-12 grid grid-cols-3 border-t border-line pt-4">
               {[
                 ["Fundación", history.foundedOn.replace(" de ", " ").replace(" de ", " ")],
                 ["Sede", "09 del SNCCCR"],
@@ -61,77 +61,47 @@ export default async function HomePage() {
 
         <div className="relative aspect-[4/5] bg-surface sm:aspect-[16/11] lg:aspect-auto">
           <Image src={hero.src} alt={hero.alt} fill priority sizes="(min-width: 1024px) 42vw, 100vw" className="object-cover" />
-          <p className="absolute bottom-0 left-0 bg-white px-3 py-2 font-mono text-[11px] uppercase tracking-[0.08em]">
-            {hero.caption}
-          </p>
         </div>
       </section>
 
       {/* Admisión */}
       <AdmissionPanel admission={admission} />
 
-      {/* Franja de fotos de borde a borde */}
-      <section aria-label="Fotografías del colegio" className="grid grid-cols-2 gap-px bg-ink lg:grid-cols-4">
-        {[lab, travel, classroom, fair].map((img) => (
-          <Photo key={img.src} image={img} caption={img.caption} sizes="(min-width: 1024px) 25vw, 50vw" className="aspect-[3/4]" />
-        ))}
-      </section>
 
       {/* El colegio */}
       <section className="py-20 sm:py-28">
         <Container>
           <SectionHeader
-            index="02"
             label="El colegio"
             title="Una formación exigente, pensada para la universidad y para el país."
             lead="Somos parte del Sistema Nacional de Colegios Científicos: colegios públicos que reúnen a estudiantes con talento para la ciencia en todo Costa Rica."
             action={<TextLink href="/nosotros">Conocer el colegio</TextLink>}
           />
-          <ol className="mt-20 grid gap-x-10 md:grid-cols-3">
-            {pillars.map((p, i) => (
+          <ul className="mt-14 grid gap-x-10 gap-y-10 md:grid-cols-3 lg:ml-[25%]">
+            {pillars.map((p) => (
               <li key={p.title}>
-                <span className="block border-t-2 border-ink pt-4 font-mono text-[12px] text-muted">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <h3 className="mt-10 text-3xl leading-[1.05]">{p.title}</h3>
-                <p className="mt-4 pb-8 leading-relaxed text-muted">{p.body}</p>
+                <h3 className="text-xl leading-tight tracking-[-0.02em]">{p.title}</h3>
+                <p className="mt-3 leading-relaxed text-muted">{p.body}</p>
               </li>
             ))}
-          </ol>
+          </ul>
         </Container>
       </section>
 
-      {/* Cifras */}
-      <section aria-label="El CCAL en cifras" className="border-y border-ink">
+      {/* Fotos */}
+      <section className="pb-20 sm:pb-28">
         <Container>
-          <dl className="grid grid-cols-2 lg:grid-cols-4">
-            {stats.map((s, i) => (
-              <div
-                key={s.label}
-                className={`border-ink py-10 ${i % 2 === 0 ? "border-r pr-5" : "pl-5"} ${i < 2 ? "border-b lg:border-b-0" : ""} lg:border-r lg:px-6 lg:first:pl-0 lg:last:border-r-0`}
-              >
-                <dt className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted">{s.label}</dt>
-                <dd className="mt-6 font-display text-5xl font-semibold tracking-[-0.05em] sm:text-7xl">{s.value}</dd>
-              </div>
+          <SectionHeader label="Vida estudiantil" title="Laboratorio, competencia y comunidad." action={<TextLink href="/vida-estudiantil">Ver galería</TextLink>} />
+          <div className="mt-12 grid grid-cols-2 gap-3 lg:grid-cols-4">
+            {[lab, travel, classroom, fair].map((img, i) => (
+              <Photo
+                key={img.src}
+                image={img}
+                sizes="(min-width: 1024px) 25vw, 50vw"
+                className={i === 0 ? "col-span-2 aspect-[4/3] lg:col-span-2 lg:row-span-2 lg:aspect-auto" : "aspect-square"}
+              />
             ))}
-          </dl>
-        </Container>
-      </section>
-
-      {/* Vida estudiantil */}
-      <section className="py-20 sm:py-28">
-        <Container>
-          <SectionHeader
-            index="03"
-            label="Vida estudiantil"
-            title="Laboratorio, competencia y comunidad."
-            action={<TextLink href="/vida-estudiantil">Ver galería</TextLink>}
-          />
-          <div className="mt-16 grid grid-cols-2 gap-2 lg:grid-cols-12 lg:grid-rows-[repeat(2,minmax(0,18rem))]">
-            <Photo image={community} caption={community.caption} sizes="(min-width: 1024px) 50vw, 100vw" className="col-span-2 aspect-[4/3] lg:col-span-6 lg:row-span-2 lg:aspect-auto" />
-            <Photo image={graduation} caption={graduation.caption} sizes="(min-width: 1024px) 50vw, 100vw" className="col-span-2 aspect-[16/9] lg:col-span-6 lg:aspect-auto" />
-            <Photo image={football} caption={football.caption} sizes="(min-width: 1024px) 25vw, 50vw" className="aspect-square lg:col-span-3 lg:aspect-auto" />
-            <Photo image={gallery[8]} caption={gallery[8].caption} sizes="(min-width: 1024px) 25vw, 50vw" className="aspect-square lg:col-span-3 lg:aspect-auto" />
+            <Photo image={community} sizes="(min-width: 1024px) 25vw, 50vw" className="hidden aspect-square lg:block" />
           </div>
         </Container>
       </section>
@@ -139,8 +109,8 @@ export default async function HomePage() {
       {/* Noticias */}
       <section className="pb-20 sm:pb-28">
         <Container>
-          <SectionHeader index="04" label="Noticias" title="Lo más reciente" action={<TextLink href="/noticias">Todas las noticias</TextLink>} />
-          <div className="mt-10 border-t border-line">
+          <SectionHeader label="Noticias" title="Lo más reciente" action={<TextLink href="/noticias">Todas las noticias</TextLink>} />
+          <div className="mt-8 border-t border-line">
             {news.map((item) => (
               <NewsRow key={item.slug} item={item} />
             ))}

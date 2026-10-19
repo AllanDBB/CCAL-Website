@@ -21,7 +21,7 @@ export default async function ContactoPage() {
       <PageHero label="Contacto" title="Estamos para ayudarte" lead="Escríbenos o llámanos con tus preguntas sobre el colegio o el proceso de admisión." />
       <section className="pb-20 sm:pb-28">
         <Container className="grid gap-12 lg:grid-cols-12">
-          <dl className="border-t border-ink lg:col-span-5">
+          <dl className="border-t border-line lg:col-span-5">
             {items.map((item) => (
               <div key={item.label} className="border-b border-line py-6">
                 <dt>

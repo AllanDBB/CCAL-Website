@@ -33,7 +33,7 @@ export default async function NoticiaPage({ params }: PageProps<"/noticias/[slug
           <ArrowIcon className="h-4 w-4 rotate-180 transition-transform group-hover:-translate-x-1" />
           Noticias
         </Link>
-        <div className="mt-10 grid gap-6 border-t border-ink pt-6 lg:grid-cols-12">
+        <div className="mt-10 grid gap-6 border-t border-line pt-6 lg:grid-cols-12">
           <Label className="lg:col-span-3">
             <time dateTime={item.date} className="text-ink">
               {formatNumericDate(item.date)}

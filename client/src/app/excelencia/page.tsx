@@ -19,16 +19,16 @@ export default async function ExcelenciaPage() {
         lead="Pensamiento crítico, creatividad y pasión por la ciencia, con resultados en ferias, olimpiadas y el ingreso universitario."
       />
 
-      <section aria-label="Cifras" className="border-y border-ink">
+      <section aria-label="Cifras" className="border-y border-line">
         <Container>
           <dl className="grid grid-cols-2 lg:grid-cols-4">
             {stats.map((s, i) => (
               <div
                 key={s.label}
-                className={`border-ink py-10 ${i % 2 === 0 ? "border-r pr-5" : "pl-5"} ${i < 2 ? "border-b lg:border-b-0" : ""} lg:border-r lg:px-6 lg:first:pl-0 lg:last:border-r-0`}
+                className={`border-line py-10 ${i % 2 === 0 ? "border-r pr-5" : "pl-5"} ${i < 2 ? "border-b lg:border-b-0" : ""} lg:border-r lg:px-6 lg:first:pl-0 lg:last:border-r-0`}
               >
                 <dt className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted">{s.label}</dt>
-                <dd className="mt-6 font-display text-5xl font-semibold tracking-[-0.05em] sm:text-7xl">{s.value}</dd>
+                <dd className="mt-4 font-display text-5xl font-semibold tracking-[-0.04em] sm:text-6xl">{s.value}</dd>
               </div>
             ))}
           </dl>
@@ -38,23 +38,22 @@ export default async function ExcelenciaPage() {
       <section className="py-20 sm:py-28">
         <Container>
           <SectionHeader
-            index="01"
             label="Investigación"
             title="Proyectos y competencias"
             lead="Nuestros estudiantes llevan sus proyectos a ferias científicas y a competencias nacionales e internacionales."
           />
         </Container>
-        <div className="mt-16 grid gap-px bg-ink md:grid-cols-3">
+        <Container className="mt-12 grid gap-3 md:grid-cols-3">
           {featured.map((img) => (
             <Photo key={img.src} image={img} caption={img.caption} sizes="(min-width: 768px) 33vw, 100vw" className="aspect-[4/5]" />
           ))}
-        </div>
+        </Container>
       </section>
 
       <section className="pb-20 sm:pb-28">
         <Container>
-          <SectionHeader index="02" label="Reconocimientos" title="Distinciones recientes" />
-          <ol className="mt-12 border-t border-ink lg:ml-[25%]">
+          <SectionHeader label="Reconocimientos" title="Distinciones recientes" />
+          <ol className="mt-12 border-t border-line lg:ml-[25%]">
             {achievements.map((a) => (
               <li key={`${a.year}-${a.title}`} className="grid grid-cols-[5rem_1fr] gap-6 border-b border-line py-6 sm:grid-cols-[6rem_1fr_1fr]">
                 <span className="font-mono text-[13px] text-muted">{a.year}</span>

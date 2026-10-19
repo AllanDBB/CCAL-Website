@@ -70,14 +70,14 @@ export function SectionHeader({
   light?: boolean;
 }) {
   return (
-    <div className={`grid gap-6 border-t pt-6 lg:grid-cols-12 ${light ? "border-white/25" : "border-ink"}`}>
+    <div className={`grid gap-4 border-t pt-5 lg:grid-cols-12 ${light ? "border-white/25" : "border-line"}`}>
       <Label light={light} className="lg:col-span-3">
         {index && <span className={light ? "text-accent" : "text-ink"}>{index}</span>}
         {index && " — "}
         {label}
       </Label>
       <div className="lg:col-span-9">
-        <h2 className={`text-4xl leading-[1] sm:text-5xl lg:text-6xl ${light ? "text-white" : "text-ink"}`}>{title}</h2>
+        <h2 className={`text-3xl leading-[1.05] sm:text-4xl lg:text-5xl ${light ? "text-white" : "text-ink"}`}>{title}</h2>
         {lead && <p className={`mt-5 max-w-2xl text-lg leading-relaxed ${light ? "text-white/70" : "text-muted"}`}>{lead}</p>}
         {action && <div className="mt-6">{action}</div>}
       </div>
@@ -148,26 +148,28 @@ export function PageHero({
 }) {
   return (
     <section>
-      <Container className="pt-12 pb-14 sm:pt-16 lg:pt-24 lg:pb-20">
+      <Container className="pt-12 pb-12 sm:pt-16 lg:pt-20 lg:pb-16">
         <Label className="flex items-center gap-3">
           <AccentSquare className="h-2.5 w-2.5" />
           {label}
         </Label>
         <div className="mt-8 grid gap-10 lg:grid-cols-12">
           <div className={aside ? "lg:col-span-8" : "lg:col-span-11"}>
-            <h1 className="text-[2.75rem] leading-[0.95] tracking-[-0.045em] sm:text-7xl lg:text-[6.25rem]">{title}</h1>
+            <h1 className="text-[2.5rem] leading-[1] tracking-[-0.04em] sm:text-6xl lg:text-7xl">{title}</h1>
           </div>
           {aside && <div className="lg:col-span-4 lg:self-end">{aside}</div>}
         </div>
         {(lead || children) && (
-          <div className="mt-10 grid gap-8 border-t border-line pt-8 lg:mt-14 lg:grid-cols-12">
-            {lead && <p className="text-lg leading-relaxed text-muted lg:col-span-6 lg:col-start-4 sm:text-xl">{lead}</p>}
-            {children && <div className="lg:col-span-3 lg:col-start-10">{children}</div>}
+          <div className="mt-10 grid gap-8 lg:mt-12 lg:grid-cols-12">
+            {lead && <p className="text-lg leading-relaxed text-muted lg:col-span-7 sm:text-xl">{lead}</p>}
+            {children && <div className="lg:col-span-4 lg:col-start-9">{children}</div>}
           </div>
         )}
       </Container>
       {image && (
-        <Photo image={image} priority sizes="100vw" className="aspect-[16/9] w-full sm:aspect-[21/9]" />
+        <Container>
+          <Photo image={image} priority sizes="(min-width: 1320px) 1256px, 100vw" className="aspect-[16/9] w-full sm:aspect-[21/9]" />
+        </Container>
       )}
     </section>
   );
