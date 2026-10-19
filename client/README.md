@@ -37,8 +37,6 @@ npm run migrate:create -- nombre-del-cambio
 npm run generate:types
 ```
 
-Usa siempre estos scripts: activan el almacenamiento de Vercel Blob al generar el esquema, igual que en producción.
-
 ## Despliegue (Vercel)
 
 Variables necesarias en el proyecto de Vercel:

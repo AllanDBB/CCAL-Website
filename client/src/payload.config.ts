@@ -50,6 +50,8 @@ export default buildConfig({
       token: process.env.BLOB_READ_WRITE_TOKEN || "",
       // El navegador sube directo a Blob: evita el límite de 4,5 MB por petición de Vercel.
       clientUploads: true,
+      // Mismo esquema de base de datos con o sin Blob (local vs. Vercel).
+      alwaysInsertFields: true,
     }),
   ],
 });
