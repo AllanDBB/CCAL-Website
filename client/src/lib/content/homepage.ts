@@ -143,7 +143,7 @@ export const homePageContent = {
 
   cta: {
     title: "¿Listo para formar parte de nuestra familia CCAL?",
-    description: "Únete a la comunidad educativa más prestigiosa de Alajuela. Pronto anunciaremos el proceso de admisión 2026.",
+    description: "Únete a la comunidad educativa más prestigiosa de Alajuela. Los resultados del proceso de admisión 2026 se publicarán el viernes 23 de octubre.",
     buttons: {
       primary: "Más Información",
       secondary: "Conócenos"

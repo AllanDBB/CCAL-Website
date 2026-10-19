@@ -55,7 +55,7 @@ export default function AdmisionesPage() {
     {
       numero: "4",
       titulo: "Consultar Resultados",
-      descripcion: "Esperar publicación de resultados (finales de noviembre)"
+      descripcion: "Los resultados se publicarán el viernes 23 de octubre de 2026"
     }
   ];
 
@@ -93,25 +93,25 @@ export default function AdmisionesPage() {
             <div className="bg-white rounded-2xl shadow-xl p-8 border-t-4 border-[#FAA916]">
               <div className="bg-gradient-to-r from-[#FAA916] to-[#ffb52e] text-[#0A2463] rounded-xl p-6 mb-6 text-center">
                 <h2 className="text-2xl font-bold mb-2">
-                  Admisiones 2026
+                  El proceso de admisión 2026 ha finalizado
                 </h2>
                 <p className="text-lg font-semibold">
-                  Pronto anunciaremos las fechas y detalles del proceso de admisión 2026
+                  Los resultados se publicarán este viernes 23 de octubre de 2026
                 </p>
               </div>
               <h2 className="text-3xl font-bold text-[#0A2463] mb-4">
                 Proceso de Admisión 2026
               </h2>
               <p className="text-gray-700 leading-relaxed mb-4">
-                El proceso de admisión estará dirigido a estudiantes que se encuentren <strong>cursando 9° año</strong> y 
+                El proceso de admisión estuvo dirigido a estudiantes que se encuentran <strong>cursando 9° año</strong> y 
                 desean formar parte de alguna de las 14 sedes de los Colegios Científicos de Costa Rica para el ciclo lectivo 2026.
               </p>
               <div className="bg-blue-50 border-l-4 border-[#0A2463] p-4 rounded">
                 <p className="text-[#0A2463] font-semibold">
-                  📅 Fecha de la PAA: 10 de Octubre de 2026
+                  📅 Publicación de resultados: viernes 23 de octubre de 2026
                 </p>
                 <p className="text-gray-700 text-sm mt-1">
-                  Las listas de admitidos se publicarán a finales de noviembre
+                  La PAA se aplicó el 10 de octubre de 2026. ¡Gracias a todos los estudiantes que participaron!
                 </p>
               </div>
             </div>
