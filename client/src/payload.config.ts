@@ -45,6 +45,8 @@ export default buildConfig({
       enabled: Boolean(process.env.BLOB_READ_WRITE_TOKEN),
       collections: { media: true },
       token: process.env.BLOB_READ_WRITE_TOKEN || "",
+      // El navegador sube directo a Blob: evita el límite de 4,5 MB por petición de Vercel.
+      clientUploads: true,
     }),
   ],
 });
