@@ -123,10 +123,9 @@ export const achievements: Achievement[] = [
 ];
 
 export const gallery: GalleryItem[] = [
-  { src: "/images/proyectos.jpeg", alt: "Dos estudiantes conectan un circuito electrónico", caption: "Proyectos de electrónica y robótica" },
+  { src: "/images/cientifica.jpeg", alt: "Estudiantes con gabacha presentan un experimento", caption: "Ciencia en el aula" },
   { src: "/images/estudiantes.jpeg", alt: "Estudiantes con gabacha trabajando en el laboratorio", caption: "Laboratorios de ciencias" },
   { src: "/images/actividades.jpeg", alt: "Estudiantes con la bandera de Costa Rica en Singapur", caption: "Competencias internacionales" },
-  { src: "/images/cientifica.jpeg", alt: "Estudiantes con gabacha presentan un experimento", caption: "Ciencia en el aula" },
   { src: "/images/futbol-chill.jpeg", alt: "Grupo de estudiantes con camisetas de fútbol", caption: "Comunidad" },
   { src: "/images/graduacion.jpeg", alt: "Auditorio lleno durante una ceremonia de graduación", caption: "Graduación" },
   { src: "/images/proyecto.jpeg", alt: "Estudiantes muestran un proyecto a visitantes", caption: "Ferias y exposiciones" },

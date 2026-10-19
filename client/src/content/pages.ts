@@ -5,6 +5,7 @@ export const pages: PagesContent = {
   home: {
     heroLabel: "Sistema Nacional de Colegios Científicos — Sede 09",
     heroTitle: "Colegio\nCientífico\nde Alajuela",
+    heroImage: { src: "/images/cientifica.jpeg", alt: "Estudiantes del CCAL con gabacha presentan un experimento a niños de escuela" },
     primaryButton: "Proceso de admisión",
     secondaryButton: "Conocer el colegio",
     facts: [
