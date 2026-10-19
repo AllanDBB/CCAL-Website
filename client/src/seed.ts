@@ -36,9 +36,28 @@ function paragraphsToLexical(paragraphs: string[]) {
 
 const payload = await getPayload({ config });
 
+// En el build de Vercel (SEED_IF_EMPTY=1) solo se carga contenido si la base
+// está vacía, para no pisar lo que el personal edita en el panel. El primer
+// administrador se crea desde /admin («Crear primer usuario»).
+const buildMode = Boolean(process.env.SEED_IF_EMPTY);
+if (buildMode && process.env.VERCEL && !process.env.BLOB_READ_WRITE_TOKEN) {
+  // Sin Blob las fotos quedarían en el disco temporal del build y se perderían.
+  console.log("Falta BLOB_READ_WRITE_TOKEN; no se carga el contenido inicial.");
+  process.exit(0);
+}
+if (buildMode) {
+  const existing = await payload.findGlobal({ slug: "site" });
+  if (existing.name) {
+    console.log("La base ya tiene contenido; no se carga el contenido inicial.");
+    process.exit(0);
+  }
+}
+
 // 1. Primer administrador
 const users = await payload.count({ collection: "users" });
-if (users.totalDocs === 0) {
+if (buildMode) {
+  console.log("Crea el primer administrador desde /admin.");
+} else if (users.totalDocs === 0) {
   const email = process.env.SEED_ADMIN_EMAIL || "admin@ccalajuela.ed.cr";
   const password = process.env.SEED_ADMIN_PASSWORD || crypto.randomBytes(9).toString("base64url");
   await payload.create({ collection: "users", data: { name: "Administrador", email, password, role: "admin" } });

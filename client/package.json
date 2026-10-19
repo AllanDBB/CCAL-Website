@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "sh -c 'if [ -n \"$DATABASE_URL\" ]; then payload migrate; fi' && next build",
+    "build": "sh -c 'if [ -n \"$DATABASE_URL\" ]; then payload migrate && SEED_IF_EMPTY=1 payload run src/seed.ts; fi' && next build",
     "start": "next start",
     "lint": "next lint",
     "payload": "payload",
